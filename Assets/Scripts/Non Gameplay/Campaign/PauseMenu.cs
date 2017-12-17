@@ -24,17 +24,17 @@ public class PauseMenu : MonoBehaviour {
 
 	void Start () {
 		if (youdidthistoher.Instance.soundOn == 1) {
-			soundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.pressedSound;
+		//	soundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.pressedSound;
 
 		} else {
-			soundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.unpressedSound;
+		//	soundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.unpressedSound;
 			
 		}
 		if (youdidthistoher.Instance.inGameSond == 1) {
-			osoundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.pressedoSound;
+		//	osoundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.pressedoSound;
 			a.SetActive (true);
 		} else {
-			osoundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.unpressedoSound;
+	//		osoundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.unpressedoSound;
 			a.SetActive (false);
 		}
 			containers = new GameObject[noOfPowerUps];
@@ -239,21 +239,21 @@ public class PauseMenu : MonoBehaviour {
 	public void sond()
 	{
 		youdidthistoher.Instance.MenuSound ();
-		if(youdidthistoher.Instance.soundOn==1)
-			soundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.pressedSound;
-		else
-			soundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.unpressedSound;
+//		if(youdidthistoher.Instance.soundOn==1)
+	//		soundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.pressedSound;
+//		else
+	//		soundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.unpressedSound;
 	}
 
 	public void oSond()
 	{
 		if (youdidthistoher.Instance.inGameSond == 1) {
 			youdidthistoher.Instance.inGameSond = 0;
-			osoundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.unpressedoSound;
+	//		osoundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.unpressedoSound;
 			a.SetActive (false);
 		}else
 		{	youdidthistoher.Instance.inGameSond = 1;
-			osoundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.pressedoSound;
+		//	osoundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.pressedoSound;
 			a.SetActive (true);
 
 		}

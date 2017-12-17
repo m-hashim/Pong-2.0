@@ -581,9 +581,6 @@ public class MainMenu : MonoBehaviour
 		joyStickButton.GetComponent<Image> ().sprite = pressedJoystick;
 		touchButton.GetComponent<Image> ().sprite = unpresedTouch;
 		gyroButton.GetComponent<Image> ().sprite = unpressedGyro;
-
-		
-		
 	}
 
 	public void touch()

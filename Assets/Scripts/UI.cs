@@ -14,12 +14,12 @@ public class UI : MonoBehaviour {
 	private const int BLOKES_COUNT = 3;
 	private const int SPECIAL_COUNT = 2;
 	private const int PAD_COUNT = 1;
+	private const float gameSelectionWaitTime = 3.5f;
 
-	private bool blockMovement,firstBlock;
-	private int levelCount=1;
-	private int levelsUnlocked = 52;
-	private int lastSwitch=0;
-	private int tempSound = 1;
+	private bool blockMovement,firstBlock, levelSelected;
+	private int levelCount;
+	private int levelsUnlocked;
+	private int lastSwitch=1;
 
 	private string[] parsed;
 
@@ -31,6 +31,8 @@ public class UI : MonoBehaviour {
 	public GameObject LevelPage, LevelButton, LevelRow, StoreButton;
 	public GameObject GroundsPanel, BlokesPanel, PowerupsPanel, PadsPanel, SpecialPanel;
 	public GameObject soundButton, cameraButton, controlButton;
+	public GameObject practiceButton, endlessButton, campaignButton, forwardCampaignButton, backwardCampaignButton;
+	public GameObject bckGameSelection, bckLevelSelection;			//back buttons that need to be disabled
 
 	public Sprite[] powerUpSprites = new Sprite[POWERUP_COUNT];
 	public Sprite[] groundSprites = new Sprite[GROUND_COUNT];
@@ -43,8 +45,20 @@ public class UI : MonoBehaviour {
 
 	void Awake () 
 	{
+		string isLoginOnce  = PlayerPrefs.GetString ("_isLoginOnce");
+		if (isLoginOnce != "True") {
+			PlayerPrefs.SetString ("_isLoginOnce", "True");
+			cameraButtonController (2);	//fps button active
+			controlButtonController (1);	//touch button active
+			//		PlayerPrefs.SetInt ("PlayerModePong",0);
+		} else {
+			cameraButtonController (youdidthistoher.Instance.currentCameraMode);
+			controlButtonController (PlayerPrefs.GetInt ("InputType"));
+		}
 		parsed = new string[15];			
-		firstBlock=false;
+		firstBlock=levelSelected=false;
+		levelsUnlocked = youdidthistoher.Instance.campaignLevelReached;
+		levelCount = (NO_OF_ROWS*NO_OF_COLUMNS)*(levelsUnlocked/(NO_OF_ROWS*NO_OF_COLUMNS))+1;
 		makeAPage (LevelPage.transform.position);									//Campaign levels
 		shopInstantiator ("Text/grounds",GROUND_COUNT,GroundsPanel,groundSprites);
 		shopInstantiator ("Text/blokes",BLOKES_COUNT,BlokesPanel,blokeSprites);
@@ -112,11 +126,43 @@ public class UI : MonoBehaviour {
 
 	private void LoadMenu(int level)
 	{
-		print (level);
-        youdidthistoher.Instance.currentPlayingLevel = level;
-        SceneManager.LoadScene("Pong_Breaker");
-
+		if (!levelSelected) 
+		{
+			print ("level "+level);
+			youdidthistoher.Instance.currentPlayingLevel = level;											//load current level
+			int row = (level%(NO_OF_ROWS*NO_OF_COLUMNS))/NO_OF_COLUMNS;
+			if (row % NO_OF_COLUMNS == 0 && row != 0) {														//row correction
+				row--;
+			}
+			int column = (level%(NO_OF_ROWS*NO_OF_COLUMNS))%NO_OF_COLUMNS;
+			if(levelsUnlocked<((levelCount/(NO_OF_ROWS*NO_OF_COLUMNS))+1)*(NO_OF_ROWS*NO_OF_COLUMNS))		//currentLevelPage Correction of One block ahead selection
+			{	
+				column--;
+				if (column == -1) 
+				{
+					column = NO_OF_COLUMNS-1;
+					row--;
+					if (row == -1) 
+					{
+						row = NO_OF_ROWS - 1;
+					}
+				}
+			}
+			//	print ("row "+row+" column "+column);
+			GameObject thisButton = levels [row, column];
+			if (thisButton.transform.GetChild (2).gameObject.activeInHierarchy) {
+				//locked Button Click
+				thisButton.GetComponent<Animation> ().Play ("lockedButtonCampaign");					//Locked Anim
+			} else {
+				//level Selected
+				thisButton.GetComponent<Animation> ().Play ("levelButtonSelect");						//ButtonSelectAnim
+				bckLevelSelection.GetComponent<Button> ().interactable = false;
+				levelSelected = true;
+				Invoke ("loadScene", 1f);
+			}
+		}
 	}
+
     void makeAPage(Vector3 parentOfRows)
     {
 
@@ -133,13 +179,14 @@ public class UI : MonoBehaviour {
             {
                 levels[i, j] = Instantiate(LevelButton) as GameObject;
                 levels[i, j].name = LevelPage.name + " item at (" + i + "," + j + ")";
-                levels[i, j].transform.parent = LevelPage.transform;
+                //levels[i, j].transform.parent = LevelPage.transform;
+				levels [i, j].transform.SetParent (LevelPage.transform);
 
                 levels[i, j].transform.GetChild(1).GetComponent<Text>().text = levelCount++.ToString();
                 int temp = levelCount - 1;
                 levels[i, j].GetComponent<Button>().onClick.AddListener(() => LoadMenu(temp));
 
-                if (levelCount <= levelsUnlocked)
+                if (levelCount <= levelsUnlocked+1)
                 {
                     levels[i, j].transform.GetChild(2).gameObject.SetActive(false);
                     blockMovement = false;
@@ -177,42 +224,7 @@ public class UI : MonoBehaviour {
         }
     
     }
-    /*
-    void makeAPage(Vector3 parentOfRows)
-    {
-        for (int i = 0; i < NO_OF_ROWS; i++)
-        {
-            row[i] = GameObject.Instantiate(LevelRow, parentOfRows, Quaternion.identity);
-            row[i].transform.parent = LevelPage.transform;
-            for (int j = 0; j < NO_OF_COLUMNS; j++)
-            {
-                levels[i, j] = GameObject.Instantiate(LevelButton, row[i].transform.position, Quaternion.identity);
-                levels[i, j].transform.parent = row[i].transform;
-                if (levelCount - 1 == levelsUnlocked)
-                {                                                           //select component
-                    levels[i, j].transform.GetChild(0).gameObject.SetActive(true);
-                }
-                else
-                {
-                    levels[i, j].transform.GetChild(0).gameObject.SetActive(false);
-                }
-                levels[i, j].transform.GetChild(1).GetComponent<Text>().text = levelCount++.ToString(); //text component
-                int temp = levelCount - 1;
-                levels[i, j].GetComponent<Button>().onClick.AddListener(() => LoadMenu(temp));
-                if (levelCount - 1 <= levelsUnlocked)
-                {                                                           //lock component
-                    levels[i, j].transform.GetChild(2).gameObject.SetActive(false);
-                    blockMovement = false;
-                }
-                else
-                {
-                    levels[i, j].transform.GetChild(2).gameObject.SetActive(true);
-                    blockMovement = true;
-                }
-            }
-        }
 
-    }*/
     void Update () {
 		
 	}
@@ -220,19 +232,50 @@ public class UI : MonoBehaviour {
     public void Campaign()
     {
         youdidthistoher.Instance.gameplayType = 0;
-        
     }
+
     public void Endless()
     {
+		campaignButton.GetComponent<Button> ().interactable = false;
+		practiceButton.GetComponent<Button> ().interactable = false;
+		bckGameSelection.GetComponent<Button> ().interactable = false;
         youdidthistoher.Instance.gameplayType = 1;
-        SceneManager.LoadScene("Pong_Breaker");
+	//	GAME SELECTION PANEL 1
+/*		endlessButton.GetComponent<ButtonBackRotatorAnticlockwise>().enabled=true;
+		endlessButton.GetComponent<ButtonBackRotatorAnticlockwise>().rateIncrease();
+*/	//	GAME SELECTION PANEL 2
+		practiceButton.transform.GetChild(1).gameObject.GetComponent<ButtonBackRotatorClockwise>().enabled = false;
+		campaignButton.transform.GetChild(1).gameObject.GetComponent<ButtonBackRotatorAnticlockwise>().enabled = false;
+		endlessButton.transform.GetChild (1).gameObject.GetComponent<ButtonBackRotatorClockwise> ().rateIncrease();
+		endlessButton.GetComponent<Animation> ().Play("endless");
+		campaignButton.GetComponent<Animation> ().Play ("campaignRight");
+		practiceButton.GetComponent<Animation> ().Play ("practiceRight");
+		Invoke ("loadScene", gameSelectionWaitTime);
     }
 
     public void Practice()
     {
-        youdidthistoher.Instance.gameplayType = 2;
-        SceneManager.LoadScene("Pong_Breaker");
+		campaignButton.GetComponent<Button> ().interactable = false;
+		endlessButton.GetComponent<Button> ().interactable = false;
+		bckGameSelection.GetComponent<Button> ().interactable = false;
+		youdidthistoher.Instance.gameplayType = 2;
+	//	GAME SELECTION PANEL 1
+/*		practiceButton.GetComponent<ButtonBackRotatorClockwise>().enabled=true;
+		practiceButton.GetComponent<ButtonBackRotatorClockwise>().rateIncrease();	 	
+*/	//	GAME SELECTION PANEL 2
+		campaignButton.transform.GetChild(1).gameObject.GetComponent<ButtonBackRotatorAnticlockwise>().enabled = false;
+		endlessButton.transform.GetChild(1).gameObject.GetComponent<ButtonBackRotatorClockwise>().enabled = false;
+		practiceButton.transform.GetChild (1).gameObject.GetComponent<ButtonBackRotatorClockwise> ().rateIncrease();
+		practiceButton.GetComponent<Animation> ().Play("practice");
+		campaignButton.GetComponent<Animation> ().Play ("campaignLeft");
+		endlessButton.GetComponent<Animation> ().Play ("endlessLeft");
+		Invoke ("loadScene", gameSelectionWaitTime);
     }
+
+	void loadScene()
+	{
+		SceneManager.LoadScene("Pong_Breaker");
+	}
 
 	public void quit()
 	{
@@ -256,11 +299,15 @@ public class UI : MonoBehaviour {
 					levels [i, j].GetComponent<Button> ().onClick.RemoveAllListeners ();
 					int temp = levelCount - 1;
 					levels [i, j].GetComponent<Button> ().onClick.AddListener (() => LoadMenu (temp));
-					if (levelCount-1 <= levelsUnlocked) {
+					if (levelCount<=levelsUnlocked) {
 						levels [i, j].transform.GetChild (2).gameObject.SetActive (false);
 						blockMovement = false;
-					} else {
-						levels [i, j].transform.GetChild (2).gameObject.SetActive (true);
+					} 
+					else {
+						if (levelCount-1 == levelsUnlocked)
+							levels [i, j].transform.GetChild (2).gameObject.SetActive (false);	
+						else
+							levels [i, j].transform.GetChild (2).gameObject.SetActive (true);
 						blockMovement = true;
 					}
 				}
@@ -270,31 +317,31 @@ public class UI : MonoBehaviour {
 
 	public void previousPageLevel()
 	{
-		if (levelCount !=1) {
-			blockMovement = false;
-			if (lastSwitch == 1)
-				levelCount -= 20;
-			lastSwitch = -1;
-			for (int i = NO_OF_ROWS - 1; i >= 0; i--) {
-				for (int j = NO_OF_COLUMNS - 1; j >= 0; j--) {	
-					levels [i, j].transform.GetChild (1).GetComponent<Text> ().text = (--levelCount).ToString ();
-					if (levelCount-1 == levelsUnlocked) {															//select component
-						levels [i, j].transform.GetChild (0).gameObject.SetActive (true);
-					} else {
-						levels [i, j].transform.GetChild (0).gameObject.SetActive (false);
-					}
-					levels [i, j].GetComponent<Button> ().onClick.RemoveAllListeners ();
-					int temp = levelCount - 1;
-					levels [i, j].GetComponent<Button> ().onClick.AddListener (() => LoadMenu (temp));
+			if (levelCount != 1) {
+				blockMovement = false;
+				if (lastSwitch == 1)
+					levelCount -= 20;
+				lastSwitch = -1;
+				for (int i = NO_OF_ROWS - 1; i >= 0; i--) {
+					for (int j = NO_OF_COLUMNS - 1; j >= 0; j--) {	
+						levels [i, j].transform.GetChild (1).GetComponent<Text> ().text = (--levelCount).ToString ();
+						if (levelCount == levelsUnlocked) {															//select component
+							levels [i, j].transform.GetChild (0).gameObject.SetActive (true);
+						} else {
+							levels [i, j].transform.GetChild (0).gameObject.SetActive (false);
+						}
+						levels [i, j].GetComponent<Button> ().onClick.RemoveAllListeners ();
+						int temp = levelCount - 1;
+						levels [i, j].GetComponent<Button> ().onClick.AddListener (() => LoadMenu (temp));
 
-					if (levelCount-1 <= levelsUnlocked) {
-						levels [i, j].transform.GetChild (2).gameObject.SetActive (false);
-					} else {
-						levels [i, j].transform.GetChild (2).gameObject.SetActive (true);
+						if (levelCount <= levelsUnlocked) {
+							levels [i, j].transform.GetChild (2).gameObject.SetActive (false);
+						} else {
+							levels [i, j].transform.GetChild (2).gameObject.SetActive (true);
+						}
 					}
 				}
 			}
-		}
 	}
 
 	void resetShop()
@@ -369,15 +416,16 @@ public class UI : MonoBehaviour {
 
 	public void soundButtonController()
 	{
-		if (tempSound == 1) {
-			tempSound = 0;
+		if (youdidthistoher.Instance.soundOn == 1) {
+			youdidthistoher.Instance.soundOn = 0;
 			soundButton.transform.GetChild (0).gameObject.SetActive (false);
 			soundButton.transform.GetChild (1).gameObject.SetActive (true);
 		} else {
-			tempSound = 1;
+			youdidthistoher.Instance.soundOn = 1;
 			soundButton.transform.GetChild (1).gameObject.SetActive (false);
 			soundButton.transform.GetChild (0).gameObject.SetActive (true);
 		}
+		youdidthistoher.Instance.Save ();
 	}
 
 	void resetCameraButtons()
@@ -390,19 +438,12 @@ public class UI : MonoBehaviour {
 
 	public void cameraButtonController(int param)
 	{
+		// 0 = dynamic, 1= topdown, 2= fps
 		resetCameraButtons ();
-		switch (param) 
-		{
-		case 0:
-			cameraButton.transform.GetChild (0).transform.GetChild(0).gameObject.SetActive (true);
-			break;
-		case 1:
-			cameraButton.transform.GetChild (1).transform.GetChild(0).gameObject.SetActive (true);
-			break;
-		case 2:
-			cameraButton.transform.GetChild (2).transform.GetChild(0).gameObject.SetActive (true);
-			break;
-		}
+		cameraButton.transform.GetChild (param).transform.GetChild (0).gameObject.SetActive (true);
+		youdidthistoher.Instance.currentCameraMode = param;
+		youdidthistoher.Instance.Save ();
+	//	print (param);
 	}
 
 	void resetControlButtons()
@@ -415,18 +456,15 @@ public class UI : MonoBehaviour {
 
 	public void controlButtonController(int param)
 	{
+		// 0 = joystick, 1= hand, 2= gyro
 		resetControlButtons ();
-		switch (param) 
-		{
-		case 0:
-			controlButton.transform.GetChild (0).transform.GetChild(0).gameObject.SetActive (true);
-			break;
-		case 1:
-			controlButton.transform.GetChild (1).transform.GetChild(0).gameObject.SetActive (true);
-			break;
-		case 2:
-			controlButton.transform.GetChild (2).transform.GetChild(0).gameObject.SetActive (true);
-			break;
-		}
+		controlButton.transform.GetChild (param).transform.GetChild(0).gameObject.SetActive (true);
+		PlayerPrefs.SetInt ("InputType",param);
+	//	print (param);
+	}
+
+	public void clrprfs()
+	{
+		PlayerPrefs.DeleteAll ();
 	}
 }

@@ -399,7 +399,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1291291321}
-  - component: {fileID: 1291291322}
   m_Layer: 0
   m_Name: IAP
   m_TagString: Untagged
@@ -420,17 +419,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1291291322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1291291320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 792a4a6d061a4954c9d60d87cae78e7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1326331269
 GameObject:
   m_ObjectHideFlags: 0
@@ -641,7 +629,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1915594695}
-  - component: {fileID: 1915594694}
   m_Layer: 0
   m_Name: Ad
   m_TagString: Untagged
@@ -649,17 +636,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &1915594694
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1915594693}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f99eb2f5171c3f41b25e393249f05a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1915594695
 Transform:
   m_ObjectHideFlags: 0
@@ -915,7 +891,7 @@ MonoBehaviour:
   powerUpPriceDisplay: 30
   currentCameraMode: 0
   powerUpArray: 
-  campaignLevelReached: 1
+  campaignLevelReached: 52
   level: []
   pressedSound: {fileID: 21300000, guid: 96065298aa863eb4ba894d7d86f9a975, type: 3}
   unpressedSound: {fileID: 21300000, guid: 1c5cab6707b0ff642aeabe42e8167069, type: 3}

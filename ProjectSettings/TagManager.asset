@@ -12,6 +12,7 @@ TagManager:
   - padGoli
   - Bullet
   - POWERUPS
+  - MenuButton
   layers:
   - Default
   - TransparentFX

@@ -40,7 +40,7 @@ public class youdidthistoher : MonoBehaviour {
 	public int skinAvailabilityDrunk = 0;
 	public int hasRatedGame = 0;
 	public int gameOpenCount = 1;
-	public int currentPlayingLevel = 1;
+	public int currentPlayingLevel = 52;
 	public int HighScore = 0;
 	public int LevelLooseCount=1;
 	public int soundOn = 1;
@@ -52,12 +52,10 @@ public class youdidthistoher : MonoBehaviour {
 	public int extraPriceDisplay = 150;
 	public int powerUpPriceDisplay = 30;
 
-
 	public int currentCameraMode=2;		//0 for dynamic, 2 for first person
 	public int[] powerUpArray;
-	public int campaignLevelReached=1;
+	public int campaignLevelReached=52;
 	public string[] level;
-	public Sprite pressedSound, unpressedSound, pressedoSound, unpressedoSound;
 
 	public GameObject g1, g2, w1, w2, w3, w4, w5, w6, w7, w8;
 
@@ -170,8 +168,8 @@ public class youdidthistoher : MonoBehaviour {
 		PlayerPrefs.SetInt ("gameplayType", gameplayType);
 
 
-		//	print (skinAvailabilityPad);
-	//	print (skinAvailabilityExtra);
+	//	print ("currentPlayingLevel "+currentPlayingLevel);
+	//	print ("campaignLevelReached "+campaignLevelReached);
 	}
 
 	public void MenuSound()

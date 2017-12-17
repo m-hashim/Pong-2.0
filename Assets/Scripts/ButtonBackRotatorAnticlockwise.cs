@@ -4,11 +4,25 @@ using UnityEngine;
 
 public class ButtonBackRotatorAnticlockwise : MonoBehaviour {
 
+	private const float timeRateForIncrement = 0.5f;
+	private const float incrementRate = -3f;
+	public float rotationRate = -2f;
+
 	void Start () {
 		
 	}
 	
 	void Update () {
-		transform.Rotate (new Vector3 (0f,0f,-2f));
+		transform.Rotate (new Vector3 (0f,0f,rotationRate));
+	}
+
+	public void rateIncrease()
+	{
+		InvokeRepeating ("incr", 0f, timeRateForIncrement);
+	}
+
+	void incr()
+	{
+		rotationRate += incrementRate;
 	}
 }

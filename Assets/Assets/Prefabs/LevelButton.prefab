@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 222906344445489572}
   - component: {fileID: 114106924040454910}
   - component: {fileID: 114613225335888540}
+  - component: {fileID: 111125192215507272}
   m_Layer: 5
   m_Name: LevelButton
   m_TagString: Untagged
@@ -80,6 +81,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!111 &111125192215507272
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1981053500811222}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations:
+  - {fileID: 7400000, guid: 9b55a1bf34fa9d6408457a78aae684ab, type: 2}
+  - {fileID: 7400000, guid: 901a04b69a72daa4aa616ad9863d3d64, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!114 &114053188999423592
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -215,7 +232,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1

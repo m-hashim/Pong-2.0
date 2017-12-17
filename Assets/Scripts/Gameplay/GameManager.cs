@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject coin;
 	public Transform BlokeGroup,DeadPool,BallContainer;
 	public GameObject g,w1,w2,w3,w4;
-	public GameObject camera2,camera3;
+	public GameObject camera1,camera2,camera3;
 
 	private int currentPlayingLevel;
     private float initialTime;
@@ -49,8 +49,7 @@ public class GameManager : MonoBehaviour {
 	private const float BLOKE_MULTIPLIER = 1f;
 	private const float WALL_MULTIPLIER = 3f;
 	private float PAD_MULTIPLIER = 1f;
-	public GameObject goScreen;
-	public GameObject otherScreen;
+	public GameObject goPanel, pausePanel;
 
 	public bool GameOver;
 	public int coinCount;
@@ -66,15 +65,13 @@ public class GameManager : MonoBehaviour {
 	public Text coinsEarned;
 	public float HighScore;
 	private bool HighScoreTuta;
-	/// </summary>
+
     void Start () {
 		gameStartTime = Time.time;
 		AI_Point = 0;
 		player_Point = 0;
 		AI_BlokePoint = 0;
 		player_BlokePoint = 0;
-		goScreen.SetActive (false);
-		otherScreen.SetActive (true);
 		if (youdidthistoher.Instance.MCDActive == 1) {
 			PAD_MULTIPLIER = 0.5f;
 		} else if (youdidthistoher.Instance.DrunkActive == 1) {
@@ -99,34 +96,26 @@ public class GameManager : MonoBehaviour {
 		w3.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
 		w4.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
 
+		camReset ();
 		switch (youdidthistoher.Instance.currentCameraMode) {
-
 		case 0:
-			camera2.SetActive (false);
-			camera3.SetActive (false);
-
+			camera1.SetActive (true);
 			break;
 		case 1:
 			camera2.SetActive (true);
-			camera3.SetActive (false);
-
 			break;
 		case 2:
-			camera2.SetActive (false);
 			camera3.SetActive (true);
-
-			//	camera3.transform.SetParent (PowerUp.currentPlayerPad);
 			break;
 		}
 
 		if(youdidthistoher.Instance.gameplayType == 0){
-		    currentPlayingLevel = PlayerPrefs.GetInt("currentPlayingLevel");
+			currentPlayingLevel = youdidthistoher.Instance.currentPlayingLevel;
             LevelMaker(currentPlayingLevel);
             ExtraFeatures();
         }
 		else if(youdidthistoher.Instance.gameplayType==1){
 			InvokeRepeating ("BlokeSpawner", SPAWN_RATE, SPAWN_RATE);
-
 		}
 
 		if (youdidthistoher.Instance.gameplayType<=1)
@@ -144,6 +133,14 @@ public class GameManager : MonoBehaviour {
         }
       
     }
+
+	void camReset()
+	{
+		camera1.SetActive (false);
+		camera2.SetActive (false);
+		camera3.SetActive (false);
+	}
+
     void Update()
 	{	if(GameOver) return;
 
@@ -362,10 +359,10 @@ public class GameManager : MonoBehaviour {
 		/////
 		//	AdManager.Instance.ShowBanner();
 		/////
-		otherScreen.SetActive (false);
-		goScreen.SetActive (true);
-		goScreen.transform.GetChild(0).GetChild (state).gameObject.SetActive (true);
-		goScreen.GetComponent<GOBABY> ().state = state;
+		pausePanel.SetActive (false);
+		goPanel.SetActive (true);
+	//	goScreen.transform.GetChild(0).GetChild (state).gameObject.SetActive (true);
+	//	goScreen.GetComponent<GOBABY> ().state = state;
 		coinEarned.text = "Coins Earned : " + GameManager.Instance.coinCount.ToString ();
 		for (int i = 0; i < ground.GetComponent<PowerUp> ().ballList.Length; i++)
 			ground.GetComponent<PowerUp> ().ballList [i].SetActive (false);

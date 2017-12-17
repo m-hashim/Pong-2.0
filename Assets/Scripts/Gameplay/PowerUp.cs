@@ -176,9 +176,9 @@ public class PowerUp : MonoBehaviour {
 	void PowerUpWorking(){
 		for (int i = 0; i < 14; i++) {
 			
-			if (powerVar[i].isWorking) {
-				print (Time.time + "   " + powerVar[i].finishTime);
-			}
+//			if (powerVar[i].isWorking) {
+//				print (Time.time + "   " + powerVar[i].finishTime);
+//			}
 			if (powerVar[i].isWorking && Time.time>powerVar[i].finishTime) {
 				print ("power is reset " + powerVar[i]);
 				powerVar[i].isWorking = false;
@@ -476,7 +476,7 @@ public class PowerUp : MonoBehaviour {
 				break;
 
 			}
-			print ( "kjaskd"+ powerVar[i].durationApplied);
+		//	print ( "kjaskd"+ powerVar[i].durationApplied);
 
 		}
 	}
