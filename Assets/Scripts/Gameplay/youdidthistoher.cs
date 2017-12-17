@@ -68,6 +68,8 @@ public class youdidthistoher : MonoBehaviour {
 		blokeMaterials = new Material[NO_OF_MATERIALS_BLOKE];
 		extraMaterials = new Material[NO_OF_EXTRAS];
 		powerUpArray = new int[7];
+		for(int i=0;i<7;i++)
+			powerUpArray [i] = 5;
 		materials = Resources.LoadAll<Material> ("Material/Pad_Materials");
 		blokeMaterials = Resources.LoadAll<Material> ("Material/Bloke_Materials");
 		extraMaterials = Resources.LoadAll<Material> ("Material/Extra_Materials");

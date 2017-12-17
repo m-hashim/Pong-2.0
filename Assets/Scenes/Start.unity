@@ -893,10 +893,6 @@ MonoBehaviour:
   powerUpArray: 
   campaignLevelReached: 52
   level: []
-  pressedSound: {fileID: 21300000, guid: 96065298aa863eb4ba894d7d86f9a975, type: 3}
-  unpressedSound: {fileID: 21300000, guid: 1c5cab6707b0ff642aeabe42e8167069, type: 3}
-  pressedoSound: {fileID: 21300000, guid: 65efe9ad2a7f4ef4593c19fc9bc9be4c, type: 3}
-  unpressedoSound: {fileID: 21300000, guid: b184d0d816c286249815ccdac974415c, type: 3}
   g1: {fileID: 1465554500288424, guid: c1ae5462878aab640aaa9ce7f6a67e4e, type: 2}
   g2: {fileID: 1078632826784414, guid: 59566477bcb2452498b6bb89a37eaee7, type: 2}
   w1: {fileID: 1654566198970602, guid: 456d781ef0bdf2547b863f7ea6be6757, type: 2}
