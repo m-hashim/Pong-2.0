@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour {
 
@@ -15,6 +16,13 @@ public class GameUI : MonoBehaviour {
 
 	void Start () {
 		isSelected = new int[noOfPowerUps];
+		bigBallButton.transform.GetChild (1).transform.GetChild (0).GetComponent<Text> ().text = "5";//youdidthistoher.Instance.powerUpArray [0].ToString();//youdidthistoher.Instance.p_bigBall.ToString();
+		flareButton.transform.GetChild (1).transform.GetChild (0).GetComponent<Text>().text = youdidthistoher.Instance.powerUpArray [1].ToString();//youdidthistoher.Instance.p_flareBall.ToString();
+		gunButton.transform.GetChild (1).transform.GetChild (0).GetComponent<Text>().text = youdidthistoher.Instance.powerUpArray [2].ToString();//youdidthistoher.Instance.p_gun.ToString();
+		magnetButton.transform.GetChild (1).transform.GetChild (0).GetComponent<Text>().text = youdidthistoher.Instance.powerUpArray [4].ToString();//youdidthistoher.Instance.p_magnet.ToString();
+		vipButton.transform.GetChild (1).transform.GetChild (0).GetComponent<Text>().text = youdidthistoher.Instance.powerUpArray [5].ToString();//youdidthistoher.Instance.p_VIPBall.ToString();
+		padLongButton.transform.GetChild (1).transform.GetChild (0).GetComponent<Text>().text = youdidthistoher.Instance.powerUpArray [3].ToString();//youdidthistoher.Instance.p_padLong.ToString();
+		multiBallButton.transform.GetChild (1).transform.GetChild (0).GetComponent<Text>().text = youdidthistoher.Instance.powerUpArray [6].ToString();//youdidthistoher.Instance.p_multiBall.ToString();
 	}
 
 	public void pause()

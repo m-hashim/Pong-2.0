@@ -12,7 +12,7 @@ public class starter : MonoBehaviour {
 	void Start () {
 		Invoke ("start",4.70f);
 		Invoke ("switcher", 2.5f);
-//		PlayerPrefs.DeleteAll ();
+		PlayerPrefs.DeleteAll ();
 	}
 		
 	void start()
