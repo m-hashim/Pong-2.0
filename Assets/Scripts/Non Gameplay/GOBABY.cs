@@ -15,7 +15,6 @@ public class GOBABY : MonoBehaviour {
 	private int coinsEarned;
 	public int state;
 
-	public GameObject ground;
 	public Text winText;
 	public Text loseText;
 	public Text totalCoin;
@@ -28,6 +27,7 @@ public class GOBABY : MonoBehaviour {
 	}
 
 	void Start () {
+		Time.timeScale = 0f;
 		totalCoin.text = youdidthistoher.Instance.currency.ToString ();
 		pausemenu.SetActive (false);
 		switch (state) 
@@ -60,7 +60,7 @@ public class GOBABY : MonoBehaviour {
 	{	/////
 	//	AdManager.Instance.HideBanner ();
 		/////
-	//	Time.timeScale = 1.0f;
+		Time.timeScale = 1.0f;
 		SceneManager.LoadScene ("Intermediate");
 		//PlayerPrefs.SetInt ("currentPlayingLevel", PlayerPrefs.GetInt ("currentPlayingLevel") + 1);
 		youdidthistoher.Instance.currentPlayingLevel++;
@@ -73,12 +73,7 @@ public class GOBABY : MonoBehaviour {
 		/////
 	//	AdManager.Instance.HideBanner ();
 		/////
-
-		if (SceneManager.GetActiveScene ().name == "Pong_Breaker")
-			SceneManager.LoadScene ("Pong_Breaker");
-		else
-			SceneManager.LoadScene ("Pong_Breaker_Endless");
-
+		SceneManager.LoadScene ("Pong_Breaker");
 		Time.timeScale = 1.0f;
 	}
 
@@ -87,7 +82,7 @@ public class GOBABY : MonoBehaviour {
 	//	AdManager.Instance.HideBanner ();
 		/////
 		//	
-	//	Time.timeScale = 1.0f;
+		Time.timeScale = 1.0f;
 		youdidthistoher.Instance.currentPlayingLevel++;
 		youdidthistoher.Instance.Save ();
 		SceneManager.LoadScene ("Pong_Breaker");

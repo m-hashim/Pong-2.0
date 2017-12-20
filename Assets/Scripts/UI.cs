@@ -148,7 +148,7 @@ public class UI : MonoBehaviour {
 					}
 				}
 			}
-			//	print ("row "+row+" column "+column);
+			print ("row "+row+" column "+column);
 			GameObject thisButton = levels [row, column];
 			if (thisButton.transform.GetChild (2).gameObject.activeInHierarchy) {
 				//locked Button Click
@@ -158,7 +158,7 @@ public class UI : MonoBehaviour {
 				thisButton.GetComponent<Animation> ().Play ("levelButtonSelect");						//ButtonSelectAnim
 				bckLevelSelection.GetComponent<Button> ().interactable = false;
 				levelSelected = true;
-				Invoke ("loadScene", 1f);
+				Invoke ("loadScene", 0.5f);
 			}
 		}
 	}

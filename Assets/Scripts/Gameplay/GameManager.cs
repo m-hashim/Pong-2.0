@@ -14,7 +14,10 @@ public class GameManager : MonoBehaviour {
 	private const float BLOKE_MAX_SPAWNX = 3f;
 	private const float	BLOKE_MIN_SPAWNZ = -5f;
 	private const float BLOKE_MAX_SPAWNZ = 5f;
-
+	private const int WIN_LIMIT = 7;
+	private const float BLOKE_MULTIPLIER = 1f;
+	private const float WALL_MULTIPLIER = 3f;
+	private float PAD_MULTIPLIER = 1f;
 	private const float BLOKE_HEIGHT = 1f;
 	private const float BLOKE_WIDTH=0.5f;
 	private const float BLOKE_HEIGHT_FROM_GROUND = 0.4f;
@@ -23,7 +26,7 @@ public class GameManager : MonoBehaviour {
 	private const int CORD_Z_MAX= 11;
     
 	public bool BlokeHit;
-	public Text level;
+	public bool GameOver;
 
 	public GameObject padLong,padShort,bigBall,speedUp,speedDown,flareBall,multiBall,magnetPad,gunPad,VIPBall;
 	public GameObject coin;
@@ -44,14 +47,8 @@ public class GameManager : MonoBehaviour {
 	public AudioClip a1,a2,a3,a4;
 	public GameObject BlastAnim;
 
-	/// <summary>
-	private const int WIN_LIMIT = 7;
-	private const float BLOKE_MULTIPLIER = 1f;
-	private const float WALL_MULTIPLIER = 3f;
-	private float PAD_MULTIPLIER = 1f;
-	public GameObject goPanel, pausePanel;
+	public GameObject gameCanvas, powerup, gameoverAnimationButton;
 
-	public bool GameOver;
 	public int coinCount;
 	private float AI_Point, player_Point;
 	private float AI_BlokePoint,player_BlokePoint;
@@ -61,8 +58,8 @@ public class GameManager : MonoBehaviour {
 	private bool ShowInterAd;
 	private float gameStartTime;
 
-	public Text coinEarned;
 	public Text coinsEarned;
+
 	public float HighScore;
 	private bool HighScoreTuta;
 
@@ -70,6 +67,7 @@ public class GameManager : MonoBehaviour {
 		gameStartTime = Time.time;
 		AI_Point = 0;
 		player_Point = 0;
+		GameOver = false;
 		AI_BlokePoint = 0;
 		player_BlokePoint = 0;
 		if (youdidthistoher.Instance.MCDActive == 1) {
@@ -85,11 +83,7 @@ public class GameManager : MonoBehaviour {
 		/// 
 //		AdManager.Instance.HideBanner();
 		/// /////
-		GOBABY.coinMoveCount=0;
 		//youdidthistoher.Instance.loader ();
-		if (youdidthistoher.Instance.gameplayType==0) {
-			level.text = "Level No: " + PlayerPrefs.GetInt ("currentPlayingLevel").ToString ();
-		}
 		g.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentGround];
 		w1.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
 		w2.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
@@ -355,17 +349,13 @@ public class GameManager : MonoBehaviour {
 			///// 
 		}
 
-
 		/////
 		//	AdManager.Instance.ShowBanner();
 		/////
-		pausePanel.SetActive (false);
-		goPanel.SetActive (true);
-	//	goScreen.transform.GetChild(0).GetChild (state).gameObject.SetActive (true);
-	//	goScreen.GetComponent<GOBABY> ().state = state;
-		coinEarned.text = "Coins Earned : " + GameManager.Instance.coinCount.ToString ();
-		for (int i = 0; i < ground.GetComponent<PowerUp> ().ballList.Length; i++)
-			ground.GetComponent<PowerUp> ().ballList [i].SetActive (false);
+		gameoverAnimationButton.GetComponent<UIAnimController>().PanelActive();
+		gameCanvas.GetComponent<GameUI> ().gameOver(state, GameManager.Instance.coinCount);
+		for (int i = 0; i < powerup.GetComponent<PowerUp> ().ballList.Length; i++)
+			powerup.GetComponent<PowerUp> ().ballList [i].SetActive (false);
 	}
 
 	private int BlokeRemaining(){
