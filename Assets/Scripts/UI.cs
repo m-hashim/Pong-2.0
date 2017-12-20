@@ -129,7 +129,7 @@ public class UI : MonoBehaviour {
 		if (!levelSelected) 
 		{
 			print ("level "+level);
-			youdidthistoher.Instance.currentPlayingLevel = level;											//load current level
+			youdidthistoher.Instance.currentPlayingLevel = level+1;											//load current level
 			int row = (level%(NO_OF_ROWS*NO_OF_COLUMNS))/NO_OF_COLUMNS;
 			if (row % NO_OF_COLUMNS == 0 && row != 0) {														//row correction
 				row--;

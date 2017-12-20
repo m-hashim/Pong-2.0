@@ -174,9 +174,9 @@ public class GameManager : MonoBehaviour {
 						}
 					}
 					//player is winner
-					gogoScreen(0);
-				}else{
 					gogoScreen(1);
+				}else{
+					gogoScreen(0);
 				}				
 			}
 		} else if (youdidthistoher.Instance.gameplayType==1) {

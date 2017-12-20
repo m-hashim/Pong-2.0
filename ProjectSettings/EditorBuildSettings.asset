@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Resources/Scenes/Start.unity
+    path: Assets/Scenes/Start.unity
     guid: b2581aa43d9ba1645b1febc01018e396
   - enabled: 1
-    path: Assets/Resources/Scenes/Main Scene.unity
+    path: Assets/Scenes/Main Scene.unity
     guid: 56d9f9ca5d2f31a4a8cd492468382d3c
   - enabled: 1
-    path: Assets/Resources/Scenes/Pong_Breaker.unity
+    path: Assets/Scenes/Pong_Breaker.unity
     guid: 0e6a238fce426a04390de3c6af29e81d
