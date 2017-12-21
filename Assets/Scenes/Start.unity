@@ -891,7 +891,7 @@ MonoBehaviour:
   powerUpPriceDisplay: 30
   currentCameraMode: 0
   powerUpArray: 
-  campaignLevelReached: 52
+  campaignLevelReached: 39
   level: []
   g1: {fileID: 1465554500288424, guid: c1ae5462878aab640aaa9ce7f6a67e4e, type: 2}
   g2: {fileID: 1078632826784414, guid: 59566477bcb2452498b6bb89a37eaee7, type: 2}

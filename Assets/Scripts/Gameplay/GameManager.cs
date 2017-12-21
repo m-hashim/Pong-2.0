@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour {
 
 	public int coinCount;
 	private float AI_Point, player_Point;
-	private float AI_BlokePoint,player_BlokePoint;
+	public float AI_BlokePoint,player_BlokePoint;
 	public float AI_WallPoint, player_WallPoint;
 	public GameObject ground;
 	public GameObject AI_Score,player_Score;
@@ -65,11 +65,8 @@ public class GameManager : MonoBehaviour {
 
     void Start () {
 		gameStartTime = Time.time;
-		AI_Point = 0;
-		player_Point = 0;
+		AI_Point = player_Point = AI_BlokePoint = player_BlokePoint = AI_WallPoint = player_WallPoint =0;
 		GameOver = false;
-		AI_BlokePoint = 0;
-		player_BlokePoint = 0;
 		if (youdidthistoher.Instance.MCDActive == 1) {
 			PAD_MULTIPLIER = 0.5f;
 		} else if (youdidthistoher.Instance.DrunkActive == 1) {
@@ -77,6 +74,7 @@ public class GameManager : MonoBehaviour {
 		}
 		instance = this;
 		DeadPool = GameObject.Find ("DeadPool").transform;
+		resetTriggers ();												//flare powerup reset correction
 		BlastList = new List<GameObject> ();
 
 		////////
@@ -128,6 +126,15 @@ public class GameManager : MonoBehaviour {
       
     }
 
+	void resetTriggers()
+	{
+		foreach (Transform t in DeadPool) 
+		{
+			t.gameObject.GetComponent<BoxCollider> ().isTrigger = false;
+			t.SetParent (DeadPool);
+		}
+	}
+
 	void camReset()
 	{
 		camera1.SetActive (false);
@@ -174,9 +181,9 @@ public class GameManager : MonoBehaviour {
 						}
 					}
 					//player is winner
-					gogoScreen(1);
-				}else{
 					gogoScreen(0);
+				}else{
+					gogoScreen(1);
 				}				
 			}
 		} else if (youdidthistoher.Instance.gameplayType==1) {
@@ -191,18 +198,12 @@ public class GameManager : MonoBehaviour {
 			player_Score.GetComponent<Text> ().text = player_Point + "";
 			AI_Score.GetComponent<Text> ().text = AI_Point+"";
 
-
-
-
-
 			if (player_WallPoint >= WIN_LIMIT) {
 				GameOver = true;
 				if (youdidthistoher.Instance.HighScore < player_Point) {
 					youdidthistoher.Instance.HighScore = (int)player_Point;
 					youdidthistoher.Instance.Save ();
-
 				}
-
 				if (player_Point >= AI_Point) {
 					gogoScreen(0);
 				}else{
@@ -210,9 +211,6 @@ public class GameManager : MonoBehaviour {
 				}
 			}		
 		}
-
-
-
 		EmptyBlastList ();
     }
 
@@ -255,6 +253,7 @@ public class GameManager : MonoBehaviour {
 			obj.GetComponent<Block> ().SetBlock (type-1);
 		}
 	}
+
     private void ExtraFeatures()
     {
         ballList = PowerUp.Instance.ballList;
@@ -352,6 +351,7 @@ public class GameManager : MonoBehaviour {
 		/////
 		//	AdManager.Instance.ShowBanner();
 		/////
+		coinsEarned.gameObject.transform.parent.gameObject.SetActive(false);
 		gameoverAnimationButton.GetComponent<UIAnimController>().PanelActive();
 		gameCanvas.GetComponent<GameUI> ().gameOver(state, GameManager.Instance.coinCount);
 		for (int i = 0; i < powerup.GetComponent<PowerUp> ().ballList.Length; i++)

@@ -53,13 +53,9 @@ public class BallS : MonoBehaviour {
 			GameManager.Instance.a.PlayOneShot (GameManager.Instance.a4, 0.6f); 
 		
 		} else if (col.gameObject.CompareTag ("Block")) {
-			if (this.transform.localScale.z == NORMAL_BALL_SIZE) {
-				col.gameObject.GetComponent<Block> ().HitBlock (turn);
-				col.gameObject.GetComponent<Block> ().ResetBlock (turn);
-			} 
-			else {
-				col.gameObject.GetComponent<Block> ().HitBlock (turn);
-				col.gameObject.GetComponent<Block> ().ResetBlock (turn);
+			col.gameObject.GetComponent<Block> ().HitBlock (turn);
+			col.gameObject.GetComponent<Block> ().ResetBlock (turn);
+			if (this.transform.localScale.z != NORMAL_BALL_SIZE) {
 				removeADJBloke (col.gameObject);
 			}
 		}

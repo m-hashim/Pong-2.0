@@ -5,24 +5,32 @@ using UnityEngine.UI;
 
 public class PattRotator : MonoBehaviour {
 
-	private const int SIZE = 6;
-	private const float ALPHA_CHANGE_SPEED = 0.01f;
+	private int SIZE=3;
+	private const float ALPHA_CHANGE_SPEED = 0.02f;
 	private float ALPHA_DIRECTION;
+	private const float ROTATE_SPEED = 0.05f;
+	private const float PATTERN_CHANGE_TIME=5f;
+	private const float ALPHA_CHANGE_TIME = 10f;
+	private const float MIN_ALPHA = 0.05f;
+	private const float MAX_ALPHA = 0.15f;
 
-	public Sprite[] patt = new Sprite[SIZE];
+	public Sprite[] patt;
 
 	private Color temp;
 
 	void Start () {
 		ALPHA_DIRECTION = 1f;
-		InvokeRepeating ("pattChanger", 0f, 5f);
-		InvokeRepeating ("directionChanger", 0f, 7f);
+		pattChanger ();
+	//	InvokeRepeating ("pattChanger", 0f, PATTERN_CHANGE_TIME);
+		InvokeRepeating ("directionChanger", 0f, ALPHA_CHANGE_TIME);
 		temp = GetComponent<Image> ().color;
+	//	SIZE = patt.Length;
 	}
 
 	void FixedUpdate () {
-		transform.Rotate (new Vector3(0f,0f,0.1f));
-		temp.a = Mathf.Min (1.0f, temp.a + ALPHA_CHANGE_SPEED * Time.deltaTime * ALPHA_DIRECTION);
+		transform.Rotate (new Vector3(0f,0f,ROTATE_SPEED));
+		temp.a = Mathf.Min (MAX_ALPHA, temp.a + ALPHA_CHANGE_SPEED * Time.deltaTime * ALPHA_DIRECTION);
+		temp.a = Mathf.Max (MIN_ALPHA, temp.a);
 		GetComponent<Image> ().color = temp;
 	}
 

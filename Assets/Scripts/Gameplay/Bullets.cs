@@ -35,10 +35,10 @@ public class Bullets : MonoBehaviour {
 		Temporary_Bullet_Handler_Left = Instantiate (bulletPrefab, Bullet_Emmiter_Left.transform.position, Bullet_Emmiter_Left.transform.rotation) as GameObject; 
 		Temporary_Bullet_Handler_Right = Instantiate (bulletPrefab, Bullet_Emmiter_Right.transform.position, Bullet_Emmiter_Right.transform.rotation) as GameObject; 
 			a.PlayOneShot (b, 0.2f);
-			if (gameObject.name.Contains ("player")) {
+			if (gameObject.tag.Equals ("player")) {
 				Temporary_Bullet_Handler_Left.name = "player_goli";
 				Temporary_Bullet_Handler_Right.name = "player_goli";
-			} else if(gameObject.name.Contains ("AI")) {
+			} else if(gameObject.tag.Equals ("AI")) {
 				Temporary_Bullet_Handler_Left.name = "AI_goli";
 				Temporary_Bullet_Handler_Right.name = "AI_goli";
 			}

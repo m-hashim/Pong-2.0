@@ -40,7 +40,7 @@ public class youdidthistoher : MonoBehaviour {
 	public int skinAvailabilityDrunk = 0;
 	public int hasRatedGame = 0;
 	public int gameOpenCount = 1;
-	public int currentPlayingLevel = 52;
+	public int currentPlayingLevel = 1;
 	public int HighScore = 0;
 	public int LevelLooseCount=1;
 	public int soundOn = 1;
@@ -54,11 +54,10 @@ public class youdidthistoher : MonoBehaviour {
 
 	public int currentCameraMode=2;		//0 for dynamic, 2 for first person
 	public int[] powerUpArray;
-	public int campaignLevelReached=52;
+	public int campaignLevelReached=39;
 	public string[] level;
 
 	public GameObject g1, g2, w1, w2, w3, w4, w5, w6, w7, w8;
-
 
 	void Awake () {
 		instance = this;
@@ -69,7 +68,7 @@ public class youdidthistoher : MonoBehaviour {
 		extraMaterials = new Material[NO_OF_EXTRAS];
 		powerUpArray = new int[7];
 		for(int i=0;i<7;i++)
-			powerUpArray[i]=5;
+			powerUpArray[i]=3;
 		PlayerPrefs.DeleteAll ();
 		materials = Resources.LoadAll<Material> ("Material/Pad_Materials");
 		blokeMaterials = Resources.LoadAll<Material> ("Material/Bloke_Materials");

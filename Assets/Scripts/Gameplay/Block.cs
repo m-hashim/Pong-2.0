@@ -60,6 +60,7 @@ public class Block : MonoBehaviour {
 			break;
 		}
 	}
+
 	public void HitBlock(bool turn = true){
 		switch (blockType) {
 		case BlockTypes.One:

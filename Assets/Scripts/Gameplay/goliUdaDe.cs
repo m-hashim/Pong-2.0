@@ -8,7 +8,7 @@ public class goliUdaDe : MonoBehaviour {
 
 	private GameManager GMScript;
 	void Start(){
-		if (gameObject.CompareTag ("player")) {
+		if (gameObject.name.Contains ("player")) {
 			turn = true;
 		} else {
 			turn = false;
@@ -18,12 +18,14 @@ public class goliUdaDe : MonoBehaviour {
 	{
 		if (col.gameObject.CompareTag ("Block")) {
 			col.GetComponent<Block> ().ResetBlock (turn);
-
+			if(turn)
+				GameManager.Instance.player_BlokePoint++;
+			else
+				GameManager.Instance.AI_BlokePoint++;
+			Destroy (this.gameObject);
 		} 
 		else if (col.gameObject.name.Contains ("Wall")||col.gameObject.CompareTag("AI")||col.gameObject.CompareTag("player")) {
 			Destroy (this.gameObject);
 		}
-
 	}
-
 }

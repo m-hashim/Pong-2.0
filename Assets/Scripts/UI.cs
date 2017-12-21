@@ -27,7 +27,7 @@ public class UI : MonoBehaviour {
 
 	public Text  descriptionText;
 
-	public GameObject mainPanel, gameSelectionPanel, settingsPanel, aboutPanel, helpPanel, shopPanel;
+	public GameObject mainPanel, gameSelectionPanel, settingsPanel, aboutPanel, helpPanel, shopPanel, patt;
 	public GameObject LevelPage, LevelButton, LevelRow, StoreButton;
 	public GameObject GroundsPanel, BlokesPanel, PowerupsPanel, PadsPanel, SpecialPanel;
 	public GameObject soundButton, cameraButton, controlButton;
@@ -45,6 +45,7 @@ public class UI : MonoBehaviour {
 
 	void Awake () 
 	{
+		Time.timeScale = 1f;
 		string isLoginOnce  = PlayerPrefs.GetString ("_isLoginOnce");
 		if (isLoginOnce != "True") {
 			PlayerPrefs.SetString ("_isLoginOnce", "True");
@@ -129,24 +130,24 @@ public class UI : MonoBehaviour {
 		if (!levelSelected) 
 		{
 			print ("level "+level);
-			youdidthistoher.Instance.currentPlayingLevel = level+1;											//load current level
+
 			int row = (level%(NO_OF_ROWS*NO_OF_COLUMNS))/NO_OF_COLUMNS;
 			if (row % NO_OF_COLUMNS == 0 && row != 0) {														//row correction
 				row--;
 			}
 			int column = (level%(NO_OF_ROWS*NO_OF_COLUMNS))%NO_OF_COLUMNS;
-			if(levelsUnlocked<((levelCount/(NO_OF_ROWS*NO_OF_COLUMNS))+1)*(NO_OF_ROWS*NO_OF_COLUMNS))		//currentLevelPage Correction of One block ahead selection
-			{	
+			if (levelsUnlocked < ((levelCount / (NO_OF_ROWS * NO_OF_COLUMNS)) + 1) * (NO_OF_ROWS * NO_OF_COLUMNS)) {		//currentLevelPage Correction of One block ahead selection
+				youdidthistoher.Instance.currentPlayingLevel = level;
 				column--;
-				if (column == -1) 
-				{
-					column = NO_OF_COLUMNS-1;
+				if (column == -1) {
+					column = NO_OF_COLUMNS - 1;
 					row--;
-					if (row == -1) 
-					{
+					if (row == -1) {
 						row = NO_OF_ROWS - 1;
 					}
 				}
+			} else {
+				youdidthistoher.Instance.currentPlayingLevel = level + 1;											//load current level
 			}
 			print ("row "+row+" column "+column);
 			GameObject thisButton = levels [row, column];
@@ -158,6 +159,7 @@ public class UI : MonoBehaviour {
 				thisButton.GetComponent<Animation> ().Play ("levelButtonSelect");						//ButtonSelectAnim
 				bckLevelSelection.GetComponent<Button> ().interactable = false;
 				levelSelected = true;
+				print ("here");
 				Invoke ("loadScene", 0.5f);
 			}
 		}
@@ -463,8 +465,8 @@ public class UI : MonoBehaviour {
 	//	print (param);
 	}
 
-	public void clrprfs()
+	public void pattButt()
 	{
-		PlayerPrefs.DeleteAll ();
+		patt.SetActive (true);
 	}
 }
