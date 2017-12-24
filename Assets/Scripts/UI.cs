@@ -9,23 +9,26 @@ public class UI : MonoBehaviour {
 	private const int NO_OF_ROWS = 4;
 	private const int NO_OF_COLUMNS = 5;
 	private const int NO_OF_PAGES = 20;
-	private const int POWERUP_COUNT = 5;
+	private const int POWERUP_COUNT = 7;
 	private const int GROUND_COUNT = 4;
-	private const int BLOKES_COUNT = 3;
-	private const int SPECIAL_COUNT = 2;
-	private const int PAD_COUNT = 1;
+	private const int BLOKES_COUNT = 5;
+	private const int SPECIAL_COUNT = 4;
+	private const int PAD_COUNT = 9;
 	private const float gameSelectionWaitTime = 3.5f;
+	private const int maxDescriptionSizeParsed=15;
 
 	private bool blockMovement,firstBlock, levelSelected;
-	private int levelCount;
-	private int levelsUnlocked;
+	private int levelCount, levelsUnlocked;
 	private int lastSwitch=1;
+	private int currentActiveStore=0;
+	private int[] currentSelectedInStores =  new int[5];
 
 	private string[] parsed;
 
 	private TextAsset txt;
 
-	public Text  descriptionText;
+	public Text  descriptionText, itemDescriptionText, countText;
+
 
 	public GameObject mainPanel, gameSelectionPanel, settingsPanel, aboutPanel, helpPanel, shopPanel, patt;
 	public GameObject LevelPage, LevelButton, LevelRow, StoreButton;
@@ -33,15 +36,17 @@ public class UI : MonoBehaviour {
 	public GameObject soundButton, cameraButton, controlButton;
 	public GameObject practiceButton, endlessButton, campaignButton, forwardCampaignButton, backwardCampaignButton;
 	public GameObject bckGameSelection, bckLevelSelection;			//back buttons that need to be disabled
+	public GameObject confirmBuy;
 
 	public Sprite[] powerUpSprites = new Sprite[POWERUP_COUNT];
 	public Sprite[] groundSprites = new Sprite[GROUND_COUNT];
 	public Sprite[] blokeSprites = new Sprite[BLOKES_COUNT];
-	public Sprite[] specialSprites = new Sprite[SPECIAL_COUNT];
 	public Sprite[] padSprites = new Sprite[PAD_COUNT];
 
 	private GameObject[] row = new GameObject[NO_OF_ROWS];
 	private GameObject[,] levels = new GameObject[NO_OF_ROWS,NO_OF_COLUMNS];
+	private GameObject prevButton;
+	private int prevItemNo;
 
 	void Awake () 
 	{
@@ -56,15 +61,21 @@ public class UI : MonoBehaviour {
 			cameraButtonController (youdidthistoher.Instance.currentCameraMode);
 			controlButtonController (PlayerPrefs.GetInt ("InputType"));
 		}
-		parsed = new string[15];			
+		parsed = new string[maxDescriptionSizeParsed];			
 		firstBlock=levelSelected=false;
 		levelsUnlocked = youdidthistoher.Instance.campaignLevelReached;
 		levelCount = (NO_OF_ROWS*NO_OF_COLUMNS)*(levelsUnlocked/(NO_OF_ROWS*NO_OF_COLUMNS))+1;
 		makeAPage (LevelPage.transform.position);									//Campaign levels
+		currentSelectedInStores[1]=youdidthistoher.Instance.skinAvailabilityPad;
+		currentSelectedInStores[3]=youdidthistoher.Instance.skinAvailabilityBloke;
+		currentSelectedInStores[4]=youdidthistoher.Instance.skinAvailabilityGround;
+		currentActiveStore = 4;
 		shopInstantiator ("Text/grounds",GROUND_COUNT,GroundsPanel,groundSprites);
+		currentActiveStore = 3;
 		shopInstantiator ("Text/blokes",BLOKES_COUNT,BlokesPanel,blokeSprites);
-		shopInstantiator ("Text/specials",SPECIAL_COUNT,SpecialPanel,specialSprites);
+		currentActiveStore = 1;
 		shopInstantiator ("Text/pads",PAD_COUNT,PadsPanel,padSprites);
+		currentActiveStore = 0;
 		shopInstantiator ("Text/powerups",POWERUP_COUNT,PowerupsPanel,powerUpSprites);
 	}
 
@@ -73,24 +84,33 @@ public class UI : MonoBehaviour {
 	{
 		txt = (TextAsset)Resources.Load (address,typeof(TextAsset));
 		parser (txt.text);
-		RectTransform rowRectTransform = StoreButton.GetComponent<RectTransform>();
-		RectTransform containerRectTransform = parentGameObject.GetComponent<RectTransform>();
+//		RectTransform rowRectTransform = StoreButton.GetComponent<RectTransform>();
+//		RectTransform containerRectTransform = parentGameObject.GetComponent<RectTransform>();
 
-		float width = containerRectTransform.rect.width / NO_OF_COLUMNS;
-		float ratio = width / rowRectTransform.rect.width;
-		float height = rowRectTransform.rect.height * ratio;
-		GameObject temp;
+//		float width = containerRectTransform.rect.width / NO_OF_COLUMNS;
+//		float ratio = width / rowRectTransform.rect.width;
+//		float height = rowRectTransform.rect.height * ratio;
 		int i = 1;
 		for (int j = 0; j < count; j++) {
-			temp = GameObject.Instantiate (StoreButton, parentGameObject.transform.position, Quaternion.identity);
+			GameObject temp = GameObject.Instantiate (StoreButton, parentGameObject.transform.position, Quaternion.identity);
 			temp.transform.position = parentGameObject.transform.position;
-			temp.transform.SetParent (parentGameObject.transform);
-			int z = j;
-			temp.gameObject.GetComponent<Button> ().onClick.AddListener (() => StoreItem (z));
-			temp.transform.GetChild (0).GetComponent<Text> ().text = parsed [j + 1];
+			temp.transform.SetParent (parentGameObject.transform.GetChild(0).transform);
 			temp.GetComponent<Image> ().sprite = images [j];
+			int tempItemNo = j;
+			temp.gameObject.GetComponent<Button> ().onClick.AddListener (() => StoreItem (temp, tempItemNo));
+			if ((currentSelectedInStores [currentActiveStore] & 1 << tempItemNo) == 1 << tempItemNo && currentActiveStore != 0) {
+				//if already purchased
+				temp.transform.GetChild (0).gameObject.SetActive (false);
+				if (tempItemNo == currentSelectedInStores [currentActiveStore])
+					temp.transform.GetChild (1).gameObject.SetActive (true);
+			} else if (currentActiveStore == 0) {
+				temp.transform.GetChild (0).gameObject.SetActive (false);
+			}
+			else {
+				temp.transform.GetChild (0).GetComponent<Text> ().text = (j + 1).ToString();		//enter prices here
+			}
 		
-
+/*
 			float offsetRatio = 0.1f;
 			RectTransform rectTransform = temp.GetComponent<RectTransform> ();
 
@@ -103,9 +123,9 @@ public class UI : MonoBehaviour {
 			rectTransform.offsetMax = new Vector2 (x, y);
 
 			rectTransform.localScale = new Vector3 (1f, 1f, 1f);
-		}
+*/		}
 	}
-		
+
 	void Start()
 	{
 		shopStarter ();
@@ -117,13 +137,132 @@ public class UI : MonoBehaviour {
 		//		parsed [i] = null;
 		parsed=str.Split ("\n"[0]);
 		descriptionText.text = parsed [0];
+		itemDescriptionText.text = parsed[1];
 	}
 
 	private void StoreItem(int itemNo)
 	{
-		print (itemNo);
+		print (itemNo+" "+(1 << itemNo));
 		descriptionText.text = parsed [itemNo + 1];
 	}
+
+	private void StoreItem(GameObject button, int itemNo)
+	{
+		if (button == prevButton) {
+			//purchase happens
+
+			switch (currentActiveStore) {
+			case 0:
+				//powerups
+				youdidthistoher.Instance.powerUpArray[itemNo] += 1;
+				youdidthistoher.Instance.Save ();
+				countText.text = "In Pocket: "+youdidthistoher.Instance.powerUpArray[itemNo];
+				break;
+			case 1:
+				//pads	
+				int cost = 100;																	//enter prices here
+				if (youdidthistoher.Instance.currency >= cost && (youdidthistoher.Instance.skinAvailabilityPad & 1 << itemNo) != 1 << itemNo) {
+					youdidthistoher.Instance.currency -= cost;
+					youdidthistoher.Instance.skinAvailabilityPad += 1 << itemNo;
+					youdidthistoher.Instance.currentSkinIndexPad = itemNo;
+					youdidthistoher.Instance.Save ();
+					button.transform.GetChild (0).gameObject.SetActive (false);
+				} else {
+					//insufficient funds
+			//		coinPurchasePanel.SetActive(true);
+			//		mastIdea.SetActive (false);
+				}
+				break;
+			case 2:
+				//specials
+				//separate functions written
+				break;
+			case 3:
+				//blokes
+				int costB = 50;
+				if (youdidthistoher.Instance.currency >= costB && (youdidthistoher.Instance.skinAvailabilityBloke & 1 << itemNo) != 1 << itemNo) {
+					youdidthistoher.Instance.currency -= costB;
+					youdidthistoher.Instance.skinAvailabilityBloke += 1 << itemNo;
+					youdidthistoher.Instance.currentSkinIndexBloke = itemNo;
+					youdidthistoher.Instance.Save ();
+					print("bought");
+					button.transform.GetChild (0).gameObject.SetActive (false);
+				}else {
+					//insufficient funds
+//					coinPurchasePanel.SetActive(true);
+//					mastIdea.SetActive (false);
+				}
+				break;
+			case 4:
+				//grounds
+				int costG = 50;
+				if (youdidthistoher.Instance.currency >= costG && (youdidthistoher.Instance.skinAvailabilityGround & 1 << itemNo) != 1 << itemNo) {
+					youdidthistoher.Instance.currency -= costG;
+					youdidthistoher.Instance.skinAvailabilityGround += 1 << itemNo;
+					youdidthistoher.Instance.currentGround = itemNo;
+					youdidthistoher.Instance.Save ();
+					button.transform.GetChild (0).gameObject.SetActive (false);
+				}else {
+					//insufficient funds
+					//					coinPurchasePanel.SetActive(true);
+					//					mastIdea.SetActive (false);
+				}
+				break;
+			default:
+				break;
+			}
+
+		} 
+
+
+		else {
+			//fist click, confirmation needed or selection
+			prevButton = button;
+			print (itemNo + " " + (1 << itemNo)+" "+button);
+			itemDescriptionText.text = parsed [itemNo + 2];
+			confirmBuy.transform.parent.GetComponent<Animation> ().Play ("confirmBuy");
+			switch (currentActiveStore) {
+			case 0:
+				//powerups
+				countText.text = "In Pocket: "+youdidthistoher.Instance.powerUpArray[itemNo];
+				break;
+			case 1:
+				//pads
+				if ((youdidthistoher.Instance.skinAvailabilityPad & 1 << itemNo) == 1 << itemNo) {
+					//runs to select the already bought materials
+					youdidthistoher.Instance.currentSkinIndexPad = itemNo;
+					youdidthistoher.Instance.Save ();			
+				}
+				break;
+			case 2:
+				//specials
+				//separate functions written
+				break;
+			case 3:
+				//blokes
+				if ((youdidthistoher.Instance.skinAvailabilityBloke & 1 << itemNo) == 1 << itemNo) {
+					//runs to select the already bought materials
+
+					print("selected");
+					youdidthistoher.Instance.currentSkinIndexBloke = itemNo;
+					youdidthistoher.Instance.Save ();			
+				}
+				break;
+			case 4:
+				//grounds
+				if ((youdidthistoher.Instance.skinAvailabilityGround & 1 << itemNo) == 1 << itemNo) {
+					//runs to select the already bought materials
+
+					youdidthistoher.Instance.currentGround = itemNo;
+					youdidthistoher.Instance.Save ();			
+				}
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
 
 	private void LoadMenu(int level)
 	{
@@ -242,10 +381,6 @@ public class UI : MonoBehaviour {
 		practiceButton.GetComponent<Button> ().interactable = false;
 		bckGameSelection.GetComponent<Button> ().interactable = false;
         youdidthistoher.Instance.gameplayType = 1;
-	//	GAME SELECTION PANEL 1
-/*		endlessButton.GetComponent<ButtonBackRotatorAnticlockwise>().enabled=true;
-		endlessButton.GetComponent<ButtonBackRotatorAnticlockwise>().rateIncrease();
-*/	//	GAME SELECTION PANEL 2
 		practiceButton.transform.GetChild(1).gameObject.GetComponent<ButtonBackRotatorClockwise>().enabled = false;
 		campaignButton.transform.GetChild(1).gameObject.GetComponent<ButtonBackRotatorAnticlockwise>().enabled = false;
 		endlessButton.transform.GetChild (1).gameObject.GetComponent<ButtonBackRotatorClockwise> ().rateIncrease();
@@ -261,10 +396,6 @@ public class UI : MonoBehaviour {
 		endlessButton.GetComponent<Button> ().interactable = false;
 		bckGameSelection.GetComponent<Button> ().interactable = false;
 		youdidthistoher.Instance.gameplayType = 2;
-	//	GAME SELECTION PANEL 1
-/*		practiceButton.GetComponent<ButtonBackRotatorClockwise>().enabled=true;
-		practiceButton.GetComponent<ButtonBackRotatorClockwise>().rateIncrease();	 	
-*/	//	GAME SELECTION PANEL 2
 		campaignButton.transform.GetChild(1).gameObject.GetComponent<ButtonBackRotatorAnticlockwise>().enabled = false;
 		endlessButton.transform.GetChild(1).gameObject.GetComponent<ButtonBackRotatorClockwise>().enabled = false;
 		practiceButton.transform.GetChild (1).gameObject.GetComponent<ButtonBackRotatorClockwise> ().rateIncrease();
@@ -364,6 +495,8 @@ public class UI : MonoBehaviour {
 	{
 		resetShop ();
 		PowerupsPanel.SetActive (true);
+		countText.gameObject.SetActive (true);
+		currentActiveStore = 0;
 		txt = (TextAsset)Resources.Load ("Text/powerups",typeof(TextAsset));
 		parser (txt.text);
 	}
@@ -372,6 +505,8 @@ public class UI : MonoBehaviour {
 	{
 		resetShop ();
 		PadsPanel.SetActive (true);
+		countText.gameObject.SetActive (false);
+		currentActiveStore = 1;
 		txt = (TextAsset)Resources.Load ("Text/pads",typeof(TextAsset));
 		parser (txt.text);
 	}
@@ -380,6 +515,8 @@ public class UI : MonoBehaviour {
 	{
 		resetShop ();
 		SpecialPanel.SetActive (true);
+		countText.gameObject.SetActive (false);
+		currentActiveStore = 2;
 		txt = (TextAsset)Resources.Load ("Text/specials",typeof(TextAsset));
 		parser (txt.text);
 	}
@@ -388,6 +525,8 @@ public class UI : MonoBehaviour {
 	{
 		resetShop ();
 		BlokesPanel.SetActive (true);
+		countText.gameObject.SetActive (false);
+		currentActiveStore = 3;
 		txt = (TextAsset)Resources.Load ("Text/blokes",typeof(TextAsset));
 		parser (txt.text);
 	}
@@ -396,6 +535,8 @@ public class UI : MonoBehaviour {
 	{
 		resetShop ();
 		GroundsPanel.SetActive (true);
+		countText.gameObject.SetActive (false);
+		currentActiveStore = 4;
 		txt = (TextAsset)Resources.Load ("Text/grounds",typeof(TextAsset));
 		parser (txt.text);
 	}

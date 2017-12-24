@@ -307,7 +307,7 @@ public class PowerUp : MonoBehaviour {
 			break;
 		case PowerTypes.VipBall:
 			BlockGiraDe = true;
-			GameObject.Find("Ground").GetComponent<vipBehaviour>().enabled=false;
+			GameObject.Find("Ground1").GetComponent<vipBehaviour>().enabled=false;
 			for (int i = 0; i < 3; i++) {
 				ballList [i].transform.GetChild (4).gameObject.SetActive (false);
 				ballList [i].transform.GetChild (5).gameObject.SetActive (false);

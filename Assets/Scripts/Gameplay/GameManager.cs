@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour {
 	private const float SPAWN_RATE = 3f;
 	private const float BLOKE_MIN_SPAWNX = -3f;
 	private const float BLOKE_MAX_SPAWNX = 3f;
-	private const float	BLOKE_MIN_SPAWNZ = -5f;
+	private const float	BLOKE_MIN_SPAWNZ = -7.5f;
 	private const float BLOKE_MAX_SPAWNZ = 5f;
 	private const int WIN_LIMIT = 7;
 	private const float BLOKE_MULTIPLIER = 1f;
@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour {
 	private const float BLOKE_HEIGHT_FROM_GROUND = 0.4f;
 	private const int TYPE_OF_BLOKE=7;
 	private const int CORD_X_MAX = 12 ;
-	private const int CORD_Z_MAX= 11;
+	private const int CORD_Z_MAX= 16;
     
 	public bool BlokeHit;
 	public bool GameOver;
@@ -83,10 +83,10 @@ public class GameManager : MonoBehaviour {
 		/// /////
 		//youdidthistoher.Instance.loader ();
 		g.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentGround];
-		w1.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
-		w2.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
-		w3.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
-		w4.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
+	//	w1.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
+	//	w2.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
+	//	w3.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
+	//	w4.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
 
 		camReset ();
 		switch (youdidthistoher.Instance.currentCameraMode) {

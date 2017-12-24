@@ -19,11 +19,10 @@ public class youdidthistoher : MonoBehaviour {
 	public Sprite[] extras;
 	public Sprite[] powerUps;
 
-	public int currentSkinIndexPad=0;
-	public int currentSkinIndexBloke = 0;
-	public int currentGround = 0;
-	public int currentWall = 4;
-	public int currency=0;
+	public int currentSkinIndexPad=1;
+	public int currentSkinIndexBloke = 1;
+	public int currentGround = 1;
+	public int currency=500;
 	public int p_bigBall = 5;
 	public int p_flareBall = 5;
 	public int p_gun = 5;
@@ -31,9 +30,9 @@ public class youdidthistoher : MonoBehaviour {
 	public int p_magnet = 5;
 	public int p_VIPBall = 5;
 	public int p_multiBall = 5;
-	public int skinAvailabilityPad=1;
-	public int skinAvailabilityBloke=1;
-	public int skinAvailabilityExtra = 17;
+	public int skinAvailabilityPad=2;
+	public int skinAvailabilityBloke=2;
+	public int skinAvailabilityGround=2;
 	public int MCDActive=0;
 	public int DrunkActive=0;
 	public int skinAvailabilityMCD = 0;
@@ -87,10 +86,9 @@ public class youdidthistoher : MonoBehaviour {
 			currentSkinIndexBloke = PlayerPrefs.GetInt("CurrentSkinBloke");
 			currency = PlayerPrefs.GetInt ("Currency");
 			currentGround = PlayerPrefs.GetInt ("currentGround");
-			currentWall = PlayerPrefs.GetInt ("currentWall");
 			skinAvailabilityPad = PlayerPrefs.GetInt ("SkinAvailabilityPad");
 			skinAvailabilityBloke = PlayerPrefs.GetInt ("SkinAvailabilityBloke");
-			skinAvailabilityExtra = PlayerPrefs.GetInt ("SkinAvailabilityExtra");
+			skinAvailabilityGround = PlayerPrefs.GetInt ("SkinAvailabilityGround");
 			skinAvailabilityMCD = PlayerPrefs.GetInt ("SkinAvailabilityMCD");
 			skinAvailabilityDrunk = PlayerPrefs.GetInt ("SkinAvailabilityDrunk");
 			MCDActive = PlayerPrefs.GetInt ("MCDActive");
@@ -143,11 +141,10 @@ public class youdidthistoher : MonoBehaviour {
 		PlayerPrefs.SetInt ("CurrentSkinBloke", currentSkinIndexBloke);
 		PlayerPrefs.SetInt ("Currency", currency);
 		PlayerPrefs.SetInt ("currentGround", currentGround);
-		PlayerPrefs.SetInt ("currentWall", currentWall);
 		PlayerPrefs.SetInt ("currentCameraMode", currentCameraMode);
 		PlayerPrefs.SetInt ("SkinAvailabilityPad", skinAvailabilityPad);
 		PlayerPrefs.SetInt ("SkinAvailabilityBloke", skinAvailabilityBloke);
-		PlayerPrefs.SetInt ("SkinAvailabilityExtra", skinAvailabilityExtra);
+		PlayerPrefs.SetInt ("SkinAvailabilityGround", skinAvailabilityGround);
 		PlayerPrefs.SetInt ("SkinAvailabilityMCD", skinAvailabilityMCD);
 		PlayerPrefs.SetInt ("SkinAvailabilityDrunk", skinAvailabilityDrunk);
 		PlayerPrefs.SetInt ("p_bigBall", powerUpArray [0]);

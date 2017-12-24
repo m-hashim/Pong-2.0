@@ -40,13 +40,13 @@ public class GameUI : MonoBehaviour {
 		switch (state) 
 		{
 		case 0:
-			txt = (TextAsset)Resources.Load ("TextAssets/win", typeof(TextAsset));
+			txt = (TextAsset)Resources.Load ("Text/win", typeof(TextAsset));
 			parsed = txt.text.Split ("\n"[0]);
 			descriptionText.text = parsed [Random.Range (0, noOfWinText)];
 			goText.text = "SUSTAINED";
 			break;
 		case 1:
-			txt = (TextAsset)Resources.Load ("TextAssets/lose", typeof(TextAsset));
+			txt = (TextAsset)Resources.Load ("Text/lose", typeof(TextAsset));
 			parsed = txt.text.Split ("\n" [0]);
 			descriptionText.text = parsed [Random.Range (0, noOfLoseText)];
 			goText.text = "THUMPED";

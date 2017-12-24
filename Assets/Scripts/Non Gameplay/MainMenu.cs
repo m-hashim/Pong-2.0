@@ -86,7 +86,6 @@ public class MainMenu : MonoBehaviour
 		playerSample.GetComponent<Renderer> ().material = youdidthistoher.Instance.materials [youdidthistoher.Instance.currentSkinIndexPad];
 		loadBlokes (youdidthistoher.Instance.currentSkinIndexBloke);
 		loadExtras (youdidthistoher.Instance.currentGround);
-		loadExtras (youdidthistoher.Instance.currentWall);
 		curPrice = youdidthistoher.Instance.padPriceDisplay;
 		currentRollyElements = NO_OF_PADS;
 		txt = (TextAsset)Resources.Load ("TextAssets/pad_descriptions",typeof(TextAsset));
@@ -309,7 +308,7 @@ public class MainMenu : MonoBehaviour
 			if (isOnceClicked != objectNumber) {
 				//CHOOSING ITEMS
 
-				if ((youdidthistoher.Instance.skinAvailabilityExtra & 1 << objectNumber) == 1 << objectNumber)
+				if ((youdidthistoher.Instance.skinAvailabilityGround& 1 << objectNumber) == 1 << objectNumber)
 				{	
 				//	print ("in1");
 					if (objectNumber < 4) {
@@ -317,14 +316,14 @@ public class MainMenu : MonoBehaviour
 						youdidthistoher.Instance.currentGround = objectNumber;
 					} else {
 					//	print ("wl1");
-						youdidthistoher.Instance.currentWall = objectNumber;
+//						youdidthistoher.Instance.currentWall = objectNumber;
 					}	
 					loadExtras (objectNumber);
 					youdidthistoher.Instance.Save ();				// saves when bought
 				}isOnceClicked = objectNumber;
 			} else {
 
-				if ((youdidthistoher.Instance.skinAvailabilityExtra & 1 << objectNumber) != 1 << objectNumber) {
+				if ((youdidthistoher.Instance.skinAvailabilityGround & 1 << objectNumber) != 1 << objectNumber) {
 					//Debug.Log (1 << objectNumber);
 					//	print("chal to raha hai");
 					buyingActivated (objectNumber);
@@ -475,7 +474,7 @@ public class MainMenu : MonoBehaviour
 		currentRollyElements = NO_OF_EXTRAS;
 		sampleFalse ();
 		thumbnails = youdidthistoher.Instance.extras;
-		currentAvailability = youdidthistoher.Instance.skinAvailabilityExtra;
+		currentAvailability = youdidthistoher.Instance.skinAvailabilityGround;
 		txt = (TextAsset)Resources.Load ("TextAssets/extra_descriptions",typeof(TextAsset));
 //		print (curPrice);
 		LoadIt ();
@@ -720,11 +719,12 @@ public class MainMenu : MonoBehaviour
 		int cost = 150;
 		if (youdidthistoher.Instance.currency >= cost) {
 			youdidthistoher.Instance.currency -= cost;
-			youdidthistoher.Instance.skinAvailabilityExtra += 1 << currentBuyNum;
+			youdidthistoher.Instance.skinAvailabilityGround += 1 << currentBuyNum;
 			if (currentBuyNum < 4)
 				youdidthistoher.Instance.currentGround = currentBuyNum;
 			else
-				youdidthistoher.Instance.currentWall = currentBuyNum;
+//				youdidthistoher.Instance.currentWall = currentBuyNum;
+				print("placed");
 			youdidthistoher.Instance.Save ();
 			currencyText.text = youdidthistoher.Instance.currency.ToString ();
 			storeButtonContainer.transform.GetChild (currentBuyNum).GetChild (0).gameObject.SetActive (false);

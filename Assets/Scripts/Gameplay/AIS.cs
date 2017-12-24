@@ -50,8 +50,8 @@ public class AIS : MonoBehaviour {
 		instance = this;
 		MIN_X =	5.5f + transform.localScale.x/2;
 		MAX_X = 11.5f - transform.localScale.x/2;
-		MAX_Z=	5.5f-transform.localScale.z/2;						
-		MIN_Z=	-5.5f+transform.localScale.z/2;		
+		MAX_Z=	8.5f-transform.localScale.z/2;						
+		MIN_Z=	-8.5f+transform.localScale.z/2;		
 		magnet = transform.GetChild (0).gameObject;
 		gun = transform.GetChild (1).gameObject;
 
