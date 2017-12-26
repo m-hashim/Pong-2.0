@@ -65,7 +65,12 @@ public class UI : MonoBehaviour {
 		firstBlock=levelSelected=false;
 		levelsUnlocked = youdidthistoher.Instance.campaignLevelReached;
 		levelCount = (NO_OF_ROWS*NO_OF_COLUMNS)*(levelsUnlocked/(NO_OF_ROWS*NO_OF_COLUMNS))+1;
+		print (levelCount);
 		makeAPage (LevelPage.transform.position);									//Campaign levels
+		if (levelsUnlocked % 20 == 0) {
+			previousPageLevel ();
+			blockMovement = true;
+		}
 		currentSelectedInStores[1]=youdidthistoher.Instance.skinAvailabilityPad;
 		currentSelectedInStores[3]=youdidthistoher.Instance.skinAvailabilityBloke;
 		currentSelectedInStores[4]=youdidthistoher.Instance.skinAvailabilityGround;
@@ -450,10 +455,10 @@ public class UI : MonoBehaviour {
 
 	public void previousPageLevel()
 	{
-			if (levelCount != 1) {
+		if (levelCount>NO_OF_ROWS*NO_OF_COLUMNS) {
 				blockMovement = false;
 				if (lastSwitch == 1)
-					levelCount -= 20;
+					levelCount -= NO_OF_ROWS*NO_OF_COLUMNS;
 				lastSwitch = -1;
 				for (int i = NO_OF_ROWS - 1; i >= 0; i--) {
 					for (int j = NO_OF_COLUMNS - 1; j >= 0; j--) {	

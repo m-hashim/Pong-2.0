@@ -11,7 +11,7 @@ public class InputHandler : MonoBehaviour {
 	private RaycastHit hit;
 	private Vector3 mouseOldPosition = Vector3.zero;
 	public GameObject camera3;
-
+	public float relativeSpeedGradient = 0.6f;
 	// Use this for initialization
 	void Start () {
 		instance = this;
@@ -36,7 +36,7 @@ public class InputHandler : MonoBehaviour {
 				Vector3 oldPointInWorld = hit.point;
 
 				relative = newPointInWorld - oldPointInWorld;
-				Vector3 toMove = Vector3.ClampMagnitude (new Vector3 (relative.x, 0, relative.z), 0.6f);
+				Vector3 toMove = Vector3.ClampMagnitude (new Vector3 (relative.x, 0, relative.z), relativeSpeedGradient);
 				PlayerS.Instance.Move (toMove);
 			}
 			mouseDown = true;

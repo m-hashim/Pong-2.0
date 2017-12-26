@@ -24,8 +24,10 @@ public class Block : MonoBehaviour {
 		case BlockTypes.Rock:
 			break;
 		case BlockTypes.Toggle:
+			GetComponent<BlockToggle> ().enabled = true;
 			break;
 		case BlockTypes.Blink:
+			GetComponent<BlockBlink> ().enabled = true;
 			break;
 		case BlockTypes.Blast:
 			break;
@@ -57,7 +59,8 @@ public class Block : MonoBehaviour {
 			break;
 		case BlockTypes.Blast:
 			GameManager.Instance.BlastAnimation (transform.position);
-			break;
+                gameObject.SetActive(false);
+                break;
 		}
 	}
 

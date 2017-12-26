@@ -112,6 +112,8 @@ public class GameUI : MonoBehaviour {
 		Time.timeScale = 1.0f;
 		gameoverAnimationButton.GetComponent<UIAnimController>().PanelInactive();
 		SceneManager.LoadScene ("Pong_Breaker");
+        ObjectPool.Instance.Reset();
+
 	}
 
 	public void back()
@@ -122,10 +124,12 @@ public class GameUI : MonoBehaviour {
 			}
 		}
 		Time.timeScale = 1f;
-		SceneManager.LoadScene ("Main Scene");	
-	}
+		SceneManager.LoadScene ("Main Scene");
+        ObjectPool.Instance.Reset();
 
-	public void soundButtonController()
+    }
+
+    public void soundButtonController()
 	{
 		if (youdidthistoher.Instance.soundOn == 1) {
 			youdidthistoher.Instance.soundOn = 0;

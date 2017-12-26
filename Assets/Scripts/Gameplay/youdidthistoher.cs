@@ -53,7 +53,7 @@ public class youdidthistoher : MonoBehaviour {
 
 	public int currentCameraMode=2;		//0 for dynamic, 2 for first person
 	public int[] powerUpArray;
-	public int campaignLevelReached=39;
+	public int campaignLevelReached=80;
 	public string[] level;
 
 	public GameObject g1, g2, w1, w2, w3, w4, w5, w6, w7, w8;

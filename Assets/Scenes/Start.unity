@@ -861,7 +861,6 @@ MonoBehaviour:
   currentSkinIndexPad: 0
   currentSkinIndexBloke: 0
   currentGround: 0
-  currentWall: 4
   currency: 250
   p_bigBall: 0
   p_flareBall: 0
@@ -872,7 +871,7 @@ MonoBehaviour:
   p_multiBall: 0
   skinAvailabilityPad: 1
   skinAvailabilityBloke: 1
-  skinAvailabilityExtra: 17
+  skinAvailabilityGround: 2
   MCDActive: 0
   DrunkActive: 0
   skinAvailabilityMCD: 0
@@ -891,7 +890,7 @@ MonoBehaviour:
   powerUpPriceDisplay: 30
   currentCameraMode: 0
   powerUpArray: 
-  campaignLevelReached: 39
+  campaignLevelReached: 120
   level: []
   g1: {fileID: 1465554500288424, guid: c1ae5462878aab640aaa9ce7f6a67e4e, type: 2}
   g2: {fileID: 1078632826784414, guid: 59566477bcb2452498b6bb89a37eaee7, type: 2}

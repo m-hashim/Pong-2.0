@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour {
 		DeadPool = GameObject.Find ("DeadPool").transform;
 		resetTriggers ();												//flare powerup reset correction
 		BlastList = new List<GameObject> ();
-
+        Time.timeScale = 1f;
 		////////
 		/// 
 //		AdManager.Instance.HideBanner();
@@ -351,6 +351,8 @@ public class GameManager : MonoBehaviour {
 		/////
 		//	AdManager.Instance.ShowBanner();
 		/////
+		ObjectPool.Instance.Reset();
+
 		coinsEarned.gameObject.transform.parent.gameObject.SetActive(false);
 		gameoverAnimationButton.GetComponent<UIAnimController>().PanelActive();
 		gameCanvas.GetComponent<GameUI> ().gameOver(state, GameManager.Instance.coinCount);
