@@ -11,7 +11,7 @@ public class InputHandler : MonoBehaviour {
 	private RaycastHit hit;
 	private Vector3 mouseOldPosition = Vector3.zero;
 	public GameObject camera3;
-	public float relativeSpeedGradient = 0.6f;
+	private float relativeSpeedGradient = 1.4f;
 	// Use this for initialization
 	void Start () {
 		instance = this;
@@ -22,6 +22,7 @@ public class InputHandler : MonoBehaviour {
 	void Update () {
 		RelativeMouse();
 	}
+
 	bool mouseDown= false;
 	public Vector3 relative;
 	void RelativeMouse(){

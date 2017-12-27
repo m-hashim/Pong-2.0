@@ -154,6 +154,12 @@ public class GameManager : MonoBehaviour {
 
 			player_Score.GetComponent<Text> ().text = player_Point + "";
 			AI_Score.GetComponent<Text> ().text = AI_Point+"";
+			if (player_Point > AI_Point) {
+				player_Score.GetComponent<Text> ().color = Color.green;
+			} else {
+				player_Score.GetComponent<Text> ().color = Color.red;
+			}
+
 			if (BlokeRemaining() == 0) {
 				//if(false){	
 
@@ -195,9 +201,8 @@ public class GameManager : MonoBehaviour {
 			player_Point = player_BlokePoint * BLOKE_MULTIPLIER + (AI_WallPoint)*WALL_MULTIPLIER ;
 			AI_Point = AI_BlokePoint * BLOKE_MULTIPLIER + (player_WallPoint )*WALL_MULTIPLIER;
 			player_Point *= PAD_MULTIPLIER;
-			player_Score.GetComponent<Text> ().text = player_Point + "";
+			player_Score.GetComponent<Text> ().text = player_Point + "";			
 			AI_Score.GetComponent<Text> ().text = AI_Point+"";
-
 			if (player_WallPoint >= WIN_LIMIT) {
 				GameOver = true;
 				if (youdidthistoher.Instance.HighScore < player_Point) {
@@ -329,6 +334,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 	}
+
 	private void EmptyBlastList(){
 		if (BlastList.Count > 0) {
 			GameObject temp = BlastList [0];

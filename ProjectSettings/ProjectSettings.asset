@@ -218,7 +218,7 @@ PlayerSettings:
   AndroidTargetDevice: 3
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/Public/Documents/Unity Projects/pong 2.04/pong 2.04/user.keystore
+  AndroidKeystoreName: C:/Users/Public/Documents/Unity Projects/Pong 2.0/user.keystore
   AndroidKeyaliasName: pong maniac
   AndroidTVCompatibility: 0
   AndroidIsGame: 1

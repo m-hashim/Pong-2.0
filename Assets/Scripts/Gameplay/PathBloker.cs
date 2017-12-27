@@ -42,8 +42,7 @@ public class PathBloker : MonoBehaviour {
 	}
     void spawnPathBloker()
     {
-        
         GameObject obj = Instantiate(pathBloker, spawnPosition, Quaternion.Euler(new Vector3(0f,45f,0f)));
-		Destroy (obj, 15f);
+		Destroy (obj, 10f);
 	}
 }

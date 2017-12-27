@@ -28,6 +28,7 @@ public class ObjectPool : MonoBehaviour {
 			}
 		}
 	}
+
 	//opt : objectPoolType
 	public GameObject GetObject(int opt=0){
 		for (int i = 0; i < poolList [(int)opt].Count; i++) {

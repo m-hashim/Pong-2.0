@@ -60,6 +60,7 @@ public class Block : MonoBehaviour {
 		case BlockTypes.Blast:
 			GameManager.Instance.BlastAnimation (transform.position);
                 gameObject.SetActive(false);
+
                 break;
 		}
 	}
@@ -114,7 +115,7 @@ public class Block : MonoBehaviour {
 			}
 			GameManager.Instance.BlokePoint (turn);
 			GameManager.Instance.Blast (gameObject);
-
+			print ("blastHere");
 			break;
 		}
 	}

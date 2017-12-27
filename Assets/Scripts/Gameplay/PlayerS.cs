@@ -107,6 +107,8 @@ public class PlayerS : MonoBehaviour {
 	Vector3 withinBoundary(Vector3 pos)
     {
         Vector3 temp = pos;
+		if (temp.x > MAX_X)
+			GameManager.Instance.ground.transform.GetChild (1).GetComponent<Animation> ().Play ();	//Play the area limit animation
         temp.x = Mathf.Clamp(temp.x, MIN_X, MAX_X);                                             //Field Play Constraint
         temp.z = Mathf.Clamp(temp.z, MIN_Z, MAX_Z);                                             //Field Play Constraint
 		return temp;
