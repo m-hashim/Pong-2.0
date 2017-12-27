@@ -28,7 +28,7 @@ public class rotator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+
 		transform.Rotate (new Vector3 (15, 30, 45) * Time.deltaTime);
 		transform.position=new Vector3(transform.position.x+Time.deltaTime*dirX,transform.position.y,transform.position.z);
 	
@@ -55,7 +55,11 @@ public class rotator : MonoBehaviour {
 			} else if (this.gameObject.name.Contains ("SpeedUp")) {
 				PowerUp.Instance.PU (PowerTypes.FastBall);
 			} else if (this.gameObject.name.Contains ("SpeedDown")) {
-				PowerUp.Instance.PU (PowerTypes.SlowBall);
+				if (turn) {
+					PowerUp.Instance.PU (PowerTypes.PlayerSlowBall);
+				} else {
+					PowerUp.Instance.PU (PowerTypes.AISlowBall);
+				}
 			} else if (this.gameObject.name.Contains ("FlareBall")) {
 				PowerUp.Instance.PU (PowerTypes.FlareBall,turn);
 			} else if (this.gameObject.name.Contains ("MultiBall")) {

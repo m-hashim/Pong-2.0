@@ -10,5 +10,5 @@ public enum BlockTypes{
 }
 public enum PowerTypes{
 	AILong ,AIShort, AIGun, AIMagnet , PlayerLong , PlayerShort , PlayerGun, PlayerMagnet,
-	BigBall, MultiBall ,FlareBall ,VipBall, SlowBall, FastBall
+	BigBall, MultiBall ,FlareBall ,VipBall, PlayerSlowBall, AISlowBall, FastBall
 }

@@ -17,9 +17,9 @@
 		private const float BLOKE_MIN_SPAWNX = -3f;
 		private const float BLOKE_MAX_SPAWNX = 3f;
 
-		private float SPEEDNORMAL=8f;
+		public float SPEEDNORMAL=8f;
 		private float SPEEDFAST=14f;
-		private float SPEEDSLOW=4f;
+		public float SPEEDSLOW=4f;
 
 		private const float POWER_5_DURATION =5f;				//gun
 		private const float POWER_7_DURATION = 7f;			//multi ball,flare ball, vip ball;
@@ -41,7 +41,7 @@
 		private Magnet MagnetScript;
 		private bool BlockGiraDe;
 
-		PowerVariables[] powerVar = new PowerVariables[14];
+		PowerVariables[] powerVar = new PowerVariables[15];
 
 
 
@@ -50,7 +50,7 @@
 
 		public bool animPlayerPad,animAIPad,animBall,animMultiBall;
 		public Vector3 playerPadScale,AIPadScale,BallScale;
-		private Material[] materials;
+		public Material[] materials;
 		public GameObject drunkPad;
 
 		// Use this for initialization
@@ -77,7 +77,8 @@
 
 	    void BallKoMaterialDo(){
 			if ((powerVar[(int)PowerTypes.VipBall].isWorking 
-				||powerVar[(int)PowerTypes.SlowBall].isWorking 
+				||powerVar[(int)PowerTypes.PlayerSlowBall].isWorking
+				||powerVar[(int)PowerTypes.AISlowBall].isWorking
 				||powerVar[(int)PowerTypes.FastBall].isWorking
 				||powerVar[(int)PowerTypes.FlareBall].isWorking
 				) 
@@ -237,11 +238,15 @@
 			case PowerTypes.VipBall:
 				WorkingThenDeactivate (PowerTypes.FlareBall);
 				break;
-			case PowerTypes.SlowBall:
+			case PowerTypes.PlayerSlowBall:
+				WorkingThenDeactivate (PowerTypes.FastBall);
+				break;
+			case PowerTypes.AISlowBall:
 				WorkingThenDeactivate (PowerTypes.FastBall);
 				break;
 			case PowerTypes.FastBall:
-				WorkingThenDeactivate (PowerTypes.SlowBall);
+				WorkingThenDeactivate (PowerTypes.AISlowBall);
+				WorkingThenDeactivate (PowerTypes.PlayerSlowBall);
 				break;
 			}
 		}
@@ -316,7 +321,20 @@
 					ballList [i].GetComponent<Renderer> ().material = materials [0];
 				}
 				break;
-			case PowerTypes.SlowBall:
+			case PowerTypes.PlayerSlowBall:
+			
+				playerSlowField.SetActive (false);
+
+				for (int i = 0; i < 3; i++) {
+					ballList [i].GetComponent<BallS> ().currentVelocity = SPEEDNORMAL;
+					ballList [i].transform.GetChild (0).gameObject.SetActive (false);
+					ballList [i].transform.GetChild (2).gameObject.SetActive (false);
+					ballList [i].GetComponent<Renderer> ().material = materials [0];
+				}
+				break;
+			case PowerTypes.AISlowBall:
+				AISlowField.SetActive (false);
+
 				for (int i = 0; i < 3; i++) {
 					ballList [i].GetComponent<BallS> ().currentVelocity = SPEEDNORMAL;
 					ballList [i].transform.GetChild (0).gameObject.SetActive (false);
@@ -409,15 +427,18 @@
 					ballList [i].GetComponent<Renderer> ().material = materials [3];
 				}
 				break;
-			case PowerTypes.SlowBall:
-				
-				for (int i = 0; i < 3; i++) {
+			case PowerTypes.PlayerSlowBall:
+				playerSlowField.SetActive (true);
+		/*		for (int i = 0; i < 3; i++) {
 
 					ballList [i].GetComponent<BallS> ().currentVelocity = SPEEDSLOW;
 					ballList [i].transform.GetChild (2).gameObject.SetActive (true);
 					ballList [i].GetComponent<Renderer> ().material = materials [1];
 				}
-		
+		*/
+				break;
+			case PowerTypes.AISlowBall:
+					AISlowField.SetActive (true);
 				break;
 			case PowerTypes.FastBall:
 				for (int i = 0; i < 3; i++) {
@@ -471,7 +492,10 @@
 				case (int)PowerTypes.VipBall:
 					powerVar[i].durationApplied = POWER_7_DURATION;
 					break;
-				case (int)PowerTypes.SlowBall:
+				case (int)PowerTypes.PlayerSlowBall:
+					powerVar[i].durationApplied = POWER_10_DURATION;
+					break;
+				case (int)PowerTypes.AISlowBall:
 					powerVar[i].durationApplied = POWER_10_DURATION;
 					break;
 				case (int)PowerTypes.FastBall:
