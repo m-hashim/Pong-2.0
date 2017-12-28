@@ -292,7 +292,7 @@ public class GameManager : MonoBehaviour {
 		if (chance < POWER_UP_PROB) {
 
 			int powerChoice = Random.Range (0, 33);
-			//int powerChoice = 27;
+			//powerChoice = 7;
 			var pu=new GameObject();
             if (powerChoice < 4) pu = Instantiate(padLong, tempBloke.transform.position, Quaternion.identity);
             else if (powerChoice < 8) pu = Instantiate(padShort, tempBloke.transform.position, Quaternion.identity);
@@ -305,12 +305,6 @@ public class GameManager : MonoBehaviour {
             else if (powerChoice < 31) pu = Instantiate(gunPad, tempBloke.transform.position, Quaternion.identity);
             else if (powerChoice < 33) pu = Instantiate(magnetPad, tempBloke.transform.position, Quaternion.identity);
             else return;
-  
-		/*	int powerChoice = Random.Range (0, 10);
-			var pu=new GameObject();
-			if (powerChoice < 5) pu = Instantiate(speedUp, tempBloke.transform.position, Quaternion.identity);
-			else pu = Instantiate(speedDown, tempBloke.transform.position, Quaternion.identity);
-		*/
 			pu.GetComponent<rotator>().turn = turn;
 
         }

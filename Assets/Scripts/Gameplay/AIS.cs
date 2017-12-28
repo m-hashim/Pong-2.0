@@ -10,12 +10,15 @@ public class AIS : MonoBehaviour {
 	private float ORIGINAL_FORCE_MODIFIER = 0.3f;
 	private float MAX_FORCE = 500.0f;
 
+	private const float POWERUP_CATCH_LINE= 6f;
+	private const float SLOW_POWERUP_MODE_MIN_CATCH_LINE = 7f;
 	private const float PAD_THICKNESS=0.5f;
 	private const float PADDLE_BACK_FORCE = 500.0f;
 	private const float PADDLE_BACK_ANIM_DUR = 0.12f;
 
-	private const float PAD_BOUND = 1.25f;
 	private const int NEGATIVE_CORRECT = -1;
+
+	private Vector3 REST_POS = new Vector3 (8, 0.4f, 0);
 
 	private Vector3 temp;
 	private float maximumZ;
@@ -27,9 +30,9 @@ public class AIS : MonoBehaviour {
 	private float xForce;
 	private bool back_motion_mode = false;
 
-	private const float MAST_VALUE_PAD_NORMAL = 1.5f;
-	private const float MAST_VALUE_PAD_SHORT=1f;
-	private const float MAST_VALUE_PAD_LONG=2.8f;
+	private const float MAST_VALUE_PAD_NORMAL = 2.5f;
+	private const float MAST_VALUE_PAD_SHORT=1.5f;
+	private const float MAST_VALUE_PAD_LONG=3.5f;
 
 	private Rigidbody rb;
 	private Rigidbody bRb;
@@ -95,7 +98,11 @@ public class AIS : MonoBehaviour {
 
 
 			if (!vella) {
-				transform.position = Vector3.MoveTowards (transform.position, ball.transform.position, SMOOTH_MOVEMENT);
+				Vector3 ballPos = ball.transform.position;
+				if(PowerUp.Instance.powerVar[(int)PowerTypes.AISlowBall].isWorking&&ball.transform.position.x < transform.position.x)
+					ballPos.x = 7f;
+				
+				transform.position = Vector3.MoveTowards (transform.position, ballPos, SMOOTH_MOVEMENT);
 			} else {
 				if (ballAtBack) {
 					Vector3 temp = transform.position;
@@ -117,22 +124,23 @@ public class AIS : MonoBehaviour {
 						float minDistance = Mathf.Infinity;
 						GameObject PUpakdo = null;
 						foreach (var PU in powerUps) {
-							float tempDistance = Vector3.Distance (PU.transform.position, transform.position);
-							if (PU.transform.position.x < transform.position.x && PU.transform.position.x > 0) {
-								float distance = tempDistance;
-								if (distance < minDistance) {
-									PUpakdo = PU;
-									minDistance = distance;
-								}
+								float tempDistance = Vector3.Distance (PU.transform.position, transform.position);
+								if (PU.transform.position.x > POWERUP_CATCH_LINE) {
+									float distance = tempDistance;
+									if (distance < minDistance) {
+										PUpakdo = PU;
+										minDistance = distance;
+									}
 							}
 						}
 						if (minDistance != Mathf.Infinity) {
 							transform.position = Vector3.MoveTowards (transform.position, PUpakdo.transform.position, SMOOTH_MOVEMENT); //toward powerUp
 						}
-					} else {
-						transform.position = Vector3.MoveTowards (transform.position, new Vector3 (8, 0.4f, 0), SMOOTH_MOVEMENT); //towards resting
+						else {
+							transform.position = Vector3.MoveTowards (transform.position, REST_POS, SMOOTH_MOVEMENT); //towards resting
+						}
 					}
-				}
+				} 
 			}
 		
 		}

@@ -13,15 +13,9 @@ public class PlayerS : MonoBehaviour {
 	private const float PADDLE_BACK_ANIM_DUR = 0.12f;
 	private float MIN_X, MAX_X, MAX_Z, MIN_Z;
 
-
-	private const float PAD_BOUND = 1.25f;
-
-	//private Vector3 FIELD_CENTRE = new Vector3 (0.0f,0.4f,0.0f);
-
-	private const float MAST_VALUE_PAD_NORMAL = 1.5f;
-	private const float MAST_VALUE_PAD_SHORT=1f;
-	private const float MAST_VALUE_PAD_LONG=2.8f;
-
+	private const float MAST_VALUE_PAD_NORMAL = 2.5f;
+	private const float MAST_VALUE_PAD_SHORT=1.5f;
+	private const float MAST_VALUE_PAD_LONG=3.5f;
 
 	private float dirZ=0;
 	private float zForce;

@@ -12,7 +12,9 @@
 
 		private const float NORMAL_PAD_SIZE = 2.5f;
 		private const float BIG_PAD_SIZE = 3.5f;
-		private const float SMALL_PAD_SIZE=1.8f;
+		private const float SMALL_PAD_SIZE = 1.5f;
+		private const float PAD_X = 0.5f;//0.3f;
+		private const float PAD_Y = 0.5f;//0.25f;
 
 		private const float BLOKE_MIN_SPAWNX = -3f;
 		private const float BLOKE_MAX_SPAWNX = 3f;
@@ -41,7 +43,7 @@
 		private Magnet MagnetScript;
 		private bool BlockGiraDe;
 
-		PowerVariables[] powerVar = new PowerVariables[15];
+		public PowerVariables[] powerVar = new PowerVariables[15];
 
 
 
@@ -258,12 +260,12 @@
 		public void PUDeactivate(PowerTypes powerType){
 			switch (powerType) {
 			case PowerTypes.AILong:
-				AIPadScale= new Vector3 (0.5f, 0.5f, NORMAL_PAD_SIZE);
+				AIPadScale= new Vector3 (PAD_X, PAD_Y, NORMAL_PAD_SIZE);
 				animAIPad = true;
 
 				break;
 			case PowerTypes.AIShort:
-				AIPadScale= new Vector3 (0.5f, 0.5f, NORMAL_PAD_SIZE);
+				AIPadScale= new Vector3 (PAD_X, PAD_Y, NORMAL_PAD_SIZE);
 				animAIPad = true;
 
 				break;
@@ -276,12 +278,12 @@
 
 				break;
 			case PowerTypes.PlayerLong:
-				playerPadScale= new Vector3 (0.5f, 0.5f, NORMAL_PAD_SIZE);
+				playerPadScale= new Vector3 (PAD_X, PAD_Y, NORMAL_PAD_SIZE);
 				animPlayerPad = true;
 
 				break;
 			case PowerTypes.PlayerShort:
-				playerPadScale= new Vector3 (0.5f, 0.5f, NORMAL_PAD_SIZE);
+				playerPadScale= new Vector3 (PAD_X, PAD_Y, NORMAL_PAD_SIZE);
 				animPlayerPad = true;
 				break;
 
@@ -357,12 +359,12 @@
 
 			switch (powerType) {
 			case PowerTypes.AILong:
-				AIPadScale = new Vector3 (0.5f, 0.5f, BIG_PAD_SIZE);
+				AIPadScale = new Vector3 (PAD_X, PAD_Y, BIG_PAD_SIZE);
 				animAIPad = true;
 
 				break;
 			case PowerTypes.AIShort:
-				AIPadScale= new Vector3 (0.5f, 0.5f, SMALL_PAD_SIZE);
+				AIPadScale= new Vector3 (PAD_X, PAD_Y, SMALL_PAD_SIZE);
 				animAIPad = true;
 
 				break;
@@ -373,11 +375,11 @@
 				AIS.Instance.magnet.SetActive (true);
 				break;
 			case PowerTypes.PlayerLong:
-				playerPadScale= new Vector3 (0.5f, 0.5f, BIG_PAD_SIZE);
+				playerPadScale= new Vector3 (PAD_X, PAD_Y, BIG_PAD_SIZE);
 				animPlayerPad = true;
 				break;
 			case PowerTypes.PlayerShort:
-				playerPadScale= new Vector3 (0.5f, 0.5f, SMALL_PAD_SIZE);
+				playerPadScale= new Vector3 (PAD_X, PAD_Y, SMALL_PAD_SIZE);
 				animPlayerPad = true;
 				break;
 
