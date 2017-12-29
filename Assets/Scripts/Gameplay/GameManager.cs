@@ -33,8 +33,8 @@ public class GameManager : MonoBehaviour {
 
 	public GameObject padLong,padShort,bigBall,speedUp,speedDown,flareBall,multiBall,magnetPad,gunPad,VIPBall;
 	public GameObject coin;
-	public Transform BlokeGroup,DeadPool,BallContainer;
-	public GameObject g,w1,w2,w3,w4;
+	public Transform BlokeGroup,DeadPool,BallContainer, SelectableGrounds;
+//	public GameObject g,w1,w2,w3,w4;
 	public GameObject camera1,camera2,camera3;
 
 	private int currentPlayingLevel;
@@ -85,11 +85,13 @@ public class GameManager : MonoBehaviour {
 //		AdManager.Instance.HideBanner();
 		/// /////
 		//youdidthistoher.Instance.loader ();
-		g.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentGround];
+	//	g.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentGround];
 	//	w1.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
 	//	w2.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
 	//	w3.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
 	//	w4.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
+
+		SelectableGrounds.GetChild (youdidthistoher.Instance.currentGround).gameObject.SetActive (true);
 
 		camReset ();
 		switch (youdidthistoher.Instance.currentCameraMode) {
@@ -122,12 +124,12 @@ public class GameManager : MonoBehaviour {
         {
             if (youdidthistoher.Instance.MCDActive == 1)
             {
-                GameObject.FindGameObjectWithTag("player").SetActive(false);
+				MCD.transform.parent.GetChild (0).gameObject.SetActive (false);
                 MCD.SetActive(true);
             }
             else if (youdidthistoher.Instance.DrunkActive == 1)
             {
-                GameObject.FindGameObjectWithTag("player").SetActive(false);
+				MCD.transform.parent.GetChild (0).gameObject.SetActive (false);
                 drunk.SetActive(true);
             }
         }

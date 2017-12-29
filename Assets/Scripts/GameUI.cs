@@ -14,7 +14,7 @@ public class GameUI : MonoBehaviour {
 	private const float moveSpeed = 2f;
 
 	public GameObject pausePanel, gameoverPanel, pauseButton, gameoverAnimationButton, continueButton, blockGroup;
-	public GameObject soundButton, magnetButton, gunButton, multiBallButton, vipButton, bigBallButton, padLongButton, flareButton, gridLock, darknessPanel;
+	public GameObject soundButton, magnetButton, gunButton, multiBallButton, vipButton, bigBallButton, padLongButton, flareButton, gridLock, darknessPanel, iconHolder;
 
 	public Text goText, descriptionText, levelText, coinsEarned, highScore;
 
@@ -31,14 +31,19 @@ public class GameUI : MonoBehaviour {
 		parsed = new string[noOfWinText];
 		tempCol = gridLock.GetComponent<Image> ().color;
 		levelText.text = (youdidthistoher.Instance.currentPlayingLevel).ToString ();
-		if (youdidthistoher.Instance.gameplayType == 1) {
+		if (youdidthistoher.Instance.gameplayType == 0) {
+			iconHolder.transform.GetChild (0).gameObject.SetActive (true);
+		}
+		else if (youdidthistoher.Instance.gameplayType == 1) {
 			highScore.transform.parent.gameObject.SetActive (true);
 			highScore.text = youdidthistoher.Instance.HighScoreEndless.ToString();
 			continueButton.GetComponent<Button> ().interactable = false;
+			iconHolder.transform.GetChild (1).gameObject.SetActive (true);
 		} else if (youdidthistoher.Instance.gameplayType == 2) {
 			highScore.transform.parent.gameObject.SetActive (true);
 			highScore.text = youdidthistoher.Instance.HighScoreDark.ToString ();
 			continueButton.GetComponent<Button> ().interactable = false;
+			iconHolder.transform.GetChild (2).gameObject.SetActive (true);
 		}
 	}
 
@@ -383,5 +388,10 @@ public class GameUI : MonoBehaviour {
 		youdidthistoher.Instance.Save ();
 		SceneManager.LoadScene ("Pong_Breaker");
 
+	}
+
+	public void doubleCoin()
+	{
+		////////////////////////////////////////////////////////////////////////////////////////////
 	}
 }

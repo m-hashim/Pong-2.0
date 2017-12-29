@@ -15,13 +15,24 @@ public class UI : MonoBehaviour {
 	private const int SPECIAL_COUNT = 4;
 	private const int PAD_COUNT = 9;
 	private const float gameSelectionWaitTime = 3.5f;
+	private const float purchaseWaitTime = 1.5f;
 	private const int maxDescriptionSizeParsed=15;
+	private const int MCD_COST=500;
+	private const int DRUNK_COST=500;
+	private const int GROUND_COST=500;
+	private const int BLOCK_COST=150;
+	private const int PAD_COST=200;
+	private const int POWERUP_COST=40;
 
-	private bool blockMovement,firstBlock, levelSelected;
+	private Vector3 checkMarkHomePos = new Vector3 (80f, 70f, 0f);
+
+	private bool blockMovement,firstBlock, levelSelected, purchaseModeOn;
 	private int levelCount, levelsUnlocked;
 	private int lastSwitch=1;
 	private int currentActiveStore=0;
-	private int[] currentSelectedInStores =  new int[5];
+	private int[] boughtInStores =  new int[5];
+	private int[] selectedInStores = new int[5];
+	private GameObject[] currentCheck = new GameObject[5];
 
 	private string[] parsed;
 
@@ -34,9 +45,10 @@ public class UI : MonoBehaviour {
 	public GameObject LevelPage, LevelButton, LevelRow, StoreButton;
 	public GameObject GroundsPanel, BlokesPanel, PowerupsPanel, PadsPanel, SpecialPanel;
 	public GameObject soundButton, cameraButton, controlButton;
-	public GameObject practiceButton, endlessButton, campaignButton, forwardCampaignButton, backwardCampaignButton;
+	public GameObject practiceButton, endlessButton, campaignButton, forwardCampaignButton, backwardCampaignButton, mcdButton, drunkButton;
 	public GameObject bckGameSelection, bckLevelSelection;			//back buttons that need to be disabled
-	public GameObject confirmBuy;
+	public GameObject confirmBuy, shopMoneyAmount, intermediateMoneyAmount, coinPurchaseActivator;
+	public GameObject checkMarkBlock, checkMarkGround, checkMarkPad;
 
 	public Sprite[] powerUpSprites = new Sprite[POWERUP_COUNT];
 	public Sprite[] groundSprites = new Sprite[GROUND_COUNT];
@@ -71,9 +83,15 @@ public class UI : MonoBehaviour {
 			previousPageLevel ();
 			blockMovement = true;
 		}
-		currentSelectedInStores[1]=youdidthistoher.Instance.skinAvailabilityPad;
-		currentSelectedInStores[3]=youdidthistoher.Instance.skinAvailabilityBloke;
-		currentSelectedInStores[4]=youdidthistoher.Instance.skinAvailabilityGround;
+		boughtInStores[1]= youdidthistoher.Instance.skinAvailabilityPad;
+		boughtInStores[3]= youdidthistoher.Instance.skinAvailabilityBloke;
+		boughtInStores[4]= youdidthistoher.Instance.skinAvailabilityGround;
+		currentCheck [1] = checkMarkPad;
+		currentCheck [3] = checkMarkBlock;
+		currentCheck [4] = checkMarkGround;
+		selectedInStores[1] = youdidthistoher.Instance.currentSkinIndexPad;
+		selectedInStores[3] = youdidthistoher.Instance.currentSkinIndexBloke;
+		selectedInStores[4] = youdidthistoher.Instance.currentGround;
 		currentActiveStore = 4;
 		shopInstantiator ("Text/grounds",GROUND_COUNT,GroundsPanel,groundSprites);
 		currentActiveStore = 3;
@@ -84,6 +102,22 @@ public class UI : MonoBehaviour {
 		shopInstantiator ("Text/powerups",POWERUP_COUNT,PowerupsPanel,powerUpSprites);
 	}
 
+	int price(int storeActive)
+	{
+		switch (storeActive) 
+		{
+		case 0:
+			return POWERUP_COST;
+		case 1:
+			return PAD_COST;
+		case 3:
+			return BLOCK_COST;
+		case 4:
+			return GROUND_COST;
+		default:
+			return -1;
+		}
+	}
 
 	void shopInstantiator(string address, int count, GameObject parentGameObject, Sprite[] images)
 	{
@@ -103,16 +137,17 @@ public class UI : MonoBehaviour {
 			temp.GetComponent<Image> ().sprite = images [j];
 			int tempItemNo = j;
 			temp.gameObject.GetComponent<Button> ().onClick.AddListener (() => StoreItem (temp, tempItemNo));
-			if ((currentSelectedInStores [currentActiveStore] & 1 << tempItemNo) == 1 << tempItemNo && currentActiveStore != 0) {
+			if ((boughtInStores [currentActiveStore] & 1 << tempItemNo) == 1 << tempItemNo && currentActiveStore != 0) {
 				//if already purchased
 				temp.transform.GetChild (0).gameObject.SetActive (false);
-				if (tempItemNo == currentSelectedInStores [currentActiveStore])
-					temp.transform.GetChild (1).gameObject.SetActive (true);
-			} else if (currentActiveStore == 0) {
-				temp.transform.GetChild (0).gameObject.SetActive (false);
-			}
+				if (tempItemNo == selectedInStores [currentActiveStore]) {
+
+					currentCheck[currentActiveStore].transform.SetParent (temp.transform);
+					currentCheck[currentActiveStore].transform.localPosition = checkMarkHomePos;
+				}
+			} 
 			else {
-				temp.transform.GetChild (0).GetComponent<Text> ().text = (j + 1).ToString();		//enter prices here
+				temp.transform.GetChild (0).GetComponent<Text> ().text = price(currentActiveStore).ToString();		//enter prices here
 			}
 		
 /*
@@ -153,29 +188,41 @@ public class UI : MonoBehaviour {
 
 	private void StoreItem(GameObject button, int itemNo)
 	{
-		if (button == prevButton) {
+		if (button == prevButton && purchaseModeOn) {
 			//purchase happens
 
 			switch (currentActiveStore) {
 			case 0:
 				//powerups
-				youdidthistoher.Instance.powerUpArray[itemNo] += 1;
-				youdidthistoher.Instance.Save ();
-				countText.text = "In Pocket: "+youdidthistoher.Instance.powerUpArray[itemNo];
+				if (youdidthistoher.Instance.currency >= POWERUP_COST) {
+					confirmBuy.transform.parent.GetComponent<Animation> ().Play ("boughtSuccessfully");
+					currentCheck[currentActiveStore].transform.SetParent (button.transform);
+					currentCheck[currentActiveStore].transform.localPosition = checkMarkHomePos;
+					youdidthistoher.Instance.currency -= POWERUP_COST;
+					intermediateMoneyAmount.GetComponent<Text>().text = shopMoneyAmount.GetComponent<Text> ().text = youdidthistoher.Instance.currency.ToString ();
+					youdidthistoher.Instance.powerUpArray [itemNo] += 1;
+					youdidthistoher.Instance.Save ();
+					countText.text = "In Pocket: " + youdidthistoher.Instance.powerUpArray [itemNo];
+				} else {
+					//insufficient funds
+					coinPurchaseActivator.GetComponent<UIAnimController>().PanelActive();
+				}
 				break;
 			case 1:
 				//pads	
-				int cost = 100;																	//enter prices here
-				if (youdidthistoher.Instance.currency >= cost && (youdidthistoher.Instance.skinAvailabilityPad & 1 << itemNo) != 1 << itemNo) {
-					youdidthistoher.Instance.currency -= cost;
+				if (youdidthistoher.Instance.currency >= PAD_COST && (youdidthistoher.Instance.skinAvailabilityPad & 1 << itemNo) != 1 << itemNo) {
+					confirmBuy.transform.parent.GetComponent<Animation> ().Play ("boughtSuccessfully");
+					currentCheck[currentActiveStore].transform.SetParent (button.transform);
+					currentCheck[currentActiveStore].transform.localPosition = checkMarkHomePos;
+					youdidthistoher.Instance.currency -= PAD_COST;
+					intermediateMoneyAmount.GetComponent<Text>().text = shopMoneyAmount.GetComponent<Text> ().text = youdidthistoher.Instance.currency.ToString();
 					youdidthistoher.Instance.skinAvailabilityPad += 1 << itemNo;
 					youdidthistoher.Instance.currentSkinIndexPad = itemNo;
 					youdidthistoher.Instance.Save ();
 					button.transform.GetChild (0).gameObject.SetActive (false);
 				} else {
 					//insufficient funds
-			//		coinPurchasePanel.SetActive(true);
-			//		mastIdea.SetActive (false);
+					coinPurchaseActivator.GetComponent<UIAnimController>().PanelActive();
 				}
 				break;
 			case 2:
@@ -184,9 +231,12 @@ public class UI : MonoBehaviour {
 				break;
 			case 3:
 				//blokes
-				int costB = 50;
-				if (youdidthistoher.Instance.currency >= costB && (youdidthistoher.Instance.skinAvailabilityBloke & 1 << itemNo) != 1 << itemNo) {
-					youdidthistoher.Instance.currency -= costB;
+				if (youdidthistoher.Instance.currency >= BLOCK_COST && (youdidthistoher.Instance.skinAvailabilityBloke & 1 << itemNo) != 1 << itemNo) {
+					confirmBuy.transform.parent.GetComponent<Animation> ().Play ("boughtSuccessfully");
+					currentCheck[currentActiveStore].transform.SetParent (button.transform);
+					currentCheck[currentActiveStore].transform.localPosition = checkMarkHomePos;
+					youdidthistoher.Instance.currency -= BLOCK_COST;
+					intermediateMoneyAmount.GetComponent<Text>().text = shopMoneyAmount.GetComponent<Text> ().text = youdidthistoher.Instance.currency.ToString();
 					youdidthistoher.Instance.skinAvailabilityBloke += 1 << itemNo;
 					youdidthistoher.Instance.currentSkinIndexBloke = itemNo;
 					youdidthistoher.Instance.Save ();
@@ -194,23 +244,24 @@ public class UI : MonoBehaviour {
 					button.transform.GetChild (0).gameObject.SetActive (false);
 				}else {
 					//insufficient funds
-//					coinPurchasePanel.SetActive(true);
-//					mastIdea.SetActive (false);
+					coinPurchaseActivator.GetComponent<UIAnimController>().PanelActive();
 				}
 				break;
 			case 4:
 				//grounds
-				int costG = 50;
-				if (youdidthistoher.Instance.currency >= costG && (youdidthistoher.Instance.skinAvailabilityGround & 1 << itemNo) != 1 << itemNo) {
-					youdidthistoher.Instance.currency -= costG;
+				if (youdidthistoher.Instance.currency >= GROUND_COST && (youdidthistoher.Instance.skinAvailabilityGround & 1 << itemNo) != 1 << itemNo) {
+					confirmBuy.transform.parent.GetComponent<Animation> ().Play ("boughtSuccessfully");
+					currentCheck[currentActiveStore].transform.SetParent (button.transform);
+					currentCheck[currentActiveStore].transform.localPosition = checkMarkHomePos;
+					youdidthistoher.Instance.currency -= GROUND_COST;
+					intermediateMoneyAmount.GetComponent<Text>().text = shopMoneyAmount.GetComponent<Text> ().text = youdidthistoher.Instance.currency.ToString();
 					youdidthistoher.Instance.skinAvailabilityGround += 1 << itemNo;
 					youdidthistoher.Instance.currentGround = itemNo;
 					youdidthistoher.Instance.Save ();
 					button.transform.GetChild (0).gameObject.SetActive (false);
 				}else {
 					//insufficient funds
-					//					coinPurchasePanel.SetActive(true);
-					//					mastIdea.SetActive (false);
+					coinPurchaseActivator.GetComponent<UIAnimController>().PanelActive();
 				}
 				break;
 			default:
@@ -223,20 +274,27 @@ public class UI : MonoBehaviour {
 		else {
 			//fist click, confirmation needed or selection
 			prevButton = button;
+			purchaseModeOn = true;
+			Invoke ("purchaseReset", purchaseWaitTime);
 			print (itemNo + " " + (1 << itemNo)+" "+button);
 			itemDescriptionText.text = parsed [itemNo + 2];
-			confirmBuy.transform.parent.GetComponent<Animation> ().Play ("confirmBuy");
 			switch (currentActiveStore) {
 			case 0:
 				//powerups
 				countText.text = "In Pocket: "+youdidthistoher.Instance.powerUpArray[itemNo];
+				confirmBuy.transform.parent.GetComponent<Animation> ().Play ("confirmBuy");
 				break;
 			case 1:
 				//pads
 				if ((youdidthistoher.Instance.skinAvailabilityPad & 1 << itemNo) == 1 << itemNo) {
 					//runs to select the already bought materials
 					youdidthistoher.Instance.currentSkinIndexPad = itemNo;
+					currentCheck[currentActiveStore].transform.SetParent (button.transform);
+					currentCheck[currentActiveStore].transform.localPosition = checkMarkHomePos;
+					print (itemNo + " selected");
 					youdidthistoher.Instance.Save ();			
+				} else {
+					confirmBuy.transform.parent.GetComponent<Animation> ().Play ("confirmBuy");
 				}
 				break;
 			case 2:
@@ -247,19 +305,24 @@ public class UI : MonoBehaviour {
 				//blokes
 				if ((youdidthistoher.Instance.skinAvailabilityBloke & 1 << itemNo) == 1 << itemNo) {
 					//runs to select the already bought materials
-
-					print("selected");
 					youdidthistoher.Instance.currentSkinIndexBloke = itemNo;
+					currentCheck[currentActiveStore].transform.SetParent (button.transform);
+					currentCheck[currentActiveStore].transform.localPosition = checkMarkHomePos;
 					youdidthistoher.Instance.Save ();			
+				} else {
+					confirmBuy.transform.parent.GetComponent<Animation> ().Play ("confirmBuy");
 				}
 				break;
 			case 4:
 				//grounds
 				if ((youdidthistoher.Instance.skinAvailabilityGround & 1 << itemNo) == 1 << itemNo) {
 					//runs to select the already bought materials
-
 					youdidthistoher.Instance.currentGround = itemNo;
+					currentCheck[currentActiveStore].transform.SetParent (button.transform);
+					currentCheck[currentActiveStore].transform.localPosition = checkMarkHomePos;
 					youdidthistoher.Instance.Save ();			
+				}else {
+					confirmBuy.transform.parent.GetComponent<Animation> ().Play ("confirmBuy");
 				}
 				break;
 			default:
@@ -493,7 +556,8 @@ public class UI : MonoBehaviour {
 
 	public void shopStarter()
 	{
-		powerUps ();	
+		powerUps ();
+		intermediateMoneyAmount.GetComponent<Text>().text = shopMoneyAmount.GetComponent<Text> ().text = youdidthistoher.Instance.currency.ToString();
 	}
 
 	public void powerUps()
@@ -522,6 +586,14 @@ public class UI : MonoBehaviour {
 		SpecialPanel.SetActive (true);
 		countText.gameObject.SetActive (false);
 		currentActiveStore = 2;
+		if (youdidthistoher.Instance.MCDActive == 1) {
+			mcdButton.transform.GetChild (0).gameObject.SetActive (true);
+			mcdButton.transform.GetChild (1).gameObject.SetActive (false);
+		}
+		if (youdidthistoher.Instance.DrunkActive == 1) {
+			drunkButton.transform.GetChild (0).gameObject.SetActive (true);
+			drunkButton.transform.GetChild (1).gameObject.SetActive (false);
+		}
 		txt = (TextAsset)Resources.Load ("Text/specials",typeof(TextAsset));
 		parser (txt.text);
 	}
@@ -614,5 +686,125 @@ public class UI : MonoBehaviour {
 	public void pattButt()
 	{
 		patt.SetActive (true);
+	}
+
+	public void MCD()
+	{
+		if (youdidthistoher.Instance.skinAvailabilityMCD == 1) {
+			if (youdidthistoher.Instance.MCDActive == 0) {
+				youdidthistoher.Instance.MCDActive = 1;
+				mcdButton.transform.GetChild (0).gameObject.SetActive (true);
+				mcdButton.transform.GetChild (1).gameObject.SetActive (false);
+				youdidthistoher.Instance.DrunkActive = 0;
+				drunkButton.transform.GetChild (0).gameObject.SetActive (false);
+				drunkButton.transform.GetChild (1).gameObject.SetActive (true);
+			} else {
+				youdidthistoher.Instance.MCDActive = 0;
+				mcdButton.transform.GetChild (0).gameObject.SetActive (false);
+				mcdButton.transform.GetChild (1).gameObject.SetActive (true);
+			}
+			youdidthistoher.Instance.Save ();
+		} else {
+			if (purchaseModeOn && prevButton == mcdButton) {
+				if (youdidthistoher.Instance.currency >= MCD_COST) {
+					confirmBuy.transform.parent.GetComponent<Animation> ().Play ("boughtSuccessfully");
+					youdidthistoher.Instance.currency -= MCD_COST;
+					intermediateMoneyAmount.GetComponent<Text> ().text = shopMoneyAmount.GetComponent<Text> ().text = youdidthistoher.Instance.currency.ToString ();
+					youdidthistoher.Instance.skinAvailabilityMCD = 1;
+					youdidthistoher.Instance.MCDActive = 1;
+					mcdButton.transform.GetChild (0).gameObject.SetActive (true);
+					mcdButton.transform.GetChild (1).gameObject.SetActive (false);
+					youdidthistoher.Instance.DrunkActive = 0;
+					drunkButton.transform.GetChild (0).gameObject.SetActive (false);
+					drunkButton.transform.GetChild (1).gameObject.SetActive (true);
+					youdidthistoher.Instance.Save ();
+				} else {
+					//insufficient funds
+					coinPurchaseActivator.GetComponent<UIAnimController>().PanelActive();
+				}
+			}
+			else {
+				prevButton = mcdButton;
+				purchaseModeOn = true;
+				Invoke ("purchaseReset", purchaseWaitTime);
+				itemDescriptionText.text = parsed [3];
+				confirmBuy.transform.parent.GetComponent<Animation> ().Play ("confirmBuy");
+			}
+		}
+	}
+
+	public void drunk()
+	{
+		if (youdidthistoher.Instance.skinAvailabilityDrunk == 1) {
+			if (youdidthistoher.Instance.DrunkActive == 0) {
+				youdidthistoher.Instance.DrunkActive = 1;
+				drunkButton.transform.GetChild (0).gameObject.SetActive (true);
+				drunkButton.transform.GetChild (1).gameObject.SetActive (false);
+				youdidthistoher.Instance.MCDActive = 0;
+				mcdButton.transform.GetChild (0).gameObject.SetActive (false);
+				mcdButton.transform.GetChild (1).gameObject.SetActive (true);
+			} else {
+				youdidthistoher.Instance.DrunkActive = 0;
+				drunkButton.transform.GetChild (0).gameObject.SetActive (false);
+				drunkButton.transform.GetChild (1).gameObject.SetActive (true);
+			}
+			youdidthistoher.Instance.Save ();
+		} else {
+			if (purchaseModeOn && prevButton == drunkButton) {
+				if (youdidthistoher.Instance.currency >= DRUNK_COST) {
+					confirmBuy.transform.parent.GetComponent<Animation> ().Play ("boughtSuccessfully");
+					youdidthistoher.Instance.currency -= DRUNK_COST;
+					intermediateMoneyAmount.GetComponent<Text>().text = shopMoneyAmount.GetComponent<Text> ().text = youdidthistoher.Instance.currency.ToString ();
+					youdidthistoher.Instance.skinAvailabilityDrunk = 1;
+					youdidthistoher.Instance.DrunkActive = 1;
+					drunkButton.transform.GetChild (0).gameObject.SetActive (true);
+					drunkButton.transform.GetChild (1).gameObject.SetActive (false);
+					youdidthistoher.Instance.MCDActive = 0;
+					mcdButton.transform.GetChild (0).gameObject.SetActive (false);
+					mcdButton.transform.GetChild (1).gameObject.SetActive (true);
+					youdidthistoher.Instance.Save ();
+				}
+				else {
+					//insufficient funds
+					coinPurchaseActivator.GetComponent<UIAnimController>().PanelActive();
+				}
+			} else {
+				prevButton = drunkButton;
+				purchaseModeOn = true;
+				Invoke ("purchaseReset", purchaseWaitTime);
+				itemDescriptionText.text = parsed [2];
+				confirmBuy.transform.parent.GetComponent<Animation> ().Play ("confirmBuy");
+			}
+		}
+	}
+
+	private void purchaseReset()
+	{
+		purchaseModeOn = false;
+		prevButton = null;
+	}
+
+	public void watchAdForMoney()
+	{
+		//reward 30 coins
+		////////////////////////////////////////////////////////////////////////////////////////////
+	}
+
+	public void purchase1()
+	{
+		//INR 29.99-499 Coins
+		////////////////////////////////////////////////////////////////////////////////////////////
+	}
+
+	public void purchase2()
+	{
+		//INR 49.99-999 Coins
+		////////////////////////////////////////////////////////////////////////////////////////////
+	}
+
+	public void purchase3()
+	{
+		//INR 99.99-2999 Coins
+		////////////////////////////////////////////////////////////////////////////////////////////
 	}
 }

@@ -861,7 +861,7 @@ MonoBehaviour:
   currentSkinIndexPad: 0
   currentSkinIndexBloke: 0
   currentGround: 0
-  currency: 250
+  currency: 2000
   p_bigBall: 0
   p_flareBall: 0
   p_gun: 0
@@ -871,7 +871,7 @@ MonoBehaviour:
   p_multiBall: 0
   skinAvailabilityPad: 1
   skinAvailabilityBloke: 1
-  skinAvailabilityGround: 2
+  skinAvailabilityGround: 1
   MCDActive: 0
   DrunkActive: 0
   skinAvailabilityMCD: 0
@@ -879,7 +879,8 @@ MonoBehaviour:
   hasRatedGame: 0
   gameOpenCount: 1
   currentPlayingLevel: 1
-  HighScore: 0
+  HighScoreEndless: 0
+  HighScoreDark: 0
   LevelLooseCount: 1
   soundOn: 1
   inGameSond: 1

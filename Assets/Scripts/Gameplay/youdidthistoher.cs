@@ -19,10 +19,10 @@ public class youdidthistoher : MonoBehaviour {
 	public Sprite[] extras;
 	public Sprite[] powerUps;
 
-	public int currentSkinIndexPad=1;
-	public int currentSkinIndexBloke = 1;
-	public int currentGround = 1;
-	public int currency=500;
+	public int currentSkinIndexPad=0;
+	public int currentSkinIndexBloke = 0;
+	public int currentGround = 0;
+	public int currency=2000;
 	public int p_bigBall = 5;
 	public int p_flareBall = 5;
 	public int p_gun = 5;
@@ -30,9 +30,9 @@ public class youdidthistoher : MonoBehaviour {
 	public int p_magnet = 5;
 	public int p_VIPBall = 5;
 	public int p_multiBall = 5;
-	public int skinAvailabilityPad=2;
-	public int skinAvailabilityBloke=2;
-	public int skinAvailabilityGround=2;
+	public int skinAvailabilityPad=1;
+	public int skinAvailabilityBloke=1;
+	public int skinAvailabilityGround=1;
 	public int MCDActive=0;
 	public int DrunkActive=0;
 	public int skinAvailabilityMCD = 0;
@@ -41,7 +41,7 @@ public class youdidthistoher : MonoBehaviour {
 	public int gameOpenCount = 1;
 	public int currentPlayingLevel = 1;
 	public int HighScoreEndless = 0;
-	public int HighScoreDark = 10;
+	public int HighScoreDark = 0;
 	public int LevelLooseCount=1;
 	public int soundOn = 1;
 	public int inGameSond =1;
@@ -67,9 +67,9 @@ public class youdidthistoher : MonoBehaviour {
 		blokeMaterials = new Material[NO_OF_MATERIALS_BLOKE];
 		extraMaterials = new Material[NO_OF_EXTRAS];
 		powerUpArray = new int[7];
-		for(int i=0;i<7;i++)
-			powerUpArray[i]=3;
-		PlayerPrefs.DeleteAll ();
+	//	for(int i=0;i<7;i++)
+	//		powerUpArray[i]=7;
+	//	PlayerPrefs.DeleteAll ();
 		materials = Resources.LoadAll<Material> ("Material/Pad_Materials");
 		blokeMaterials = Resources.LoadAll<Material> ("Material/Bloke_Materials");
 		extraMaterials = Resources.LoadAll<Material> ("Material/Extra_Materials");
