@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 114957789043143554}
   - component: {fileID: 114981662100628902}
   - component: {fileID: 114876974503784820}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Block
   m_TagString: Block
   m_Icon: {fileID: 0}
@@ -54,7 +54,7 @@ MeshRenderer:
   m_GameObject: {fileID: 1504303487519616}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1

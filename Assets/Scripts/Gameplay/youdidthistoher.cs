@@ -40,7 +40,8 @@ public class youdidthistoher : MonoBehaviour {
 	public int hasRatedGame = 0;
 	public int gameOpenCount = 1;
 	public int currentPlayingLevel = 1;
-	public int HighScore = 0;
+	public int HighScoreEndless = 0;
+	public int HighScoreDark = 10;
 	public int LevelLooseCount=1;
 	public int soundOn = 1;
 	public int inGameSond =1;
@@ -107,7 +108,8 @@ public class youdidthistoher : MonoBehaviour {
 			powerUpArray [6] = PlayerPrefs.GetInt ("p_multiBall");
 			currentPlayingLevel = PlayerPrefs.GetInt ("currentPlayingLevel");
 			campaignLevelReached = PlayerPrefs.GetInt ("campaignLevelReached");
-			HighScore = PlayerPrefs.GetInt ("HighScore");
+			HighScoreEndless = PlayerPrefs.GetInt ("HighScoreEndless");
+			HighScoreDark = PlayerPrefs.GetInt ("HighScoreDark");
 			gameplayType = PlayerPrefs.GetInt ("gameplayType");
 			gameOpenCount++;
 
@@ -119,7 +121,8 @@ public class youdidthistoher : MonoBehaviour {
 			for (int i = 1; i<=level.Length; i++) {
 				PlayerPrefs.SetString ("level" + i, level [i - 1]);
 			}
-			PlayerPrefs.SetInt ("HighScore", HighScore);
+			PlayerPrefs.SetInt ("HighScoreEndless", HighScoreEndless);
+			PlayerPrefs.SetInt ("HighScoreDark", HighScoreDark);
 		}
 
 		if (soundOn == 1)
@@ -158,7 +161,8 @@ public class youdidthistoher : MonoBehaviour {
 		PlayerPrefs.SetInt ("DrunkActive", DrunkActive);
 		PlayerPrefs.SetInt ("soundOn", soundOn);
 		PlayerPrefs.SetInt ("inGameSond", inGameSond);
-		PlayerPrefs.SetInt ("HighScore", HighScore);
+		PlayerPrefs.SetInt ("HighScoreEndless", HighScoreEndless);
+		PlayerPrefs.SetInt ("HighScoreDark", HighScoreDark);
 		PlayerPrefs.SetInt ("hasRatedGame", hasRatedGame);
 		PlayerPrefs.SetInt ("gameOpenCount", gameOpenCount);
 		PlayerPrefs.SetInt ("levelLooseCount", LevelLooseCount);

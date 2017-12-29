@@ -28,7 +28,7 @@ public class Intermediate : MonoBehaviour {
 		////////
 //		AdManager.Instance.ShowBanner ();
 		////////
-		HS.text = "HighScore: "+youdidthistoher.Instance.HighScore.ToString();
+	//	HS.text = "HighScore: "+youdidthistoher.Instance.HighScore.ToString();
 		LEV.text = "Current Level: "+PlayerPrefs.GetInt ("campaignLevelReached").ToString();
 		COI.text = PlayerPrefs.GetInt ("Currency").ToString ();
 		worksGoodPanel.SetActive(false);

@@ -14,9 +14,9 @@ public class GameUI : MonoBehaviour {
 	private const float moveSpeed = 2f;
 
 	public GameObject pausePanel, gameoverPanel, pauseButton, gameoverAnimationButton, continueButton, blockGroup;
-	public GameObject soundButton, magnetButton, gunButton, multiBallButton, vipButton, bigBallButton, padLongButton, flareButton, gridLock;
+	public GameObject soundButton, magnetButton, gunButton, multiBallButton, vipButton, bigBallButton, padLongButton, flareButton, gridLock, darknessPanel;
 
-	public Text goText, descriptionText, levelText, coinsEarned;
+	public Text goText, descriptionText, levelText, coinsEarned, highScore;
 
 	private int[] isSelected;
 	private bool secondPause=false;
@@ -31,27 +31,59 @@ public class GameUI : MonoBehaviour {
 		parsed = new string[noOfWinText];
 		tempCol = gridLock.GetComponent<Image> ().color;
 		levelText.text = (youdidthistoher.Instance.currentPlayingLevel).ToString ();
+		if (youdidthistoher.Instance.gameplayType == 1) {
+			highScore.transform.parent.gameObject.SetActive (true);
+			highScore.text = youdidthistoher.Instance.HighScoreEndless.ToString();
+			continueButton.GetComponent<Button> ().interactable = false;
+		} else if (youdidthistoher.Instance.gameplayType == 2) {
+			highScore.transform.parent.gameObject.SetActive (true);
+			highScore.text = youdidthistoher.Instance.HighScoreDark.ToString ();
+			continueButton.GetComponent<Button> ().interactable = false;
+		}
 	}
 
-	public void gameOver(int state, int coinCount)
+	public void gameOver(int state, int coinCount, int score=0)
 	{
 		coinsEarned.text = coinCount.ToString ();
 		pauseButton.GetComponent<Button> ().interactable = false;
 		switch (state) 
 		{
 		case 0:
-			txt = (TextAsset)Resources.Load ("Text/win", typeof(TextAsset));
-			parsed = txt.text.Split ("\n"[0]);
-			descriptionText.text = parsed [Random.Range (0, noOfWinText)];
+			if (youdidthistoher.Instance.gameplayType == 0) {
+				txt = (TextAsset)Resources.Load ("Text/win", typeof(TextAsset));
+				parsed = txt.text.Split ("\n" [0]);
+				descriptionText.text = parsed [Random.Range (0, noOfWinText)];
+			} else if (youdidthistoher.Instance.gameplayType == 1) {
+				descriptionText.text = "High Score Broken!!!\nNew High Score: " + score.ToString();
+				descriptionText.transform.GetChild (0).GetComponent<Text> ().text = "Stats:";
+			} else {
+				descriptionText.text = "High Score Broken!!!\nNew High Score: " + score.ToString();
+				descriptionText.transform.GetChild (0).GetComponent<Text> ().text = "Stats:";
+			}
 			goText.text = "SUSTAINED";
 			break;
 		case 1:
-			txt = (TextAsset)Resources.Load ("Text/lose", typeof(TextAsset));
-			parsed = txt.text.Split ("\n" [0]);
-			descriptionText.text = parsed [Random.Range (0, noOfLoseText)];
+			if (youdidthistoher.Instance.gameplayType == 0) {
+				txt = (TextAsset)Resources.Load ("Text/lose", typeof(TextAsset));
+				parsed = txt.text.Split ("\n" [0]);
+				descriptionText.text = parsed [Random.Range (0, noOfLoseText)];
+				if (youdidthistoher.Instance.currentPlayingLevel == youdidthistoher.Instance.campaignLevelReached)
+					continueButton.GetComponent<Button> ().interactable = false;
+			}
+			else if (youdidthistoher.Instance.gameplayType == 1) {
+				if(score==-1)
+					descriptionText.text = "You beat the High Score but Alas! you couldn't beat the AI, what a waste";
+				else
+					descriptionText.text = "High Score: "+youdidthistoher.Instance.HighScoreEndless.ToString() + "\nYour Score: "+ score.ToString();
+				descriptionText.transform.GetChild (0).GetComponent<Text> ().text = "Stats:";
+			} else {
+				if(score==-1)
+					descriptionText.text = "You beat the High Score but Alas! you couldn't beat the AI, what a waste";
+				else
+					descriptionText.text = "High Score: "+youdidthistoher.Instance.HighScoreDark.ToString() + "\nYour Score: "+ score.ToString();
+				descriptionText.transform.GetChild (0).GetComponent<Text> ().text = "Stats:";
+			}
 			goText.text = "THUMPED";
-			if(youdidthistoher.Instance.currentPlayingLevel==youdidthistoher.Instance.campaignLevelReached)
-				continueButton.GetComponent<Button> ().interactable = false;
 			break;
 		}
 		youdidthistoher.Instance.currency+=coinCount;
@@ -66,6 +98,11 @@ public class GameUI : MonoBehaviour {
 		loadPowerUpCount ();
 		if(secondPause)
 			resetPowerUps ();
+		if (youdidthistoher.Instance.gameplayType == 2) //DARK MODE
+		{
+			darknessPanel.SetActive (true);
+			gridLock.SetActive (false);
+		}
 	}
 
 	public void unPause()
@@ -104,7 +141,6 @@ public class GameUI : MonoBehaviour {
 
 		Time.timeScale = 1f;
 		pauseButton.GetComponent<Button> ().interactable = true;
-		youdidthistoher.Instance.Save ();
 	}
 
 	public void restart()

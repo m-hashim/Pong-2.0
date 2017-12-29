@@ -8,13 +8,16 @@ public class GameManager : MonoBehaviour {
 	private static GameManager instance;
 	public static GameManager Instance{get{ return instance;}}
 	private const float COIN_PROB=0.3f;
-	private const float POWER_UP_PROB = 0.12f;
+	private float POWER_UP_PROB = 0.12f;
+	private float DARK_MODE_AI_POWERUP_PROB = 35f;
+	private float DARK_MODE_AI_POWERUP_TIME = 10f;
 	private const float SPAWN_RATE = 3f;
 	private const float BLOKE_MIN_SPAWNX = -3f;
 	private const float BLOKE_MAX_SPAWNX = 3f;
 	private const float	BLOKE_MIN_SPAWNZ = -7.5f;
 	private const float BLOKE_MAX_SPAWNZ = 5f;
-	private const int WIN_LIMIT = 7;
+	private const int WIN_LIMIT_ENDLESS = 7;
+	private const int WIN_LIMIT_DARK = 1;
 	private const float BLOKE_MULTIPLIER = 1f;
 	private const float WALL_MULTIPLIER = 3f;
 	private float PAD_MULTIPLIER = 1f;
@@ -47,7 +50,7 @@ public class GameManager : MonoBehaviour {
 	public AudioClip a1,a2,a3,a4;
 	public GameObject BlastAnim;
 
-	public GameObject gameCanvas, powerup, gameoverAnimationButton;
+	public GameObject gameCanvas, powerup, gameoverAnimationButton, lightSystem;
 
 	public int coinCount;
 	private float AI_Point, player_Point;
@@ -101,13 +104,18 @@ public class GameManager : MonoBehaviour {
 			break;
 		}
 
-		if(youdidthistoher.Instance.gameplayType == 0){
+		if (youdidthistoher.Instance.gameplayType == 0) {
 			currentPlayingLevel = youdidthistoher.Instance.currentPlayingLevel;
-            LevelMaker(currentPlayingLevel);
-            ExtraFeatures();
-        }
-		else if(youdidthistoher.Instance.gameplayType==1){
+			LevelMaker (currentPlayingLevel);
+			ExtraFeatures ();
+		} else if (youdidthistoher.Instance.gameplayType == 1) {
 			InvokeRepeating ("BlokeSpawner", SPAWN_RATE, SPAWN_RATE);
+		} else if (youdidthistoher.Instance.gameplayType == 2) {
+			InvokeRepeating ("BlokeSpawner", SPAWN_RATE, SPAWN_RATE);
+			InvokeRepeating ("AIPowerSupplier", DARK_MODE_AI_POWERUP_TIME, DARK_MODE_AI_POWERUP_TIME);
+			lightSystem.transform.GetChild(0).gameObject.SetActive (false);		//normal lights
+			lightSystem.transform.GetChild(1).gameObject.SetActive (true);		//dark mode lights
+			POWER_UP_PROB = 0f;													//disable powerups
 		}
 
 		if (youdidthistoher.Instance.gameplayType<=1)
@@ -192,7 +200,7 @@ public class GameManager : MonoBehaviour {
 					gogoScreen(1);
 				}				
 			}
-		} else if (youdidthistoher.Instance.gameplayType==1) {
+		} else if (youdidthistoher.Instance.gameplayType==1||youdidthistoher.Instance.gameplayType==2) {
 			if (Time.time - gameStartTime > 100f) {
 				ShowInterAd = true;
 			}
@@ -203,18 +211,36 @@ public class GameManager : MonoBehaviour {
 			player_Point *= PAD_MULTIPLIER;
 			player_Score.GetComponent<Text> ().text = player_Point + "";			
 			AI_Score.GetComponent<Text> ().text = AI_Point+"";
-			if (player_WallPoint >= WIN_LIMIT) {
-				GameOver = true;
-				if (youdidthistoher.Instance.HighScore < player_Point) {
-					youdidthistoher.Instance.HighScore = (int)player_Point;
-					youdidthistoher.Instance.Save ();
+
+			if (youdidthistoher.Instance.gameplayType == 1) {
+				if (player_WallPoint >= WIN_LIMIT_ENDLESS) {
+					GameOver = true;
+					if (youdidthistoher.Instance.HighScoreEndless < player_Point && player_Point > AI_Point) {
+							youdidthistoher.Instance.HighScoreEndless = (int)player_Point;				//highscore is broken only if player points are greater than AI points
+							youdidthistoher.Instance.Save ();
+							gogoScreen (0, (int)player_Point);
+					}else {
+						if (player_Point < AI_Point) {
+							player_Point = -1;
+						}
+						gogoScreen (1, (int)player_Point);
+					}
 				}
-				if (player_Point >= AI_Point) {
-					gogoScreen(0);
-				}else{
-					gogoScreen(1);
+			}else {
+				if (player_WallPoint >= WIN_LIMIT_DARK) {
+					GameOver = true;
+					if (youdidthistoher.Instance.HighScoreDark < player_Point && player_Point > AI_Point) {
+							youdidthistoher.Instance.HighScoreDark = (int)player_Point;
+							youdidthistoher.Instance.Save ();
+						gogoScreen (0, (int)player_Point);
+					}else {
+						if (player_Point < AI_Point) {
+							player_Point = -1;
+						}
+						gogoScreen (1, (int)player_Point);
+					}
 				}
-			}		
+			}
 		}
 		EmptyBlastList ();
     }
@@ -223,7 +249,8 @@ public class GameManager : MonoBehaviour {
 		int CordX, CordZ,CordType;
 		CordX = Random.Range (0, CORD_X_MAX);
 		CordZ = Random.Range (0, CORD_Z_MAX);
-		CordType = Random.Range (0,3);
+		int typesOfBlocks = (youdidthistoher.Instance.gameplayType == 1) ? 3 : 7;
+		CordType = Random.Range (0,typesOfBlocks);
 
 		Vector3 pos = new Vector3 (BLOKE_MIN_SPAWNX + CordX * BLOKE_WIDTH, BLOKE_HEIGHT_FROM_GROUND, BLOKE_MIN_SPAWNZ + CordZ * BLOKE_HEIGHT);
 		bool canSpawn = true;
@@ -241,6 +268,7 @@ public class GameManager : MonoBehaviour {
 			BlokeSpawner ();
 		}
 	}
+
 	void LevelMaker(int levelNo)
 	{
 		string level = PlayerPrefs.GetString("level" + levelNo);
@@ -293,8 +321,9 @@ public class GameManager : MonoBehaviour {
 
 			int powerChoice = Random.Range (0, 33);
 			//powerChoice = 7;
-			var pu=new GameObject();
-            if (powerChoice < 4) pu = Instantiate(padLong, tempBloke.transform.position, Quaternion.identity);
+	//		var pu=new GameObject();
+			GameObject pu;
+			if (powerChoice < 4) pu = Instantiate(padLong, tempBloke.transform.position, Quaternion.identity);
             else if (powerChoice < 8) pu = Instantiate(padShort, tempBloke.transform.position, Quaternion.identity);
             else if (powerChoice < 12) pu = Instantiate(bigBall, tempBloke.transform.position, Quaternion.identity);
             else if (powerChoice < 16) pu = Instantiate(speedUp, tempBloke.transform.position, Quaternion.identity);
@@ -314,7 +343,7 @@ public class GameManager : MonoBehaviour {
     
 	public void Blast(GameObject blokeTemp){
 		Transform[] childObjects = BlokeGroup.GetComponentsInChildren<Transform> ();
-		Vector3 pos = blokeTemp.transform.position;
+		Vector3 pos = blokeTemp.transform.position;	
 		foreach (Transform temp in childObjects) {
 			if (temp == BlokeGroup)
 				continue;
@@ -345,7 +374,7 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public void gogoScreen(int state)
+	public void gogoScreen(int state, int score=0)
 	{	/////
 		if(ShowInterAd){
 			ShowInterAd = false;
@@ -361,7 +390,7 @@ public class GameManager : MonoBehaviour {
 
 		coinsEarned.gameObject.transform.parent.gameObject.SetActive(false);
 		gameoverAnimationButton.GetComponent<UIAnimController>().PanelActive();
-		gameCanvas.GetComponent<GameUI> ().gameOver(state, GameManager.Instance.coinCount);
+		gameCanvas.GetComponent<GameUI> ().gameOver(state, GameManager.Instance.coinCount, score);
 		for (int i = 0; i < powerup.GetComponent<PowerUp> ().ballList.Length; i++)
 			powerup.GetComponent<PowerUp> ().ballList [i].SetActive (false);
 	}
@@ -388,5 +417,20 @@ public class GameManager : MonoBehaviour {
 	public void BlastAnimation(Vector3 pos){
 		GameObject temp = Instantiate (BlastAnim, pos, Quaternion.identity);
 		Destroy (temp, 3f);
+	}
+
+	private void AIPowerSupplier()
+	{
+		float chance = Random.Range (0, 100);
+		if (chance < DARK_MODE_AI_POWERUP_PROB) {
+			int powerUpDecideFactor = Random.Range (0, 100);
+			if (powerUpDecideFactor < 33) {
+				PowerUp.Instance.PU (PowerTypes.AILong);
+			} else if (powerUpDecideFactor < 66) {
+				PowerUp.Instance.PU (PowerTypes.AISlowBall);
+			} else {
+				PowerUp.Instance.PU (PowerTypes.VipBall, false);		//AI
+			}
+		}
 	}
 }

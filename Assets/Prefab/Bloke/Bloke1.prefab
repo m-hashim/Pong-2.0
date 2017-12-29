@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23795047899266084}
   - component: {fileID: 54792369536349334}
   - component: {fileID: 114454037384709198}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bloke1
   m_TagString: Bloke
   m_Icon: {fileID: 0}

@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 65674345498069358}
   - component: {fileID: 23578112383877068}
   - component: {fileID: 114439105580771012}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PowerUp
   m_TagString: POWERUPS
   m_Icon: {fileID: 0}
@@ -73,6 +73,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33325940624938442
 MeshFilter:
@@ -105,4 +106,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turn: 0
-  collect: 0
