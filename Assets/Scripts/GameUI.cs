@@ -167,8 +167,9 @@ public class GameUI : MonoBehaviour {
 			}
 		}
 		Time.timeScale = 1f;
-		SceneManager.LoadScene ("Main Scene");
         ObjectPool.Instance.Reset();
+        SceneManager.LoadScene ("Main Scene");
+        
 
     }
 

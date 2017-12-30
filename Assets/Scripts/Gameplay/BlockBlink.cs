@@ -6,7 +6,7 @@ public class BlockBlink : MonoBehaviour {
 	private const float BLINK_RATE = 3f;
 	private bool state;
 
-	void Start () {
+	void OnEnable () {
 		InvokeRepeating ("change", BLINK_RATE, BLINK_RATE);	
 		state = true;
 	}
@@ -14,4 +14,8 @@ public class BlockBlink : MonoBehaviour {
 		state = state ? false : true;
 		gameObject.SetActive (state);
 	}
+    void OnDisable()
+    {
+        CancelInvoke();    
+    }
 }

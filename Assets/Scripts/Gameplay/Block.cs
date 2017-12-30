@@ -38,33 +38,38 @@ public class Block : MonoBehaviour {
 	}
 
 	public void ResetBlock(bool turn = true){
-		transform.SetParent (GameManager.Instance.DeadPool);
+		
+        switch (blockType)
+        {
+            case BlockTypes.One:
+                transform.SetParent(GameManager.Instance.DeadPool);
 
-		switch (blockType) {
-		case BlockTypes.One:
-			Anim.Instance.disapperBloke (transform);	
-			gameObject.SetActive(false);
-			break;
-		case BlockTypes.Two:
-			SetBlock ((int)BlockTypes.One);
-			break;
-		case BlockTypes.Three:
-			SetBlock ((int)BlockTypes.Two);
-			break;
-		case BlockTypes.Rock:
-			break;
-		case BlockTypes.Toggle:
-			GetComponent<BlockToggle> ().enabled = false;
-			break;
-		case BlockTypes.Blink:
-			GetComponent<BlockBlink> ().enabled = false;
-			break;
-		case BlockTypes.Blast:
-			GameManager.Instance.BlastAnimation (transform.position);
+                Anim.Instance.disapperBloke(transform);
+                gameObject.SetActive(false);
+                break;
+            case BlockTypes.Two:
+                SetBlock((int)BlockTypes.One);
+                break;
+            case BlockTypes.Three:
+                SetBlock((int)BlockTypes.Two);
+                break;
+            case BlockTypes.Rock:
+                break;
+            case BlockTypes.Toggle:
+                //GetComponent<BlockToggle>().enabled = false;
+                break;
+            case BlockTypes.Blink:
+                //GetComponent<BlockBlink>().enabled = false;
+
+                break;
+            case BlockTypes.Blast:
+                transform.SetParent(GameManager.Instance.DeadPool);
+
+                GameManager.Instance.BlastAnimation(transform.position);
                 gameObject.SetActive(false);
 
                 break;
-		}
+        }
 	}
 
 	public void HitBlock(bool turn = true){
@@ -116,7 +121,7 @@ public class Block : MonoBehaviour {
 				GameManager.Instance.makeCoin (gameObject);
 			}
 			GameManager.Instance.BlokePoint (turn);
-			GameManager.Instance.Blast (gameObject);
+			GameManager.Instance.Blast (gameObject,turn);
 			print ("blastHere");
 			break;
 		}

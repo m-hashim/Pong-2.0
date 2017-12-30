@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class BallS : MonoBehaviour {
-	private const float NORMAL_BALL_SIZE = 0.75f;
+	private const float NORMAL_BALL_SIZE = 1f;
 
 	public float currentVelocity = 8f;
 
@@ -55,12 +55,14 @@ public class BallS : MonoBehaviour {
 		} else if (col.gameObject.CompareTag ("Block")) {
 			col.gameObject.GetComponent<Block> ().HitBlock (turn);
 			col.gameObject.GetComponent<Block> ().ResetBlock (turn);
-			if (this.transform.localScale.z != NORMAL_BALL_SIZE) {
-				removeADJBloke (col.gameObject);
+			if (this.transform.parent.localScale.z != NORMAL_BALL_SIZE) {
+
+               GameManager.Instance.Blast(col.gameObject, turn);
+                //removeADJBloke (col.gameObject);
 			}
 		}
 	}
-
+    /*
 	void removeADJBloke(GameObject obj){
 		Transform[] childObjects = GameManager.Instance.BlokeGroup.GetComponentsInChildren<Transform> ();
 		Vector3 pos = obj.transform.position;
@@ -73,12 +75,12 @@ public class BallS : MonoBehaviour {
 					if (i == (int)pos.x && j == (int)pos.z) {
 						continue;			
 					}
-					if (temp.position.x == i && temp.position.z == j) {
+					if (temp.position.x != i && temp.position.z != j) {
 						temp.gameObject.GetComponent<Block> ().HitBlock (turn);
 						temp.gameObject.GetComponent<Block> ().ResetBlock (turn);
 					}
 				}
 			}
 		}
-	}
+	}*/
 }

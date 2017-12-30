@@ -10,6 +10,7 @@ public class BlockToggle : MonoBehaviour {
 		original = this.GetComponent<Renderer> ().material;
 	}
 	void OnCollisionEnter(Collision col){
+        print(gameObject.GetComponent<Block>().blockType + "yo hai");
 		if (gameObject.GetComponent<Block> ().blockType != BlockTypes.Toggle)
 			return;
 		if (col.gameObject.CompareTag ("Ball") || col.gameObject.CompareTag ("Bullet")||col.gameObject.CompareTag("padGoli")) {
@@ -19,10 +20,13 @@ public class BlockToggle : MonoBehaviour {
 		}
 
 	}
-	void OnTriggerExit(Collider col){
-		if (gameObject.GetComponent<Block> ().blockType != BlockTypes.Toggle)
+	void OnTriggerEnter(Collider col){
+
+        if (gameObject.GetComponent<Block> ().blockType != BlockTypes.Toggle)
 			return;
-		if (col.gameObject.CompareTag ("Ball") || col.gameObject.CompareTag ("Bullet")||col.gameObject.CompareTag("padGoli")) {
+        //print(gameObject.GetComponent<Block>().blockType + "yo hai");
+
+        if (col.gameObject.CompareTag ("Ball") || col.gameObject.CompareTag ("Bullet")||col.gameObject.CompareTag("padGoli")) {
 			gameObject.GetComponent<Collider>().isTrigger=false;
 			this.GetComponent<Renderer> ().material = original;
 		}

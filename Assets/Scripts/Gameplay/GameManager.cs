@@ -353,14 +353,27 @@ public class GameManager : MonoBehaviour {
 
     }
 
-    
-	public void Blast(GameObject blokeTemp){
-		Transform[] childObjects = BlokeGroup.GetComponentsInChildren<Transform> ();
+    bool turn;
+	public void Blast(GameObject blokeTemp, bool turn=true){
+
+        this.turn = turn;
+        Transform[] childObjects = BlokeGroup.GetComponentsInChildren<Transform> ();
 		Vector3 pos = blokeTemp.transform.position;	
 		foreach (Transform temp in childObjects) {
-			if (temp == BlokeGroup)
-				continue;
+            if (temp == BlokeGroup || (temp.position.x == pos.x && temp.position.z == pos.z))
+                continue;
+            else if (temp.position.x >= pos.x - 0.5f && temp.position.x <= pos.x + 0.5f &&
+                temp.position.z >= pos.z - 1 && temp.position.z <= pos.z + 1)
+            {
+                if (!BlastList.Contains(temp.gameObject))
+                {
+                    BlastList.Add(temp.gameObject);
+                }
+            }
 
+            /*if (temp == BlokeGroup)
+			    continue;
+            
 			for (int i = (int)pos.x - 1; i <= (int)pos.x + 1; i++) {
 				for (int j = (int)pos.z - 1; j <= (int)pos.z + 1; j++) {
 					if (i == (int)pos.x && j == (int)pos.z) {
@@ -372,19 +385,21 @@ public class GameManager : MonoBehaviour {
 						}
 					}
 				}
-			}
-		}
+			}*/
+        }
 
-	}
+    }
 
 	private void EmptyBlastList(){
 		if (BlastList.Count > 0) {
 			GameObject temp = BlastList [0];
 			if(BlastList.Remove (BlastList [0])){
-				if (temp.GetComponent<Block>().blockType == BlockTypes.Blast)
-					Blast (temp);
-			}
-		}
+                print(temp.GetComponent<Block>().blockType+"gand marra");
+                temp.GetComponent<Block>().HitBlock(turn);
+                temp.GetComponent<Block>().ResetBlock(turn);
+
+            }
+        }
 	}
 
 	public void gogoScreen(int state, int score=0)

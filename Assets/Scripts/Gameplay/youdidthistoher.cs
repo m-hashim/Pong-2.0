@@ -64,9 +64,9 @@ public class youdidthistoher : MonoBehaviour {
 		materials = new Material[NO_OF_MATERIALS]; 
 		blokeMaterials = new Material[NO_OF_MATERIALS_BLOKE];
 		powerUpArray = new int[7];
-	//	for(int i=0;i<7;i++)
-	//		powerUpArray[i]=7;
-	//	PlayerPrefs.DeleteAll ();
+		for(int i=0;i<7;i++)
+			powerUpArray[i]=7;
+		PlayerPrefs.DeleteAll ();
 		materials = Resources.LoadAll<Material> ("Material/Pad_Materials");
 		blokeMaterials = Resources.LoadAll<Material> ("Material/Bloke_Materials");
 		pads = Resources.LoadAll<Sprite> ("Pads");

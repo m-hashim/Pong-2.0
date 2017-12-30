@@ -49,11 +49,14 @@ public class ObjectPool : MonoBehaviour {
 		print ("Objects are resetting");
 		for (int i = 0; i < poolList.Length; i++) {
 			for (int j = 0; j < poolList [i].Count; j++) {
-				if (poolList [i] [j].activeInHierarchy) {
+				//if (poolList [i] [j].activeInHierarchy) {
 					poolList [i] [j].SetActive (false);
                     poolList[i][j].transform.parent = transform;
-				}
-			}
+                poolList[i][j].GetComponent<BlockToggle>().enabled = false;
+                poolList[i][j].GetComponent<BlockBlink>().enabled = false;
+                //}
+            }
 		}
+
 	}
 }

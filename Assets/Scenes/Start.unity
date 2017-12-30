@@ -542,7 +542,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   referenceObject:
   - {fileID: 1504303487519616, guid: d4db8c6f37309f345bc9962d2e7ba7de, type: 2}
-  poolingQuantity: 90010000
+  poolingQuantity: b8000000
 --- !u!4 &1450039460
 Transform:
   m_ObjectHideFlags: 0
@@ -853,7 +853,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  extraMaterials: []
   pads: []
   blokes: []
   extras: []
@@ -891,7 +890,7 @@ MonoBehaviour:
   powerUpPriceDisplay: 30
   currentCameraMode: 0
   powerUpArray: 
-  campaignLevelReached: 120
+  campaignLevelReached: 50
   level: []
   g1: {fileID: 1465554500288424, guid: c1ae5462878aab640aaa9ce7f6a67e4e, type: 2}
   g2: {fileID: 1078632826784414, guid: 59566477bcb2452498b6bb89a37eaee7, type: 2}
