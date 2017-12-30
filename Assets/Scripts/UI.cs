@@ -23,6 +23,8 @@ public class UI : MonoBehaviour {
 	private const int BLOCK_COST=150;
 	private const int PAD_COST=200;
 	private const int POWERUP_COST=40;
+	private const int RATE_US_FREQUENCY = 4;
+	private const float RATE_US_DELAY = 0f;
 
 	private Vector3 checkMarkHomePos = new Vector3 (80f, 70f, 0f);
 
@@ -41,7 +43,7 @@ public class UI : MonoBehaviour {
 	public Text  descriptionText, itemDescriptionText, countText;
 
 
-	public GameObject mainPanel, gameSelectionPanel, settingsPanel, aboutPanel, helpPanel, shopPanel, patt;
+	public GameObject mainPanel, gameSelectionPanel, settingsPanel, aboutPanel, helpPanel, shopPanel, patt, ratingAnimatable;
 	public GameObject LevelPage, LevelButton, LevelRow, StoreButton;
 	public GameObject GroundsPanel, BlokesPanel, PowerupsPanel, PadsPanel, SpecialPanel;
 	public GameObject soundButton, cameraButton, controlButton;
@@ -100,6 +102,18 @@ public class UI : MonoBehaviour {
 		shopInstantiator ("Text/pads",PAD_COUNT,PadsPanel,padSprites);
 		currentActiveStore = 0;
 		shopInstantiator ("Text/powerups",POWERUP_COUNT,PowerupsPanel,powerUpSprites);
+	}
+
+	void Start()
+	{
+		shopStarter ();
+
+		if (youdidthistoher.Instance.hasRatedGame == 0) {
+			if (youdidthistoher.Instance.gameOpenCount % RATE_US_FREQUENCY == 0) 
+			{
+				Invoke ("rateUs", RATE_US_DELAY);
+			}
+		}
 	}
 
 	int price(int storeActive)
@@ -164,11 +178,6 @@ public class UI : MonoBehaviour {
 
 			rectTransform.localScale = new Vector3 (1f, 1f, 1f);
 */		}
-	}
-
-	void Start()
-	{
-		shopStarter ();
 	}
 
 	private void parser(string str)
@@ -806,5 +815,35 @@ public class UI : MonoBehaviour {
 	{
 		//INR 99.99-2999 Coins
 		////////////////////////////////////////////////////////////////////////////////////////////
+	}
+
+	void rateUs()
+	{
+		ratingAnimatable.GetComponent<UIAnimController> ().PanelActive ();
+		ratingAnimatable.transform.parent.GetChild (0).GetComponent<UIAnimController> ().PanelInactive();
+	}
+
+	public void takeMeThere()
+	{
+		ratingAnimatable.transform.parent.GetChild (0).GetComponent<UIAnimController> ().PanelActive();
+		ratingAnimatable.GetComponent<UIAnimController> ().PanelInactive ();
+		youdidthistoher.Instance.hasRatedGame = 1;
+		Application.OpenURL ("market://details?id=com.BizzareGames.PongManiac");
+		youdidthistoher.Instance.currency+=100;
+		youdidthistoher.Instance.Save ();
+	}
+
+	public void notRightNow()
+	{
+		ratingAnimatable.transform.parent.GetChild (0).GetComponent<UIAnimController> ().PanelActive();
+		ratingAnimatable.GetComponent<UIAnimController> ().PanelInactive ();
+	}
+
+	public void dontAskAgain()
+	{
+		ratingAnimatable.transform.parent.GetChild (0).GetComponent<UIAnimController> ().PanelActive();
+		ratingAnimatable.GetComponent<UIAnimController> ().PanelInactive ();
+		youdidthistoher.Instance.hasRatedGame = 1;
+		youdidthistoher.Instance.Save ();
 	}
 }

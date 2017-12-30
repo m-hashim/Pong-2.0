@@ -6,14 +6,12 @@ public class youdidthistoher : MonoBehaviour {
 
 	private const int NO_OF_MATERIALS = 10;
 	private const int NO_OF_MATERIALS_BLOKE = 15;
-	private const int NO_OF_EXTRAS = 10;
 
 	private static youdidthistoher instance;
 	public static youdidthistoher Instance{get{ return instance; }}
 
 	public Material[] materials; 
 	public Material[] blokeMaterials;
-	public Material[] extraMaterials;
 	public Sprite[] pads;
 	public Sprite[] blokes;
 	public Sprite[] extras;
@@ -65,14 +63,12 @@ public class youdidthistoher : MonoBehaviour {
 	
 		materials = new Material[NO_OF_MATERIALS]; 
 		blokeMaterials = new Material[NO_OF_MATERIALS_BLOKE];
-		extraMaterials = new Material[NO_OF_EXTRAS];
 		powerUpArray = new int[7];
 	//	for(int i=0;i<7;i++)
 	//		powerUpArray[i]=7;
 	//	PlayerPrefs.DeleteAll ();
 		materials = Resources.LoadAll<Material> ("Material/Pad_Materials");
 		blokeMaterials = Resources.LoadAll<Material> ("Material/Bloke_Materials");
-		extraMaterials = Resources.LoadAll<Material> ("Material/Extra_Materials");
 		pads = Resources.LoadAll<Sprite> ("Pads");
 		blokes = Resources.LoadAll<Sprite> ("Blokes");
 		extras = Resources.LoadAll<Sprite> ("Extras");

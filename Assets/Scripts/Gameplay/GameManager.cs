@@ -16,8 +16,8 @@ public class GameManager : MonoBehaviour {
 	private const float BLOKE_MAX_SPAWNX = 3f;
 	private const float	BLOKE_MIN_SPAWNZ = -7.5f;
 	private const float BLOKE_MAX_SPAWNZ = 5f;
-	private const int WIN_LIMIT_ENDLESS = 7;
-	private const int WIN_LIMIT_DARK = 1;
+	public const int WIN_LIMIT_ENDLESS = 7;
+	public const int WIN_LIMIT_DARK = 1;
 	private const float BLOKE_MULTIPLIER = 1f;
 	private const float WALL_MULTIPLIER = 3f;
 	private float PAD_MULTIPLIER = 1f;
@@ -53,22 +53,24 @@ public class GameManager : MonoBehaviour {
 	public GameObject gameCanvas, powerup, gameoverAnimationButton, lightSystem;
 
 	public int coinCount;
-	private float AI_Point, player_Point;
+	private float AI_Point, player_Point, prevPlayerWallPoint;
 	public float AI_BlokePoint,player_BlokePoint;
 	public float AI_WallPoint, player_WallPoint;
 	public GameObject ground;
 	public GameObject AI_Score,player_Score;
 	private bool ShowInterAd;
 	private float gameStartTime;
+	private int currLimit;
 
-	public Text coinsEarned;
+	public Text coinsEarned, hitsLeft;
 
 	public float HighScore;
 	private bool HighScoreTuta;
 
     void Start () {
 		gameStartTime = Time.time;
-		AI_Point = player_Point = AI_BlokePoint = player_BlokePoint = AI_WallPoint = player_WallPoint =0;
+		AI_Point = player_Point = AI_BlokePoint = player_BlokePoint = AI_WallPoint = player_WallPoint =prevPlayerWallPoint =0;
+		currLimit = (youdidthistoher.Instance.gameplayType == 1) ? WIN_LIMIT_ENDLESS : WIN_LIMIT_DARK;
 		GameOver = false;
 		if (youdidthistoher.Instance.MCDActive == 1) {
 			PAD_MULTIPLIER = 0.5f;
@@ -213,7 +215,16 @@ public class GameManager : MonoBehaviour {
 			player_Point *= PAD_MULTIPLIER;
 			player_Score.GetComponent<Text> ().text = player_Point + "";			
 			AI_Score.GetComponent<Text> ().text = AI_Point+"";
-
+			if (prevPlayerWallPoint != player_WallPoint) {
+				hitsLeft.text = (currLimit - player_WallPoint).ToString();
+				hitsLeft.gameObject.GetComponent<Animation> ().Play ();
+				prevPlayerWallPoint = player_WallPoint;
+			}
+			if (player_Point > AI_Point) {
+				player_Score.GetComponent<Text> ().color = Color.green;
+			} else {
+				player_Score.GetComponent<Text> ().color = Color.red;
+			}
 			if (youdidthistoher.Instance.gameplayType == 1) {
 				if (player_WallPoint >= WIN_LIMIT_ENDLESS) {
 					GameOver = true;

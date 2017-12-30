@@ -405,7 +405,7 @@ public class MainMenu : MonoBehaviour
 
 	private void loadExtras(int objectNumber)
 	{
-		if (objectNumber < 4) {
+	/*	if (objectNumber < 4) {
 			print ("gd");
 			ground.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [objectNumber];
 			g1.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [objectNumber];
@@ -420,7 +420,7 @@ public class MainMenu : MonoBehaviour
 			w7.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [objectNumber];
 			w8.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [objectNumber];
 		}
-	}
+*/	}
 
 	public void pads()
 	{

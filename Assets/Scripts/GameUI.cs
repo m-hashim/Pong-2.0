@@ -37,11 +37,13 @@ public class GameUI : MonoBehaviour {
 		else if (youdidthistoher.Instance.gameplayType == 1) {
 			highScore.transform.parent.gameObject.SetActive (true);
 			highScore.text = youdidthistoher.Instance.HighScoreEndless.ToString();
+			highScore.transform.parent.GetChild(1).GetChild(0).GetComponent<Text>().text = GameManager.WIN_LIMIT_ENDLESS.ToString();
 			continueButton.GetComponent<Button> ().interactable = false;
 			iconHolder.transform.GetChild (1).gameObject.SetActive (true);
 		} else if (youdidthistoher.Instance.gameplayType == 2) {
 			highScore.transform.parent.gameObject.SetActive (true);
 			highScore.text = youdidthistoher.Instance.HighScoreDark.ToString ();
+			highScore.transform.parent.GetChild(1).GetChild(0).GetComponent<Text>().text = GameManager.WIN_LIMIT_DARK.ToString();
 			continueButton.GetComponent<Button> ().interactable = false;
 			iconHolder.transform.GetChild (2).gameObject.SetActive (true);
 		}
