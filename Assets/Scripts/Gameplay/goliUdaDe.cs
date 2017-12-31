@@ -38,6 +38,10 @@ public class goliUdaDe : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+        else if (col.gameObject.CompareTag("Ball"))
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     
@@ -62,7 +66,7 @@ public class goliUdaDe : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        else
+        else if(col.gameObject.CompareTag("Ball"))
         {
             Destroy(this.gameObject);
         }

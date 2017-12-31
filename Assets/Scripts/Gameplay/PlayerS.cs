@@ -13,10 +13,11 @@ public class PlayerS : MonoBehaviour {
 	private const float PADDLE_BACK_ANIM_DUR = 0.12f;
 	private float MIN_X, MAX_X, MAX_Z, MIN_Z;
 
-	private const float MAST_VALUE_PAD_NORMAL = 2.5f;
+    
+    private const float MAST_VALUE_PAD_NORMAL = 2.5f;
 	private const float MAST_VALUE_PAD_SHORT=1.5f;
 	private const float MAST_VALUE_PAD_LONG=3.5f;
-
+   
 	private float dirZ=0;
 	private float zForce;
 	private float xForce;
@@ -46,7 +47,8 @@ public class PlayerS : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision col)
-	{	if (col.gameObject.CompareTag ("Ball")) {
+	{   if (gameObject.transform.GetChild(0).gameObject.activeInHierarchy) return;
+        if (col.gameObject.CompareTag ("Ball")) {
 			foreach (ContactPoint contact in col.contacts) {
                 //setting ball velocity zero
 				contact.otherCollider.GetComponent<Rigidbody> ().velocity = Vector3.zero;
@@ -83,9 +85,12 @@ public class PlayerS : MonoBehaviour {
 	}
 		
 	public void Move(Vector3 toMove){
-		Vector3 pos = GetComponent<Rigidbody> ().position + toMove;
-		pos = withinBoundary (pos);
-		GetComponent<Rigidbody> ().MovePosition (pos);
+        //Vector3 pos = GetComponent<Rigidbody> ().position + toMove;
+        Vector3 pos = transform.position + toMove;
+        pos = withinBoundary (pos);
+        //GetComponent<Rigidbody> ().MovePosition (pos);
+        transform.position = pos;
+//        print(toMove.magnitude+" val");
 	}
 	void CalculateMaximumZ(){
 		// maximumZ is value that is used in calculation for hitting ball in z direction

@@ -43,10 +43,10 @@ public class UI : MonoBehaviour {
 	public Text  descriptionText, itemDescriptionText, countText;
 
 
-	public GameObject mainPanel, gameSelectionPanel, settingsPanel, aboutPanel, helpPanel, shopPanel, patt, ratingAnimatable;
+	public GameObject mainPanel, gameSelectionPanel, settingsPanel, aboutPanel, helpPanel, shopPanel, patt, ratingAnimatable, musicController;
 	public GameObject LevelPage, LevelButton, LevelRow, StoreButton;
 	public GameObject GroundsPanel, BlokesPanel, PowerupsPanel, PadsPanel, SpecialPanel;
-	public GameObject soundButton, cameraButton, controlButton;
+	public GameObject soundButton, cameraButton, effectsButton;
 	public GameObject practiceButton, endlessButton, campaignButton, forwardCampaignButton, backwardCampaignButton, mcdButton, drunkButton;
 	public GameObject bckGameSelection, bckLevelSelection;			//back buttons that need to be disabled
 	public GameObject confirmBuy, shopMoneyAmount, intermediateMoneyAmount, coinPurchaseActivator;
@@ -60,26 +60,38 @@ public class UI : MonoBehaviour {
 	private GameObject[] row = new GameObject[NO_OF_ROWS];
 	private GameObject[,] levels = new GameObject[NO_OF_ROWS,NO_OF_COLUMNS];
 	private GameObject prevButton;
+	private AudioSource effectsSource;
 	private int prevItemNo;
 
 	void Awake () 
 	{
 		Time.timeScale = 1f;
+		effectsSource = GetComponent<AudioSource> ();
 		string isLoginOnce  = PlayerPrefs.GetString ("_isLoginOnce");
 		if (isLoginOnce != "True") {
 			PlayerPrefs.SetString ("_isLoginOnce", "True");
 			cameraButtonController (2);	//fps button active
-			controlButtonController (1);	//touch button active
-			//		PlayerPrefs.SetInt ("PlayerModePong",0);
 		} else {
 			cameraButtonController (youdidthistoher.Instance.currentCameraMode);
-			controlButtonController (PlayerPrefs.GetInt ("InputType"));
+			if (youdidthistoher.Instance.backgroundMusic == 1) {
+				soundButton.transform.GetChild (1).gameObject.SetActive (false);
+			} else {
+				musicController.SetActive (false);
+				soundButton.transform.GetChild (1).gameObject.SetActive (true);
+			}
+
+			if (youdidthistoher.Instance.effectsSound == 1) {
+				effectsButton.transform.GetChild (1).gameObject.SetActive (false);
+			} else {
+				effectsSource.volume = 0f;
+				effectsButton.transform.GetChild (1).gameObject.SetActive (true);
+			}
 		}
 		parsed = new string[maxDescriptionSizeParsed];			
 		firstBlock=levelSelected=false;
 		levelsUnlocked = youdidthistoher.Instance.campaignLevelReached;
 		levelCount = (NO_OF_ROWS*NO_OF_COLUMNS)*(levelsUnlocked/(NO_OF_ROWS*NO_OF_COLUMNS))+1;
-		print (levelCount);
+//		print (levelCount);
 		makeAPage (LevelPage.transform.position);									//Campaign levels
 		if (levelsUnlocked % 20 == 0) {
 			previousPageLevel ();
@@ -645,14 +657,28 @@ public class UI : MonoBehaviour {
 
 	public void soundButtonController()
 	{
-		if (youdidthistoher.Instance.soundOn == 1) {
-			youdidthistoher.Instance.soundOn = 0;
-			soundButton.transform.GetChild (0).gameObject.SetActive (false);
+		if (youdidthistoher.Instance.backgroundMusic == 1) {
+			youdidthistoher.Instance.backgroundMusic = 0;
+			musicController.SetActive (false);
 			soundButton.transform.GetChild (1).gameObject.SetActive (true);
 		} else {
-			youdidthistoher.Instance.soundOn = 1;
+			youdidthistoher.Instance.backgroundMusic = 1;
+			musicController.SetActive (true);
 			soundButton.transform.GetChild (1).gameObject.SetActive (false);
-			soundButton.transform.GetChild (0).gameObject.SetActive (true);
+		}
+		youdidthistoher.Instance.Save ();
+	}
+
+	public void effectsButtonController()
+	{
+		if (youdidthistoher.Instance.effectsSound == 1) {
+			youdidthistoher.Instance.effectsSound = 0;
+			effectsSource.volume = 0f;
+			effectsButton.transform.GetChild (1).gameObject.SetActive (true);
+		} else {
+			youdidthistoher.Instance.effectsSound = 1;
+			effectsSource.volume = 1f;
+			effectsButton.transform.GetChild (1).gameObject.SetActive (false);
 		}
 		youdidthistoher.Instance.Save ();
 	}
@@ -672,23 +698,6 @@ public class UI : MonoBehaviour {
 		cameraButton.transform.GetChild (param).transform.GetChild (0).gameObject.SetActive (true);
 		youdidthistoher.Instance.currentCameraMode = param;
 		youdidthistoher.Instance.Save ();
-	//	print (param);
-	}
-
-	void resetControlButtons()
-	{
-		for (int i = 0; i < 3; i++) 
-		{
-			controlButton.transform.GetChild (i).transform.GetChild(0).gameObject.SetActive (false);
-		}
-	}
-
-	public void controlButtonController(int param)
-	{
-		// 0 = joystick, 1= hand, 2= gyro
-		resetControlButtons ();
-		controlButton.transform.GetChild (param).transform.GetChild(0).gameObject.SetActive (true);
-		PlayerPrefs.SetInt ("InputType",param);
 	//	print (param);
 	}
 

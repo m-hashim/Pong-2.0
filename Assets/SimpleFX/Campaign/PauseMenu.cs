@@ -23,14 +23,14 @@ public class PauseMenu : MonoBehaviour {
 	private int[] isSelected;
 
 	void Start () {
-		if (youdidthistoher.Instance.soundOn == 1) {
+		if (youdidthistoher.Instance.backgroundMusic == 1) {
 		//	soundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.pressedSound;
 
 		} else {
 		//	soundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.unpressedSound;
 			
 		}
-		if (youdidthistoher.Instance.inGameSond == 1) {
+		if (youdidthistoher.Instance.effectsSound == 1) {
 		//	osoundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.pressedoSound;
 			a.SetActive (true);
 		} else {
@@ -236,28 +236,6 @@ public class PauseMenu : MonoBehaviour {
 		powerUpScreen.SetActive (true);
 	}
 
-	public void sond()
-	{
-		youdidthistoher.Instance.MenuSound ();
-//		if(youdidthistoher.Instance.soundOn==1)
-	//		soundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.pressedSound;
-//		else
-	//		soundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.unpressedSound;
-	}
 
-	public void oSond()
-	{
-		if (youdidthistoher.Instance.inGameSond == 1) {
-			youdidthistoher.Instance.inGameSond = 0;
-	//		osoundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.unpressedoSound;
-			a.SetActive (false);
-		}else
-		{	youdidthistoher.Instance.inGameSond = 1;
-		//	osoundButt.GetComponent<Image> ().sprite = youdidthistoher.Instance.pressedoSound;
-			a.SetActive (true);
-
-		}
-		youdidthistoher.Instance.Save ();
-	}
 
 }

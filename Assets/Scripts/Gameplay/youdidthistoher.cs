@@ -41,8 +41,8 @@ public class youdidthistoher : MonoBehaviour {
 	public int HighScoreEndless = 0;
 	public int HighScoreDark = 0;
 	public int LevelLooseCount=1;
-	public int soundOn = 1;
-	public int inGameSond =1;
+	public int backgroundMusic = 1;
+	public int effectsSound =1;
 	public int gameplayType = 0;
 
 	public int padPriceDisplay = 100;
@@ -90,8 +90,8 @@ public class youdidthistoher : MonoBehaviour {
 			skinAvailabilityDrunk = PlayerPrefs.GetInt ("SkinAvailabilityDrunk");
 			MCDActive = PlayerPrefs.GetInt ("MCDActive");
 			DrunkActive = PlayerPrefs.GetInt ("DrunkActive");
-			soundOn = PlayerPrefs.GetInt ("soundOn");
-			inGameSond = PlayerPrefs.GetInt ("inGameSond");
+			backgroundMusic = PlayerPrefs.GetInt ("backgroundMusic");
+			effectsSound = PlayerPrefs.GetInt ("effectsSound");
 			hasRatedGame = PlayerPrefs.GetInt ("hasRatedGame");
 			gameOpenCount = PlayerPrefs.GetInt ("gameOpenCount");
 			LevelLooseCount = PlayerPrefs.GetInt ("levelLooseCount");
@@ -111,6 +111,8 @@ public class youdidthistoher : MonoBehaviour {
 
 		} else{
 			//pehli baar chalega bencho
+				for(int i=0;i<7;i++)
+					powerUpArray[3]=7;
 			Save();
 			PlayerPrefs.SetInt ("currentPlayingLevel", currentPlayingLevel);
 			PlayerPrefs.SetInt ("campaignLevelReached", campaignLevelReached);
@@ -121,7 +123,7 @@ public class youdidthistoher : MonoBehaviour {
 			PlayerPrefs.SetInt ("HighScoreDark", HighScoreDark);
 		}
 
-		if (soundOn == 1)
+		if (backgroundMusic == 1)
 			AudioListener.volume = 1f;
 		else
 			AudioListener.volume = 0f;
@@ -155,8 +157,8 @@ public class youdidthistoher : MonoBehaviour {
 		PlayerPrefs.SetInt ("p_multiBall", powerUpArray [6]);
 		PlayerPrefs.SetInt ("MCDActive", MCDActive);
 		PlayerPrefs.SetInt ("DrunkActive", DrunkActive);
-		PlayerPrefs.SetInt ("soundOn", soundOn);
-		PlayerPrefs.SetInt ("inGameSond", inGameSond);
+		PlayerPrefs.SetInt ("backgroundMusic", backgroundMusic);
+		PlayerPrefs.SetInt ("inGameSond", effectsSound);
 		PlayerPrefs.SetInt ("HighScoreEndless", HighScoreEndless);
 		PlayerPrefs.SetInt ("HighScoreDark", HighScoreDark);
 		PlayerPrefs.SetInt ("hasRatedGame", hasRatedGame);
@@ -170,7 +172,7 @@ public class youdidthistoher : MonoBehaviour {
 	//	print ("currentPlayingLevel "+currentPlayingLevel);
 	//	print ("campaignLevelReached "+campaignLevelReached);
 	}
-
+/*
 	public void MenuSound()
 	{
 		if (youdidthistoher.Instance.soundOn == 1) {
@@ -182,7 +184,7 @@ public class youdidthistoher : MonoBehaviour {
 		}
 		Save ();
 	}
-	/*
+*/	/*
 	public void loader()
 	{
 		w1.GetComponent<Renderer> ().material = extraMaterials [currentWall];

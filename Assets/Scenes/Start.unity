@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 17600139}
   - component: {fileID: 17600138}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Starter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -144,7 +144,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 17600137}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 62.68756, y: 62.687496, z: 0.0000019073486}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -881,8 +881,8 @@ MonoBehaviour:
   HighScoreEndless: 0
   HighScoreDark: 0
   LevelLooseCount: 1
-  soundOn: 1
-  inGameSond: 1
+  backgroundMusic: 1
+  effectsSound: 1
   gameplayType: 0
   padPriceDisplay: 100
   blokePriceDisplay: 50

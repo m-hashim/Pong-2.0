@@ -36,10 +36,10 @@ public class Intermediate : MonoBehaviour {
 	//	currentPlayingLevel = PlayerPrefs.GetInt("currentPlayingLevel");
 		campaignLevelReached =PlayerPrefs.GetInt ("campaignLevelReached");
 		loadLevels ();
-		if (youdidthistoher.Instance.soundOn == 1)
-			youdidthistoher.Instance.gameObject.GetComponent<AudioSource>().enabled = true;
-		else
-			youdidthistoher.Instance.gameObject.GetComponent<AudioSource>().enabled = false;
+//		if (youdidthistoher.Instance.soundOn == 1)
+//			youdidthistoher.Instance.gameObject.GetComponent<AudioSource>().enabled = true;
+//		else
+//			youdidthistoher.Instance.gameObject.GetComponent<AudioSource>().enabled = false;
 	}
 
 	void Update()

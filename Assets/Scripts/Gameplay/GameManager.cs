@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
 //	public GameObject g,w1,w2,w3,w4;
 	public GameObject camera1,camera2,camera3;
 
-	private int currentPlayingLevel;
+	private int currentPlayingLevel, countBlockSpawnerFreq=0;
     private float initialTime;
 
 	private List  <GameObject>  BlastList; 
@@ -259,26 +259,49 @@ public class GameManager : MonoBehaviour {
     }
 
 	void BlokeSpawner() {
-		int CordX, CordZ,CordType;
-		CordX = Random.Range (0, CORD_X_MAX);
-		CordZ = Random.Range (0, CORD_Z_MAX);
-		int typesOfBlocks = (youdidthistoher.Instance.gameplayType == 1) ? 3 : 7;
-		CordType = Random.Range (0,typesOfBlocks);
-
-		Vector3 pos = new Vector3 (BLOKE_MIN_SPAWNX + CordX * BLOKE_WIDTH, BLOKE_HEIGHT_FROM_GROUND, BLOKE_MIN_SPAWNZ + CordZ * BLOKE_HEIGHT);
-		bool canSpawn = true;
-		Transform[] childObjects = BlokeGroup.GetComponentsInChildren<Transform> ();
-		foreach (Transform temp in childObjects) {
-			if (temp.gameObject.activeInHierarchy && temp.position == pos) {
-				canSpawn = false;
+		if (countBlockSpawnerFreq > 20) {				// if more than x attempts have been made to place block
+			bool isFilled = true;
+//			print ("more than 50");
+			foreach (Transform temp in BlokeGroup) {
+				if (!temp.gameObject.activeInHierarchy) {
+					countBlockSpawnerFreq = 0;
+					GameObject obj = ObjectPool.Instance.GetObject ();
+					obj.transform.position = temp.position;
+					obj.GetComponent<Block> ().SetBlock (1);		//type 1 block
+					return;
+//					print ("block found");
+				}
 			}
-		}
-		if (canSpawn) {
-			GameObject obj = ObjectPool.Instance.GetObject ();
-			obj.transform.position = pos;
-			obj.GetComponent<Block> ().SetBlock (CordType);
+
+			CancelInvoke (methodName: "BlokeSpawner");
+//			print ("invoke cancelled");
+			InvokeRepeating ("BlokeSpawner", SPAWN_RATE * 20f, SPAWN_RATE);			//start function after x times the spawn rate
+			countBlockSpawnerFreq = 0;
 		} else {
-			BlokeSpawner ();
+//			print ("less than 50");
+			int CordX, CordZ,CordType;
+			CordX = Random.Range (0, CORD_X_MAX);
+			CordZ = Random.Range (0, CORD_Z_MAX);
+			int typesOfBlocks = (youdidthistoher.Instance.gameplayType == 1) ? 3 : 7;		// only three types of blocks for endless while all 7 types of blocks for dark mode
+			CordType = Random.Range (0,typesOfBlocks);
+
+			Vector3 pos = new Vector3 (BLOKE_MIN_SPAWNX + CordX * BLOKE_WIDTH, BLOKE_HEIGHT_FROM_GROUND, BLOKE_MIN_SPAWNZ + CordZ * BLOKE_HEIGHT);
+			bool canSpawn = true;
+			Transform[] childObjects = BlokeGroup.GetComponentsInChildren<Transform> ();
+			foreach (Transform temp in childObjects) {
+				if (temp.gameObject.activeInHierarchy && temp.position == pos) {
+					canSpawn = false;
+				}
+			}
+			if (canSpawn) {
+				GameObject obj = ObjectPool.Instance.GetObject ();
+				obj.transform.position = pos;
+				obj.GetComponent<Block> ().SetBlock (CordType);
+				countBlockSpawnerFreq = 0;
+			} else {
+				BlokeSpawner ();
+				countBlockSpawnerFreq++;
+			}
 		}
 	}
 
@@ -394,7 +417,7 @@ public class GameManager : MonoBehaviour {
 		if (BlastList.Count > 0) {
 			GameObject temp = BlastList [0];
 			if(BlastList.Remove (BlastList [0])){
-                print(temp.GetComponent<Block>().blockType+"gand marra");
+//                print(temp.GetComponent<Block>().blockType);
                 temp.GetComponent<Block>().HitBlock(turn);
                 temp.GetComponent<Block>().ResetBlock(turn);
 
@@ -454,10 +477,13 @@ public class GameManager : MonoBehaviour {
 			int powerUpDecideFactor = Random.Range (0, 100);
 			if (powerUpDecideFactor < 33) {
 				PowerUp.Instance.PU (PowerTypes.AILong);
+				PowerUp.Instance.PU (PowerTypes.AILong);
 			} else if (powerUpDecideFactor < 66) {
+				PowerUp.Instance.PU (PowerTypes.AISlowBall);
 				PowerUp.Instance.PU (PowerTypes.AISlowBall);
 			} else {
 				PowerUp.Instance.PU (PowerTypes.VipBall, false);		//AI
+				PowerUp.Instance.PU (PowerTypes.VipBall, false);
 			}
 		}
 	}

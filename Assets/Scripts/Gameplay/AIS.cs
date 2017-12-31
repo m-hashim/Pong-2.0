@@ -30,10 +30,10 @@ public class AIS : MonoBehaviour {
 	private float xForce;
 	private bool back_motion_mode = false;
 
-	private const float MAST_VALUE_PAD_NORMAL = 2.5f;
+    private const float MAST_VALUE_PAD_NORMAL = 2.5f;
 	private const float MAST_VALUE_PAD_SHORT=1.5f;
 	private const float MAST_VALUE_PAD_LONG=3.5f;
-
+    
 	private Rigidbody rb;
 	private Rigidbody bRb;
 	private Vector3 oldPostion;
@@ -161,6 +161,21 @@ public class AIS : MonoBehaviour {
 		bRb = ball.GetComponent<Rigidbody> ();
 		if (bRb.velocity.magnitude != 0) {
 			//kahan_dhakka_mara = bRb.velocity.normalized.x;
+		}
+
+		if (magnet.activeInHierarchy) {
+			float minDistance = Mathf.Infinity, tempDistance;
+			Transform targetBlock=null;
+			foreach (Transform temp in GameManager.Instance.BlokeGroup) {
+				tempDistance = Vector3.Distance (temp.transform.position, transform.position);
+				if (tempDistance < minDistance) {
+					minDistance = tempDistance;
+					targetBlock = temp;
+				}
+			}
+			if (minDistance != Mathf.Infinity) {
+				transform.position = Vector3.MoveTowards (transform.position, targetBlock.position, SMOOTH_MOVEMENT); //toward block
+			}
 		}
 	}
 

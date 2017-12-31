@@ -10,11 +10,15 @@
 		private const float BIG_BALL_SIZE = 1.33f;
 		private const float BALL_HEIGHT_FROM_GROUND=0.375f;
 
-		private const float NORMAL_PAD_SIZE = 2.5f;
+    private const float NORMAL_PAD_SIZE = 1.25f;
+    private const float BIG_PAD_SIZE = 1.75f;
+    private const float SMALL_PAD_SIZE = 0.75f;
+    /*
+    private const float NORMAL_PAD_SIZE = 2.5f;
 		private const float BIG_PAD_SIZE = 3.5f;
 		private const float SMALL_PAD_SIZE = 1.5f;
-		private const float PAD_X = 0.5f;//0.3f;
-		private const float PAD_Y = 0.5f;//0.25f;
+	*/	private const float PAD_X = 0.3f;
+		private const float PAD_Y = 0.25f;
 
 		private const float BLOKE_MIN_SPAWNX = -3f;
 		private const float BLOKE_MAX_SPAWNX = 3f;

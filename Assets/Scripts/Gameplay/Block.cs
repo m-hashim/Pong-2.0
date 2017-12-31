@@ -34,7 +34,8 @@ public class Block : MonoBehaviour {
 		}
 		gameObject.SetActive (true);
 		transform.SetParent (GameManager.Instance.BlokeGroup);
-
+		if(PowerUp.Instance.powerVar[(int)PowerTypes.FlareBall].isWorking)
+			GetComponent<Collider> ().isTrigger = true;
 	}
 
 	public void ResetBlock(bool turn = true){

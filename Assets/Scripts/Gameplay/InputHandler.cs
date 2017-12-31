@@ -17,18 +17,22 @@ public class InputHandler : MonoBehaviour {
 		instance = this;
 		Input.simulateMouseWithTouches = true;
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+
+    public Vector3 touchPoint;
+    void Update () {
 		RelativeMouse();
 	}
 
 	bool mouseDown= false;
-	public Vector3 relative;
+    public Vector3 relative;
 	void RelativeMouse(){
 		if (Input.GetMouseButton (0)) {
 
-			if (mouseOldPosition != Input.mousePosition && mouseDown) {
+            Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity);
+            touchPoint = hit.point;
+            if (mouseOldPosition != Input.mousePosition && mouseDown) {
 
 				Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, Mathf.Infinity);
 				Vector3 newPointInWorld = hit.point;

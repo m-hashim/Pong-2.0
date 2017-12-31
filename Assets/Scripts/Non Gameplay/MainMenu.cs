@@ -71,13 +71,12 @@ public class MainMenu : MonoBehaviour
 		parsed = new string[15];
 		current = main;
 		youdidthistoher.Instance.gameObject.GetComponent<AudioSource> ().enabled = true;
-		if (youdidthistoher.Instance.soundOn == 1) {
-			sond.GetComponent<Image> ().sprite = pressedSound;
-		} else {
-			sond.GetComponent<Image> ().sprite = unpressedSound;
+//		if (youdidthistoher.Instance.soundOn == 1) {
+//			sond.GetComponent<Image> ().sprite = pressedSound;
+//		} else {
+//			sond.GetComponent<Image> ().sprite = unpressedSound;
 		}
 			
-	}
 
 	private void Start()
 	{	//////////
@@ -916,11 +915,11 @@ public class MainMenu : MonoBehaviour
 
 	public void sondBajega()
 	{
-		youdidthistoher.Instance.MenuSound ();
-		if (youdidthistoher.Instance.soundOn == 1)
-			sond.GetComponent<Image> ().sprite = pressedSound;
-		else
-			sond.GetComponent<Image> ().sprite = unpressedSound;
+//		youdidthistoher.Instance.MenuSound ();
+//		if (youdidthistoher.Instance.soundOn == 1)
+//			sond.GetComponent<Image> ().sprite = pressedSound;
+//		else
+//			sond.GetComponent<Image> ().sprite = unpressedSound;
 	}
 
 

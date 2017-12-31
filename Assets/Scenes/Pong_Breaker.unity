@@ -260,7 +260,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 50}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &18664643
@@ -6707,8 +6707,8 @@ MonoBehaviour:
   SPEEDNORMAL: 8
   SPEEDSLOW: 4
   BlokeGroup: {fileID: 298427129}
-  playerTransform: {fileID: 970748425}
-  AITransform: {fileID: 1448926217}
+  playerTransform: {fileID: 460025544}
+  AITransform: {fileID: 818114839}
   ballTransform: {fileID: 1576615908}
   playerSlowField: {fileID: 134063488}
   AISlowField: {fileID: 564891945}
@@ -7430,7 +7430,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &494860655
 Transform:
   m_ObjectHideFlags: 0
@@ -7587,7 +7587,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -12.2}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 432.58252, y: 170.0825}
+  m_AnchoredPosition: {x: 430, y: 230}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &512180279
@@ -7818,6 +7818,7 @@ GameObject:
   - component: {fileID: 530959052}
   - component: {fileID: 530959051}
   - component: {fileID: 530959055}
+  - component: {fileID: 530959056}
   m_Layer: 8
   m_Name: Canvas
   m_TagString: Untagged
@@ -7922,6 +7923,8 @@ MonoBehaviour:
   gameoverAnimationButton: {fileID: 685790271}
   continueButton: {fileID: 1308544490}
   blockGroup: {fileID: 298427127}
+  musicController: {fileID: 1332098308}
+  effectsController: {fileID: 494860654}
   soundButton: {fileID: 512180277}
   magnetButton: {fileID: 1754824121}
   gunButton: {fileID: 1487106209}
@@ -7938,6 +7941,86 @@ MonoBehaviour:
   levelText: {fileID: 1136792581}
   coinsEarned: {fileID: 1369685991}
   highScore: {fileID: 463534097}
+--- !u!82 &530959056
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 530959050}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!1 &532998858
 GameObject:
   m_ObjectHideFlags: 0
@@ -8250,7 +8333,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 17f034eeafdfcdd4591b144f11e22f71, type: 2}
   - {fileID: 2100000, guid: b002985932cda8f4cb491a86be98a589, type: 2}
   - {fileID: 2100000, guid: 1d0e97d2ec7f91341aa7d6d2cf47d770, type: 2}
-  a: {fileID: 494860656}
+  a: {fileID: 530959056}
   a1: {fileID: 8300000, guid: df451fce6ab6a2c43a7ac215fed0d495, type: 3}
   a2: {fileID: 8300000, guid: 4643b4270f7d599489f6c8da75b07ccb, type: 3}
   a3: {fileID: 8300000, guid: cf3e1d49c0e8ded40b43839c306f09a9, type: 3}
@@ -9448,7 +9531,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &661828521
 Transform:
   m_ObjectHideFlags: 0
@@ -12015,7 +12098,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &992400352
 Transform:
   m_ObjectHideFlags: 0
@@ -13362,7 +13445,7 @@ GameObject:
   - component: {fileID: 1147026856}
   - component: {fileID: 1147026859}
   m_Layer: 5
-  m_Name: Vip
+  m_Name: TrapBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13656,6 +13739,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera3: {fileID: 0}
+  touchPoint: {x: 0, y: 0, z: 0}
   relative: {x: 0, y: 0, z: 0}
 --- !u!4 &1216871595
 Transform:
@@ -14595,9 +14679,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1332098310}
   - component: {fileID: 1332098309}
-  - component: {fileID: 1332098311}
   m_Layer: 0
-  m_Name: SoundObject
+  m_Name: ThemeSound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14696,18 +14779,6 @@ Transform:
   m_Father: {fileID: 822918647}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1332098311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1332098308}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c5bc75ef0168ef48a0e9e02b0259cd3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  a: {fileID: 494860656}
 --- !u!1 &1333916187
 GameObject:
   m_ObjectHideFlags: 0
@@ -16594,7 +16665,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 50}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1464491801
@@ -17303,7 +17374,7 @@ GameObject:
   - component: {fileID: 1493769652}
   m_Layer: 8
   m_Name: Gun
-  m_TagString: player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17315,7 +17386,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1493769650}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.6, y: 0, z: 0}
+  m_LocalPosition: {x: 4.79, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 661828521}
@@ -22195,7 +22266,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1746850868
 Transform:
   m_ObjectHideFlags: 0
@@ -23065,7 +23136,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -60}
+  m_AnchoredPosition: {x: 10, y: -60}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1839632485
@@ -23100,7 +23171,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: VIP
+  m_Text: TRAP BALL
 --- !u!222 &1839632486
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -23124,7 +23195,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1860401459
 Transform:
   m_ObjectHideFlags: 0

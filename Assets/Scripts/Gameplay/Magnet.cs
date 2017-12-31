@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Magnet : MonoBehaviour {
 
+	private const float MAGNET_RELEASE_TIME = 1f;
+
 	public GameObject padMagnet;
 	public GameObject ballPrefab;
 
@@ -21,11 +23,20 @@ public class Magnet : MonoBehaviour {
 	public void release(){
 		Transform[] childObjects = GetComponentsInChildren<Transform> ();
 		int i = 0;
+
+
 		foreach (Transform temp in childObjects) {
 			if (temp.CompareTag ("Ball")) {
-				temp.SetParent (GameManager.Instance.BallContainer);
-				temp.gameObject.GetComponent<Rigidbody> ().isKinematic = false;
-				temp.GetComponent<Rigidbody> ().velocity = velocities [i++];
+                   Vector3 vel = temp.position - InputHandler.Instance.touchPoint;
+                //   print(vel + " " + velocities[0]);
+                temp.SetParent(GameManager.Instance.BallContainer);
+                temp.gameObject.GetComponent<Rigidbody> ().isKinematic = false;
+                // temp.GetComponent<Rigidbody>().velocity = vel; //velocities [i++];
+				if (transform.parent.tag == "player") {
+					temp.GetComponent<Rigidbody> ().AddForce (Vector3.right * 10f);
+				} else {
+					temp.GetComponent<Rigidbody> ().AddForce (Vector3.left * 10f);
+				}
 				temp.localScale = new Vector3 (0.75f, 0.75f, 0.75f);
 			}
 		}
@@ -36,7 +47,7 @@ public class Magnet : MonoBehaviour {
 		//	print (col.gameObject.name);
 		if (col.gameObject.CompareTag ("Ball")) {
 			if (gameObject.transform.parent.CompareTag("AI")) {
-				Invoke("release", 1.5f);
+				Invoke("release", MAGNET_RELEASE_TIME);
 			}
 		//	print ("Ball is entered");
 			col.transform.SetParent (this.transform);
@@ -44,7 +55,6 @@ public class Magnet : MonoBehaviour {
 			col.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
 			col.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 	
-			print (col.gameObject.GetComponent<BallS> ().ballRig.velocity);
 		}
 	}
 

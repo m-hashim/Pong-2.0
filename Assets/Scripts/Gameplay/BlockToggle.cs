@@ -10,7 +10,7 @@ public class BlockToggle : MonoBehaviour {
 		original = this.GetComponent<Renderer> ().material;
 	}
 	void OnCollisionEnter(Collision col){
-        print(gameObject.GetComponent<Block>().blockType + "yo hai");
+   //     print(gameObject.GetComponent<Block>().blockType + "yo hai");
 		if (gameObject.GetComponent<Block> ().blockType != BlockTypes.Toggle)
 			return;
 		if (col.gameObject.CompareTag ("Ball") || col.gameObject.CompareTag ("Bullet")||col.gameObject.CompareTag("padGoli")) {
