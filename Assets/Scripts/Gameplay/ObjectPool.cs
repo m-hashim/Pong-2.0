@@ -46,7 +46,7 @@ public class ObjectPool : MonoBehaviour {
 	}
 
 	public void Reset(){
-		print ("Objects are resetting");
+//		print ("Objects are resetting");
 		for (int i = 0; i < poolList.Length; i++) {
 			for (int j = 0; j < poolList [i].Count; j++) {
 				//if (poolList [i] [j].activeInHierarchy) {

@@ -12,7 +12,10 @@ public class Block : MonoBehaviour {
 	}
 	public void SetBlock(int val){
 		blockType = (BlockTypes)val;
-		GetComponent<Renderer> ().material = GameManager.Instance.blockMaterial [(int)blockType];
+		if(youdidthistoher.Instance.gameplayType==2)
+			GetComponent<Renderer> ().material = GameManager.Instance.blacky;
+		else
+			GetComponent<Renderer> ().material = GameManager.Instance.blockMaterial [(int)blockType];
 		transform.localScale = new Vector3 (0.45f, 0.5f, 0.95f);
 		switch (blockType) {
 		case BlockTypes.One:
@@ -123,7 +126,7 @@ public class Block : MonoBehaviour {
 			}
 			GameManager.Instance.BlokePoint (turn);
 			GameManager.Instance.Blast (gameObject,turn);
-			print ("blastHere");
+//			print ("blastHere");
 			break;
 		}
 	}

@@ -42,8 +42,7 @@ public class UI : MonoBehaviour {
 
 	public Text  descriptionText, itemDescriptionText, countText;
 
-
-	public GameObject mainPanel, gameSelectionPanel, settingsPanel, aboutPanel, helpPanel, shopPanel, patt, ratingAnimatable, musicController;
+	public GameObject mainPanel, gameSelectionPanel, settingsPanel, aboutPanel, helpPanel, shopPanel, patt, ratingAnimatable;
 	public GameObject LevelPage, LevelButton, LevelRow, StoreButton;
 	public GameObject GroundsPanel, BlokesPanel, PowerupsPanel, PadsPanel, SpecialPanel;
 	public GameObject soundButton, cameraButton, effectsButton;
@@ -57,35 +56,27 @@ public class UI : MonoBehaviour {
 	public Sprite[] blokeSprites = new Sprite[BLOKES_COUNT];
 	public Sprite[] padSprites = new Sprite[PAD_COUNT];
 
+	public AudioSource themeSource, effectsSource;
+	public AudioClip loadingSoundEffect;
+
 	private GameObject[] row = new GameObject[NO_OF_ROWS];
 	private GameObject[,] levels = new GameObject[NO_OF_ROWS,NO_OF_COLUMNS];
 	private GameObject prevButton;
-	private AudioSource effectsSource;
 	private int prevItemNo;
 
 	void Awake () 
 	{
+		if (youdidthistoher.Instance.startGame == true) {
+			mainPanel.SetActive (false);
+			gameSelectionPanel.SetActive (true);
+		}
 		Time.timeScale = 1f;
-		effectsSource = GetComponent<AudioSource> ();
 		string isLoginOnce  = PlayerPrefs.GetString ("_isLoginOnce");
 		if (isLoginOnce != "True") {
 			PlayerPrefs.SetString ("_isLoginOnce", "True");
 			cameraButtonController (2);	//fps button active
 		} else {
 			cameraButtonController (youdidthistoher.Instance.currentCameraMode);
-			if (youdidthistoher.Instance.backgroundMusic == 1) {
-				soundButton.transform.GetChild (1).gameObject.SetActive (false);
-			} else {
-				musicController.SetActive (false);
-				soundButton.transform.GetChild (1).gameObject.SetActive (true);
-			}
-
-			if (youdidthistoher.Instance.effectsSound == 1) {
-				effectsButton.transform.GetChild (1).gameObject.SetActive (false);
-			} else {
-				effectsSource.volume = 0f;
-				effectsButton.transform.GetChild (1).gameObject.SetActive (true);
-			}
 		}
 		parsed = new string[maxDescriptionSizeParsed];			
 		firstBlock=levelSelected=false;
@@ -97,6 +88,17 @@ public class UI : MonoBehaviour {
 			previousPageLevel ();
 			blockMovement = true;
 		}
+
+		if (youdidthistoher.Instance.backgroundMusic == 0) {
+			soundButton.transform.GetChild (1).gameObject.SetActive (true);
+			themeSource.enabled = false;
+		}
+
+		if(youdidthistoher.Instance.effectsSound==0){
+			effectsButton.transform.GetChild (1).gameObject.SetActive (true);
+			effectsSource.enabled = false;
+		}
+
 		boughtInStores[1]= youdidthistoher.Instance.skinAvailabilityPad;
 		boughtInStores[3]= youdidthistoher.Instance.skinAvailabilityBloke;
 		boughtInStores[4]= youdidthistoher.Instance.skinAvailabilityGround;
@@ -203,7 +205,7 @@ public class UI : MonoBehaviour {
 
 	private void StoreItem(int itemNo)
 	{
-		print (itemNo+" "+(1 << itemNo));
+	//	print (itemNo+" "+(1 << itemNo));
 		descriptionText.text = parsed [itemNo + 1];
 	}
 
@@ -241,7 +243,7 @@ public class UI : MonoBehaviour {
 					youdidthistoher.Instance.currentSkinIndexPad = itemNo;
 					youdidthistoher.Instance.Save ();
 					button.transform.GetChild (0).gameObject.SetActive (false);
-				} else {
+				} else {	
 					//insufficient funds
 					coinPurchaseActivator.GetComponent<UIAnimController>().PanelActive();
 				}
@@ -297,7 +299,7 @@ public class UI : MonoBehaviour {
 			prevButton = button;
 			purchaseModeOn = true;
 			Invoke ("purchaseReset", purchaseWaitTime);
-			print (itemNo + " " + (1 << itemNo)+" "+button);
+//			print (itemNo + " " + (1 << itemNo)+" "+button);
 			itemDescriptionText.text = parsed [itemNo + 2];
 			switch (currentActiveStore) {
 			case 0:
@@ -357,7 +359,7 @@ public class UI : MonoBehaviour {
 	{
 		if (!levelSelected) 
 		{
-			print ("level "+level);
+//			print ("level "+level);
 
 			int row = (level%(NO_OF_ROWS*NO_OF_COLUMNS))/NO_OF_COLUMNS;
 			if (row % NO_OF_COLUMNS == 0 && row != 0) {														//row correction
@@ -377,7 +379,7 @@ public class UI : MonoBehaviour {
 			} else {
 				youdidthistoher.Instance.currentPlayingLevel = level + 1;											//load current level
 			}
-			print ("row "+row+" column "+column);
+//			print ("row "+row+" column "+column);
 			GameObject thisButton = levels [row, column];
 			if (thisButton.transform.GetChild (2).gameObject.activeInHierarchy) {
 				//locked Button Click
@@ -387,7 +389,7 @@ public class UI : MonoBehaviour {
 				thisButton.GetComponent<Animation> ().Play ("levelButtonSelect");						//ButtonSelectAnim
 				bckLevelSelection.GetComponent<Button> ().interactable = false;
 				levelSelected = true;
-				print ("here");
+//				print ("here");
 				Invoke ("loadScene", 0.5f);
 			}
 		}
@@ -466,13 +468,15 @@ public class UI : MonoBehaviour {
 
     public void Endless()
     {
+		themeSource.enabled = false;
+		Invoke ("playLoadingSound", 0.15f);
 		campaignButton.GetComponent<Button> ().interactable = false;
 		practiceButton.GetComponent<Button> ().interactable = false;
 		bckGameSelection.GetComponent<Button> ().interactable = false;
         youdidthistoher.Instance.gameplayType = 1;
-		practiceButton.transform.GetChild(1).gameObject.GetComponent<ButtonBackRotatorClockwise>().enabled = false;
-		campaignButton.transform.GetChild(1).gameObject.GetComponent<ButtonBackRotatorAnticlockwise>().enabled = false;
-		endlessButton.transform.GetChild (1).gameObject.GetComponent<ButtonBackRotatorClockwise> ().rateIncrease();
+		practiceButton.transform.GetChild(1).gameObject.GetComponent<ButtonBackRotator>().enabled = false;
+		campaignButton.transform.GetChild(1).gameObject.GetComponent<ButtonBackRotator>().enabled = false;
+		endlessButton.transform.GetChild (1).gameObject.GetComponent<ButtonBackRotator> ().rateIncrease();
 		endlessButton.GetComponent<Animation> ().Play("endless");
 		campaignButton.GetComponent<Animation> ().Play ("campaignRight");
 		practiceButton.GetComponent<Animation> ().Play ("practiceRight");
@@ -481,21 +485,29 @@ public class UI : MonoBehaviour {
 
     public void Practice()
     {
+		themeSource.enabled = false;
+		Invoke ("playLoadingSound", 0.15f);
 		campaignButton.GetComponent<Button> ().interactable = false;
 		endlessButton.GetComponent<Button> ().interactable = false;
 		bckGameSelection.GetComponent<Button> ().interactable = false;
 		youdidthistoher.Instance.gameplayType = 2;
-		campaignButton.transform.GetChild(1).gameObject.GetComponent<ButtonBackRotatorAnticlockwise>().enabled = false;
-		endlessButton.transform.GetChild(1).gameObject.GetComponent<ButtonBackRotatorClockwise>().enabled = false;
-		practiceButton.transform.GetChild (1).gameObject.GetComponent<ButtonBackRotatorClockwise> ().rateIncrease();
+		campaignButton.transform.GetChild(1).gameObject.GetComponent<ButtonBackRotator>().enabled = false;
+		endlessButton.transform.GetChild(1).gameObject.GetComponent<ButtonBackRotator>().enabled = false;
+		practiceButton.transform.GetChild (1).gameObject.GetComponent<ButtonBackRotator> ().rateIncrease();
 		practiceButton.GetComponent<Animation> ().Play("practice");
 		campaignButton.GetComponent<Animation> ().Play ("campaignLeft");
 		endlessButton.GetComponent<Animation> ().Play ("endlessLeft");
 		Invoke ("loadScene", gameSelectionWaitTime);
     }
 
+	void playLoadingSound()
+	{
+		effectsSource.PlayOneShot (loadingSoundEffect);
+	}
+
 	void loadScene()
 	{
+		youdidthistoher.Instance.startGame = true;
 		SceneManager.LoadScene("Pong_Breaker");
 	}
 
@@ -655,32 +667,9 @@ public class UI : MonoBehaviour {
 		Application.OpenURL ("https://www.instagram.com/bizarregamestudios");
 	}
 
-	public void soundButtonController()
+	public void OpenPlaystore()
 	{
-		if (youdidthistoher.Instance.backgroundMusic == 1) {
-			youdidthistoher.Instance.backgroundMusic = 0;
-			musicController.SetActive (false);
-			soundButton.transform.GetChild (1).gameObject.SetActive (true);
-		} else {
-			youdidthistoher.Instance.backgroundMusic = 1;
-			musicController.SetActive (true);
-			soundButton.transform.GetChild (1).gameObject.SetActive (false);
-		}
-		youdidthistoher.Instance.Save ();
-	}
-
-	public void effectsButtonController()
-	{
-		if (youdidthistoher.Instance.effectsSound == 1) {
-			youdidthistoher.Instance.effectsSound = 0;
-			effectsSource.volume = 0f;
-			effectsButton.transform.GetChild (1).gameObject.SetActive (true);
-		} else {
-			youdidthistoher.Instance.effectsSound = 1;
-			effectsSource.volume = 1f;
-			effectsButton.transform.GetChild (1).gameObject.SetActive (false);
-		}
-		youdidthistoher.Instance.Save ();
+		Application.OpenURL ("https://play.google.com/store/apps/details?id=com.BizzareGames.PongManiac&hl=en");
 	}
 
 	void resetCameraButtons()
@@ -699,11 +688,6 @@ public class UI : MonoBehaviour {
 		youdidthistoher.Instance.currentCameraMode = param;
 		youdidthistoher.Instance.Save ();
 	//	print (param);
-	}
-
-	public void pattButt()
-	{
-		patt.SetActive (true);
 	}
 
 	public void MCD()
@@ -829,6 +813,7 @@ public class UI : MonoBehaviour {
 	void rateUs()
 	{
 		ratingAnimatable.GetComponent<UIAnimController> ().PanelActive ();
+		ratingAnimatable.GetComponent<UIAnimController> ().panel.GetComponent<Animation> ().Play ();
 		ratingAnimatable.transform.parent.GetChild (0).GetComponent<UIAnimController> ().PanelInactive();
 	}
 
@@ -855,4 +840,33 @@ public class UI : MonoBehaviour {
 		youdidthistoher.Instance.hasRatedGame = 1;
 		youdidthistoher.Instance.Save ();
 	}
+
+	public void soundButtonController()
+	{
+		if (youdidthistoher.Instance.backgroundMusic == 1) {
+			youdidthistoher.Instance.backgroundMusic = 0;
+			themeSource.enabled = false;
+			soundButton.transform.GetChild (1).gameObject.SetActive (true);
+		} else {
+			youdidthistoher.Instance.backgroundMusic = 1;
+			themeSource.enabled = true;
+			soundButton.transform.GetChild (1).gameObject.SetActive (false);
+		}
+		youdidthistoher.Instance.Save ();
+	}
+
+	public void effectsButtonController()
+	{
+		if (youdidthistoher.Instance.effectsSound == 1) {
+			youdidthistoher.Instance.effectsSound = 0;
+			effectsSource.enabled = false;
+			effectsButton.transform.GetChild (1).gameObject.SetActive (true);
+		} else {
+			youdidthistoher.Instance.effectsSound = 1;
+			effectsSource.enabled = true;
+			effectsButton.transform.GetChild (1).gameObject.SetActive (false);
+		}
+		youdidthistoher.Instance.Save ();
+	}
+
 }

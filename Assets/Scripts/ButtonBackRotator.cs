@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ButtonBackRotatorClockwise : MonoBehaviour {
+public class ButtonBackRotator: MonoBehaviour {
 
 	private const float timeRateForIncrement = 0.5f;
 	private const float incrementRate = 3f;
@@ -23,6 +23,6 @@ public class ButtonBackRotatorClockwise : MonoBehaviour {
 
 	void incr()
 	{
-		rotationRate += incrementRate;
+		rotationRate += incrementRate*Mathf.Sign(rotationRate);
 	}
 }

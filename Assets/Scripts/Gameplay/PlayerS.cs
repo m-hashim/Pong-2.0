@@ -48,7 +48,9 @@ public class PlayerS : MonoBehaviour {
 
 	void OnCollisionEnter(Collision col)
 	{   if (gameObject.transform.GetChild(0).gameObject.activeInHierarchy) return;
-        if (col.gameObject.CompareTag ("Ball")) {
+		if (!GameManager.Instance.gameStarted)
+			GameManager.Instance.gameStarted = true;
+		if (col.gameObject.CompareTag ("Ball")) {
 			foreach (ContactPoint contact in col.contacts) {
                 //setting ball velocity zero
 				contact.otherCollider.GetComponent<Rigidbody> ().velocity = Vector3.zero;

@@ -28,14 +28,14 @@ public class GameManager : MonoBehaviour {
 	private const int CORD_X_MAX = 12 ;
 	private const int CORD_Z_MAX= 16;
     
-	public bool BlokeHit;
+	public bool BlokeHit, gameStarted;
 	public bool GameOver;
 
 	public GameObject padLong,padShort,bigBall,speedUp,speedDown,flareBall,multiBall,magnetPad,gunPad,VIPBall;
 	public GameObject coin;
 	public Transform BlokeGroup,DeadPool,BallContainer, SelectableGrounds;
 //	public GameObject g,w1,w2,w3,w4;
-	public GameObject camera1,camera2,camera3;
+	public GameObject camera1, camera2, camera3, backPanel1, backPanel2, backPanel3;
 
 	private int currentPlayingLevel, countBlockSpawnerFreq=0;
     private float initialTime;
@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour {
     private GameObject[] ballList;
     public GameObject specials, MCD, drunk;
 	public Material[] blockMaterial;
-
+	public Material blacky;
 	public AudioSource a;
 	public AudioClip a1,a2,a3,a4;
 	public GameObject BlastAnim;
@@ -86,25 +86,21 @@ public class GameManager : MonoBehaviour {
 		/// 
 //		AdManager.Instance.HideBanner();
 		/// /////
-		//youdidthistoher.Instance.loader ();
-	//	g.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentGround];
-	//	w1.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
-	//	w2.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
-	//	w3.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
-	//	w4.GetComponent<Renderer> ().material = youdidthistoher.Instance.extraMaterials [youdidthistoher.Instance.currentWall];
-
 		SelectableGrounds.GetChild (youdidthistoher.Instance.currentGround).gameObject.SetActive (true);
 
 		camReset ();
 		switch (youdidthistoher.Instance.currentCameraMode) {
 		case 0:
 			camera1.SetActive (true);
+			backPanel1.SetActive (true);
 			break;
 		case 1:
 			camera2.SetActive (true);
+			backPanel2.SetActive (true);
 			break;
 		case 2:
 			camera3.SetActive (true);
+			backPanel3.SetActive (true);
 			break;
 		}
 
@@ -152,6 +148,9 @@ public class GameManager : MonoBehaviour {
 		camera1.SetActive (false);
 		camera2.SetActive (false);
 		camera3.SetActive (false);
+		backPanel1.SetActive (false);
+		backPanel2.SetActive (false);
+		backPanel3.SetActive (false);
 	}
 
     void Update()
@@ -228,28 +227,31 @@ public class GameManager : MonoBehaviour {
 			if (youdidthistoher.Instance.gameplayType == 1) {
 				if (player_WallPoint >= WIN_LIMIT_ENDLESS) {
 					GameOver = true;
-					if (youdidthistoher.Instance.HighScoreEndless < player_Point && player_Point > AI_Point) {
+					if (youdidthistoher.Instance.HighScoreEndless < player_Point) {
+						if (player_Point > AI_Point) {
 							youdidthistoher.Instance.HighScoreEndless = (int)player_Point;				//highscore is broken only if player points are greater than AI points
 							youdidthistoher.Instance.Save ();
-							gogoScreen (0, (int)player_Point);
-					}else {
-						if (player_Point < AI_Point) {
+						}
+						else if (player_Point < AI_Point) {
 							player_Point = -1;
 						}
+						gogoScreen (0, (int)player_Point);
+					}else {
 						gogoScreen (1, (int)player_Point);
 					}
 				}
 			}else {
 				if (player_WallPoint >= WIN_LIMIT_DARK) {
 					GameOver = true;
-					if (youdidthistoher.Instance.HighScoreDark < player_Point && player_Point > AI_Point) {
+					if (youdidthistoher.Instance.HighScoreDark < player_Point) {
+						if (player_Point > AI_Point) {
 							youdidthistoher.Instance.HighScoreDark = (int)player_Point;
 							youdidthistoher.Instance.Save ();
-						gogoScreen (0, (int)player_Point);
-					}else {
-						if (player_Point < AI_Point) {
+						} else if (player_Point < AI_Point) {
 							player_Point = -1;
 						}
+						gogoScreen (0, (int)player_Point);
+					} else{
 						gogoScreen (1, (int)player_Point);
 					}
 				}

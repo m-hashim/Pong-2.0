@@ -8,12 +8,16 @@ public class GameUI : MonoBehaviour {
 	
 	private const int noOfWinText=20;
 	private const int noOfLoseText=20;
+	private const float SET_VOLUME_TYPE01_THEME = 0.25f;
+	private const float SET_VOLUME_TYPE01_EFFECTS = 0.8f;
+	private const float SET_VOLUME_TYPE2_THEME = 1f;
+	private const float SET_VOLUME_TYPE2_EFFECTS = 0.1f;
 	private float alphaVal=0.25f;
 	private float alphaStepFactor = 0.15f;
 	private const int noOfPowerUps = 7;
 	private const float moveSpeed = 2f;
 
-	public GameObject pausePanel, gameoverPanel, pauseButton, gameoverAnimationButton, continueButton, blockGroup, musicController, effectsController;
+	public GameObject pausePanel, gameoverPanel, pauseButton, gameoverAnimationButton, continueButton, blockGroup, themeSource, effectsSource, inputHandler;
 	public GameObject soundButton, magnetButton, gunButton, multiBallButton, vipButton, bigBallButton, padLongButton, flareButton, gridLock, darknessPanel, iconHolder;
 
 	public Text goText, descriptionText, levelText, coinsEarned, highScore;
@@ -23,40 +27,57 @@ public class GameUI : MonoBehaviour {
 
 	private string[] parsed;
 	private TextAsset txt;
+	private float SET_VOLUME;
+	public AudioClip type01, type2;
 
 	private Color tempCol;
-	private AudioSource effectsSource;
 
 	void Start () {
 		isSelected = new int[noOfPowerUps];
 		parsed = new string[noOfWinText];
 		tempCol = gridLock.GetComponent<Image> ().color;
 		levelText.text = (youdidthistoher.Instance.currentPlayingLevel).ToString ();
-		effectsSource = GetComponent<AudioSource> ();
-		if(youdidthistoher.Instance.backgroundMusic==0)
-			musicController.SetActive (false);
+		if (youdidthistoher.Instance.backgroundMusic == 0)
+			themeSource.SetActive(false);
 		if(youdidthistoher.Instance.effectsSound==0)
-			effectsSource.volume = 0f;
+			effectsSource.SetActive(false);
+		if(youdidthistoher.Instance.backgroundMusic==0&&youdidthistoher.Instance.effectsSound==0)
+			soundButton.transform.GetChild (1).gameObject.SetActive (true);
 		if (youdidthistoher.Instance.gameplayType == 0) {
+			themeSource.GetComponent<AudioSource> ().clip = type01;
 			iconHolder.transform.GetChild (0).gameObject.SetActive (true);
 		}
 		else if (youdidthistoher.Instance.gameplayType == 1) {
+			themeSource.GetComponent<AudioSource> ().clip = type01;
+			themeSource.GetComponent<AudioSource> ().volume = SET_VOLUME_TYPE01_THEME;
+			effectsSource.GetComponent<AudioSource> ().volume = SET_VOLUME_TYPE01_EFFECTS;
+			SET_VOLUME = SET_VOLUME_TYPE01_THEME;
 			highScore.transform.parent.gameObject.SetActive (true);
 			highScore.text = youdidthistoher.Instance.HighScoreEndless.ToString();
 			highScore.transform.parent.GetChild(1).GetChild(0).GetComponent<Text>().text = GameManager.WIN_LIMIT_ENDLESS.ToString();
 			continueButton.GetComponent<Button> ().interactable = false;
+//			continueButton.GetComponent<ButtonBackRotator> ().enabled = false;
 			iconHolder.transform.GetChild (1).gameObject.SetActive (true);
 		} else if (youdidthistoher.Instance.gameplayType == 2) {
+			themeSource.GetComponent<AudioSource> ().Play ();
+			themeSource.GetComponent<AudioSource> ().clip = type2;
+			themeSource.GetComponent<AudioSource> ().volume = SET_VOLUME_TYPE2_THEME;
+			effectsSource.GetComponent<AudioSource> ().volume = SET_VOLUME_TYPE2_EFFECTS;
+			themeSource.GetComponent<AudioSource> ().Play ();
+			SET_VOLUME = SET_VOLUME_TYPE01_THEME;
 			highScore.transform.parent.gameObject.SetActive (true);
 			highScore.text = youdidthistoher.Instance.HighScoreDark.ToString ();
 			highScore.transform.parent.GetChild(1).GetChild(0).GetComponent<Text>().text = GameManager.WIN_LIMIT_DARK.ToString();
 			continueButton.GetComponent<Button> ().interactable = false;
+//			continueButton.GetComponent<ButtonBackRotator> ().enabled = false;
 			iconHolder.transform.GetChild (2).gameObject.SetActive (true);
 		}
 	}
 
 	public void gameOver(int state, int coinCount, int score=0)
 	{
+		themeSource.GetComponent<AudioSource> ().volume = 0f;
+		inputHandler.SetActive (false);
 		coinsEarned.text = coinCount.ToString ();
 		pauseButton.GetComponent<Button> ().interactable = false;
 		switch (state) 
@@ -80,8 +101,10 @@ public class GameUI : MonoBehaviour {
 				txt = (TextAsset)Resources.Load ("Text/lose", typeof(TextAsset));
 				parsed = txt.text.Split ("\n" [0]);
 				descriptionText.text = parsed [Random.Range (0, noOfLoseText)];
-				if (youdidthistoher.Instance.currentPlayingLevel == youdidthistoher.Instance.campaignLevelReached)
+				if (youdidthistoher.Instance.currentPlayingLevel == youdidthistoher.Instance.campaignLevelReached) {
+					continueButton.GetComponent<ButtonBackRotator> ().enabled = false;
 					continueButton.GetComponent<Button> ().interactable = false;
+				}
 			}
 			else if (youdidthistoher.Instance.gameplayType == 1) {
 				if(score==-1)
@@ -107,6 +130,8 @@ public class GameUI : MonoBehaviour {
 	public void pause()
 	{
 		Time.timeScale = 0f;
+		inputHandler.SetActive (false);
+		themeSource.GetComponent<AudioSource> ().volume = 0f;
 		pauseButton.GetComponent<Button> ().interactable = false;
 		loadPowerUpCount ();
 		if(secondPause)
@@ -121,6 +146,7 @@ public class GameUI : MonoBehaviour {
 	public void unPause()
 	{
 		secondPause = true;
+		inputHandler.SetActive (true);
 		for (int i = 0; i < noOfPowerUps; i++) {
 			if (isSelected [i] == 1) {
 				switch (i) 
@@ -151,7 +177,7 @@ public class GameUI : MonoBehaviour {
 			}
 		}
 		youdidthistoher.Instance.Save ();
-
+		themeSource.GetComponent<AudioSource> ().volume = SET_VOLUME;
 		Time.timeScale = 1f;
 		pauseButton.GetComponent<Button> ().interactable = true;
 	}
@@ -174,28 +200,8 @@ public class GameUI : MonoBehaviour {
 		}
 		Time.timeScale = 1f;
         ObjectPool.Instance.Reset();
-        SceneManager.LoadScene ("Main Scene");
-        
-
-    }
-
-	public void soundButtonController()
-	{
-		if (youdidthistoher.Instance.backgroundMusic == 1 || youdidthistoher.Instance.effectsSound == 1) {
-			youdidthistoher.Instance.backgroundMusic = 0;
-			youdidthistoher.Instance.effectsSound = 0;
-			musicController.SetActive (false);
-			effectsSource.volume = 0f;
-			soundButton.transform.GetChild (1).gameObject.SetActive (true);
-		} else {
-			youdidthistoher.Instance.backgroundMusic = 1;
-			youdidthistoher.Instance.effectsSound = 1;
-			musicController.SetActive (true);
-			effectsSource.volume = 1f;
-			soundButton.transform.GetChild (1).gameObject.SetActive (false);
-		}
-		youdidthistoher.Instance.Save ();
-	}
+        SceneManager.LoadScene ("Main Scene");    
+	  }
 
 	public void powerUpSelected(int buttonNo)
 	{
@@ -406,5 +412,24 @@ public class GameUI : MonoBehaviour {
 	public void doubleCoin()
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////
+	}
+
+
+	public void soundButtonController()
+	{
+		if (youdidthistoher.Instance.backgroundMusic == 1 || youdidthistoher.Instance.effectsSound == 1) {
+			youdidthistoher.Instance.backgroundMusic = 0;
+			youdidthistoher.Instance.effectsSound = 0;
+			effectsSource.SetActive (false);
+			themeSource.SetActive(false);
+			soundButton.transform.GetChild (1).gameObject.SetActive (true);
+		} else {
+			youdidthistoher.Instance.backgroundMusic = 1;
+			youdidthistoher.Instance.effectsSound = 1;
+			effectsSource.SetActive (true);
+			themeSource.SetActive(true);
+			soundButton.transform.GetChild (1).gameObject.SetActive (false);
+		}
+		youdidthistoher.Instance.Save ();
 	}
 }

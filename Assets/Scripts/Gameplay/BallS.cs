@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class BallS : MonoBehaviour {
 	private const float NORMAL_BALL_SIZE = 1f;
 
-	public float currentVelocity = 8f;
+	public float currentVelocity = 12f;
 
 	public Rigidbody ballRig;
 	private Vector3 direction;
@@ -32,7 +32,7 @@ public class BallS : MonoBehaviour {
 	}
 
 
-	void OnCollisionEnter(Collision col){	
+	void OnCollisionEnter(Collision col){
 		if ((col.gameObject.name == "EastWall")) {			//wall behind AI
 			GameManager.Instance.AI_WallPoint++;
 			GameManager.Instance.a.PlayOneShot (GameManager.Instance.a3, 0.5f);

@@ -14,7 +14,7 @@ public class vipBehaviour : MonoBehaviour {
 	void Start () {
 		BlokeGroup = GameObject.Find ("BlokeGroup");
 	//	rb = GetComponent<Rigidbody> ();
-		print (ballList);
+//		print (ballList);
 	}
 	
 

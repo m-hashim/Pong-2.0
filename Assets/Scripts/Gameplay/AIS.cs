@@ -6,7 +6,7 @@ public class AIS : MonoBehaviour {
 	private static AIS instance;
 	public static AIS Instance{get{ return instance;}}
 
-	private float SMOOTH_MOVEMENT=0.14f;
+	private float SMOOTH_MOVEMENT=0.225f;
 	private float ORIGINAL_FORCE_MODIFIER = 0.3f;
 	private float MAX_FORCE = 500.0f;
 
@@ -167,10 +167,12 @@ public class AIS : MonoBehaviour {
 			float minDistance = Mathf.Infinity, tempDistance;
 			Transform targetBlock=null;
 			foreach (Transform temp in GameManager.Instance.BlokeGroup) {
-				tempDistance = Vector3.Distance (temp.transform.position, transform.position);
-				if (tempDistance < minDistance) {
-					minDistance = tempDistance;
-					targetBlock = temp;
+				if (temp.GetComponent<Block> ().blockType != BlockTypes.Rock && temp.GetComponent<Block> ().blockType != BlockTypes.Blink && temp.GetComponent<Block> ().blockType != BlockTypes.Toggle) {
+					tempDistance = Vector3.Distance (temp.transform.position, transform.position);
+					if (tempDistance < minDistance) {
+						minDistance = tempDistance;
+						targetBlock = temp;
+					}
 				}
 			}
 			if (minDistance != Mathf.Infinity) {

@@ -55,18 +55,15 @@ public class youdidthistoher : MonoBehaviour {
 	public int campaignLevelReached=80;
 	public string[] level;
 
-	public GameObject g1, g2, w1, w2, w3, w4, w5, w6, w7, w8;
+	public bool startGame=false;
 
 	void Awake () {
 		instance = this;
 		DontDestroyOnLoad(gameObject);
-	
 		materials = new Material[NO_OF_MATERIALS]; 
 		blokeMaterials = new Material[NO_OF_MATERIALS_BLOKE];
 		powerUpArray = new int[7];
-		for(int i=0;i<7;i++)
-			powerUpArray[i]=7;
-		PlayerPrefs.DeleteAll ();
+//		PlayerPrefs.DeleteAll ();
 		materials = Resources.LoadAll<Material> ("Material/Pad_Materials");
 		blokeMaterials = Resources.LoadAll<Material> ("Material/Bloke_Materials");
 		pads = Resources.LoadAll<Sprite> ("Pads");
@@ -112,7 +109,7 @@ public class youdidthistoher : MonoBehaviour {
 		} else{
 			//pehli baar chalega bencho
 				for(int i=0;i<7;i++)
-					powerUpArray[3]=7;
+					powerUpArray[i]=7;
 			Save();
 			PlayerPrefs.SetInt ("currentPlayingLevel", currentPlayingLevel);
 			PlayerPrefs.SetInt ("campaignLevelReached", campaignLevelReached);
@@ -123,11 +120,11 @@ public class youdidthistoher : MonoBehaviour {
 			PlayerPrefs.SetInt ("HighScoreDark", HighScoreDark);
 		}
 
-		if (backgroundMusic == 1)
+	/*	if (backgroundMusic == 1)
 			AudioListener.volume = 1f;
 		else
 			AudioListener.volume = 0f;
-
+*/
 		if (!(PlayerPrefs.HasKey ("cameraChanging"))) 
 		{
 			PlayerPrefs.SetInt ("cameraChanging", 0);
@@ -158,7 +155,7 @@ public class youdidthistoher : MonoBehaviour {
 		PlayerPrefs.SetInt ("MCDActive", MCDActive);
 		PlayerPrefs.SetInt ("DrunkActive", DrunkActive);
 		PlayerPrefs.SetInt ("backgroundMusic", backgroundMusic);
-		PlayerPrefs.SetInt ("inGameSond", effectsSound);
+		PlayerPrefs.SetInt ("effectsSound", effectsSound);
 		PlayerPrefs.SetInt ("HighScoreEndless", HighScoreEndless);
 		PlayerPrefs.SetInt ("HighScoreDark", HighScoreDark);
 		PlayerPrefs.SetInt ("hasRatedGame", hasRatedGame);
@@ -173,30 +170,16 @@ public class youdidthistoher : MonoBehaviour {
 	//	print ("campaignLevelReached "+campaignLevelReached);
 	}
 /*
-	public void MenuSound()
+	public void backgroundSound()
 	{
-		if (youdidthistoher.Instance.soundOn == 1) {
+		if (youdidthistoher.Instance.backgroundMusic == 1) {
 			AudioListener.volume = 0f;
-			soundOn = 0;
+			backgroundMusic = 0;
 		} else {
 			AudioListener.volume = 1f;
-			soundOn = 1;
+			backgroundMusic = 1;
 		}
 		Save ();
 	}
-*/	/*
-	public void loader()
-	{
-		w1.GetComponent<Renderer> ().material = extraMaterials [currentWall];
-		w2.GetComponent<Renderer> ().material = extraMaterials [currentWall];
-		w3.GetComponent<Renderer> ().material = extraMaterials [currentWall];
-		w4.GetComponent<Renderer> ().material = extraMaterials [currentWall];
-		w5.GetComponent<Renderer> ().material = extraMaterials [currentWall];
-		w6.GetComponent<Renderer> ().material = extraMaterials [currentWall];
-		w7.GetComponent<Renderer> ().material = extraMaterials [currentWall];
-		w8.GetComponent<Renderer> ().material = extraMaterials [currentWall];
-		g1.GetComponent<Renderer> ().material = extraMaterials [currentGround];
-		g2.GetComponent<Renderer> ().material = extraMaterials [currentGround];
-
-	}*/
+*/
 }

@@ -13,32 +13,27 @@ public class PathBloker : MonoBehaviour {
 	}
 	
 	void Update () {
-        if (Mathf.Abs(ballRb.velocity.x) <= 0.05 || Mathf.Abs(ballRb.velocity.z) <= 0.05)
-        {
-            timeElapsed += Time.deltaTime;
+		if (!PowerUp.Instance.powerVar [(int)PowerTypes.PlayerMagnet].isWorking && GameManager.Instance.gameStarted) {
+			if (Mathf.Abs (ballRb.velocity.x) <= 0.05 || Mathf.Abs (ballRb.velocity.z) <= 0.05) {
+				timeElapsed += Time.deltaTime;
             
-        }
-        else
-        {
-            timeElapsed = 0f;
-        }
-        if (timeElapsed >= MAX_TIME)
-         {
-            timeElapsed = 0f;
-            spawnPosition = transform.position;
-            if (Random.Range(0, 2) % 2 == 0)
-            {
-                spawnPosition.x -= 0.1f;
-                spawnPosition.z -= 0.1f;
-            }
-            else
-            {
-                spawnPosition.x += 0.1f;
-                spawnPosition.z += 0.1f;
+			} else {
+				timeElapsed = 0f;
+			}
+			if (timeElapsed >= MAX_TIME) {
+				timeElapsed = 0f;
+				spawnPosition = transform.position;
+				if (Random.Range (0, 2) % 2 == 0) {
+					spawnPosition.x -= 0.1f;
+					spawnPosition.z -= 0.1f;
+				} else {
+					spawnPosition.x += 0.1f;
+					spawnPosition.z += 0.1f;
 
-            }
-            Invoke("spawnPathBloker", 0.5f);
-        }
+				}
+				Invoke ("spawnPathBloker", 0.5f);
+			}
+		}
 	}
     void spawnPathBloker()
     {

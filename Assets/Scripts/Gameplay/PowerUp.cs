@@ -23,9 +23,9 @@
 		private const float BLOKE_MIN_SPAWNX = -3f;
 		private const float BLOKE_MAX_SPAWNX = 3f;
 
-		public float SPEEDNORMAL=8f;
-		private float SPEEDFAST=14f;
-		public float SPEEDSLOW=4f;
+		public float SPEEDNORMAL=12f;
+		private float SPEEDFAST=18f;
+		public float SPEEDSLOW=6f;
 
 		private const float POWER_5_DURATION =5f;				//gun
 		private const float POWER_7_DURATION = 7f;			//multi ball,flare ball, vip ball;
@@ -188,7 +188,7 @@
 	//				print (Time.time + "   " + powerVar[i].finishTime);
 	//			}
 				if (powerVar[i].isWorking && Time.time>powerVar[i].finishTime) {
-					print ("power is reset " + powerVar[i]);
+//					print ("power is reset " + powerVar[i]);
 					powerVar[i].isWorking = false;
 					powerVar[i].finishTime = 0f;
 					PowerTypes powerType = (PowerTypes)i;
@@ -204,9 +204,9 @@
 			}
 			powerVar [i].finishTime += powerVar [i].durationApplied;
 		
-			print (powerType + "isWorking");
-			print (powerVar [i].finishTime + "fin" + Time.time);
-			print ("dur " + powerVar [i].durationApplied);
+//			print (powerType + "isWorking");
+//			print (powerVar [i].finishTime + "fin" + Time.time);
+//			print ("dur " + powerVar [i].durationApplied);
 			ClashingPower (powerType);
 			PUActivate (powerType,turn);
 			powerVar [i].isWorking = true;

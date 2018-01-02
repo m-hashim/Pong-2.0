@@ -892,16 +892,7 @@ MonoBehaviour:
   powerUpArray: 
   campaignLevelReached: 50
   level: []
-  g1: {fileID: 1465554500288424, guid: c1ae5462878aab640aaa9ce7f6a67e4e, type: 2}
-  g2: {fileID: 1078632826784414, guid: 59566477bcb2452498b6bb89a37eaee7, type: 2}
-  w1: {fileID: 1654566198970602, guid: 456d781ef0bdf2547b863f7ea6be6757, type: 2}
-  w2: {fileID: 1791646825973656, guid: fbcfdca94d91d244c90e134896cd5057, type: 2}
-  w3: {fileID: 1994314669108578, guid: b48e7dd53097ef540bd5cbc2d7b6bd66, type: 2}
-  w4: {fileID: 1572542933358488, guid: 9e6b8754b748405478ee89b5cc1b891e, type: 2}
-  w5: {fileID: 1522725152734338, guid: bdd50d412aa9cb845a988bd4dd362148, type: 2}
-  w6: {fileID: 1757707019470632, guid: 59c57ab3c2367d5449d179ac9f8052bc, type: 2}
-  w7: {fileID: 1651778438036678, guid: 92b63f051c2613d41b8e650b413a8fa5, type: 2}
-  w8: {fileID: 1409088743430804, guid: 72542b7b131834e4d9f3aca6c9d30f9d, type: 2}
+  startGame: 0
 --- !u!4 &1965091628
 Transform:
   m_ObjectHideFlags: 0

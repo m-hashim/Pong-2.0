@@ -11,7 +11,7 @@ public class UIAnimController : MonoBehaviour {
 	public Button button;
 	private RectTransform panelRT,buttonRT;
 	private Vector3 initPos, finalPos;
-	int steps = 20;
+	int steps = 15;
 	float stepMagnitude;
 	void Start () {
 		panelRT = panel.GetComponent<RectTransform> ();
