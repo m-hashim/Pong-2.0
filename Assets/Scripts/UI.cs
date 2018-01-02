@@ -13,7 +13,7 @@ public class UI : MonoBehaviour {
 	private const int GROUND_COUNT = 4;
 	private const int BLOKES_COUNT = 5;
 	private const int SPECIAL_COUNT = 4;
-	private const int PAD_COUNT = 9;
+	private const int PAD_COUNT = 8;
 	private const float gameSelectionWaitTime = 3.5f;
 	private const float purchaseWaitTime = 1.5f;
 	private const int maxDescriptionSizeParsed=15;
@@ -42,7 +42,7 @@ public class UI : MonoBehaviour {
 
 	public Text  descriptionText, itemDescriptionText, countText;
 
-	public GameObject mainPanel, gameSelectionPanel, settingsPanel, aboutPanel, helpPanel, shopPanel, patt, ratingAnimatable;
+	public GameObject mainPanel, gameSelectionPanel, settingsPanel, aboutPanel, helpPanel, shopPanel, patt, ratingAnimatable, gameSelectionAnimatable, mainAnimatable;
 	public GameObject LevelPage, LevelButton, LevelRow, StoreButton;
 	public GameObject GroundsPanel, BlokesPanel, PowerupsPanel, PadsPanel, SpecialPanel;
 	public GameObject soundButton, cameraButton, effectsButton;
@@ -63,6 +63,7 @@ public class UI : MonoBehaviour {
 	private GameObject[,] levels = new GameObject[NO_OF_ROWS,NO_OF_COLUMNS];
 	private GameObject prevButton;
 	private int prevItemNo;
+	private bool canAskForRating=true, selected=false;
 
 	void Awake () 
 	{
@@ -121,14 +122,14 @@ public class UI : MonoBehaviour {
 	void Start()
 	{
 		shopStarter ();
-
+/*
 		if (youdidthistoher.Instance.hasRatedGame == 0) {
 			if (youdidthistoher.Instance.gameOpenCount % RATE_US_FREQUENCY == 0) 
 			{
 				Invoke ("rateUs", RATE_US_DELAY);
 			}
 		}
-	}
+*/	}
 
 	int price(int storeActive)
 	{
@@ -211,7 +212,7 @@ public class UI : MonoBehaviour {
 
 	private void StoreItem(GameObject button, int itemNo)
 	{
-		if (button == prevButton && purchaseModeOn) {
+		if (button == prevButton && purchaseModeOn &&!selected) {
 			//purchase happens
 
 			switch (currentActiveStore) {
@@ -298,6 +299,7 @@ public class UI : MonoBehaviour {
 			//fist click, confirmation needed or selection
 			prevButton = button;
 			purchaseModeOn = true;
+			selected = false;
 			Invoke ("purchaseReset", purchaseWaitTime);
 //			print (itemNo + " " + (1 << itemNo)+" "+button);
 			itemDescriptionText.text = parsed [itemNo + 2];
@@ -314,6 +316,7 @@ public class UI : MonoBehaviour {
 					youdidthistoher.Instance.currentSkinIndexPad = itemNo;
 					currentCheck[currentActiveStore].transform.SetParent (button.transform);
 					currentCheck[currentActiveStore].transform.localPosition = checkMarkHomePos;
+					selected = true;
 					print (itemNo + " selected");
 					youdidthistoher.Instance.Save ();			
 				} else {
@@ -331,6 +334,7 @@ public class UI : MonoBehaviour {
 					youdidthistoher.Instance.currentSkinIndexBloke = itemNo;
 					currentCheck[currentActiveStore].transform.SetParent (button.transform);
 					currentCheck[currentActiveStore].transform.localPosition = checkMarkHomePos;
+					selected = true;
 					youdidthistoher.Instance.Save ();			
 				} else {
 					confirmBuy.transform.parent.GetComponent<Animation> ().Play ("confirmBuy");
@@ -343,6 +347,7 @@ public class UI : MonoBehaviour {
 					youdidthistoher.Instance.currentGround = itemNo;
 					currentCheck[currentActiveStore].transform.SetParent (button.transform);
 					currentCheck[currentActiveStore].transform.localPosition = checkMarkHomePos;
+					selected = true;
 					youdidthistoher.Instance.Save ();			
 				}else {
 					confirmBuy.transform.parent.GetComponent<Animation> ().Play ("confirmBuy");
@@ -422,6 +427,7 @@ public class UI : MonoBehaviour {
                 {
                     levels[i, j].transform.GetChild(2).gameObject.SetActive(false);
                     blockMovement = false;
+
                 }
                 else
                 {
@@ -457,8 +463,17 @@ public class UI : MonoBehaviour {
     
     }
 
-    void Update () {
-		
+    public void start() {
+
+		if (youdidthistoher.Instance.hasRatedGame == 0 && youdidthistoher.Instance.gameOpenCount % RATE_US_FREQUENCY == 0 && canAskForRating) {
+			{
+				canAskForRating = false;
+				Invoke ("rateUs", RATE_US_DELAY);
+			}
+		} else {
+			mainAnimatable.GetComponent<UIAnimController> ().PanelInactive ();
+			gameSelectionAnimatable.GetComponent<UIAnimController> ().PanelActive ();
+		}
 	}
 
     public void Campaign()

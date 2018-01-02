@@ -13,7 +13,7 @@ public class PathBloker : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (!PowerUp.Instance.powerVar [(int)PowerTypes.PlayerMagnet].isWorking && GameManager.Instance.gameStarted) {
+		if (!PowerUp.Instance.powerVar [(int)PowerTypes.PlayerMagnet].isWorking && !PowerUp.Instance.powerVar [(int)PowerTypes.AIMagnet].isWorking && GameManager.Instance.gameStarted) {
 			if (Mathf.Abs (ballRb.velocity.x) <= 0.05 || Mathf.Abs (ballRb.velocity.z) <= 0.05) {
 				timeElapsed += Time.deltaTime;
             

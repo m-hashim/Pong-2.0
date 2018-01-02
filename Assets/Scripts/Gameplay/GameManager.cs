@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject coin;
 	public Transform BlokeGroup,DeadPool,BallContainer, SelectableGrounds;
 //	public GameObject g,w1,w2,w3,w4;
-	public GameObject camera1, camera2, camera3, backPanel1, backPanel2, backPanel3;
+	public GameObject camera1, camera2, camera3, backPanel1, backPanel2, backPanel3, comingSoon;
 
 	private int currentPlayingLevel, countBlockSpawnerFreq=0;
     private float initialTime;
@@ -187,14 +187,20 @@ public class GameManager : MonoBehaviour {
 					int currentLevel = PlayerPrefs.GetInt ("currentPlayingLevel");
 
 					if(currentLevel ==levelReached){
-						youdidthistoher.Instance.campaignLevelReached = ++levelReached;
-						youdidthistoher.Instance.Save ();
-						if ((levelReached) % 5 == 0) {
-							//////
-							//							AdManager.Instance.ShowVideo ();
-							/////
-							ShowInterAd=false;
+						if (currentLevel == youdidthistoher.Instance.totalNoOfLevels) {
+							comingSoon.SetActive (true);
+							youdidthistoher.Instance.currency += 2000;
+							youdidthistoher.Instance.Save ();
+						} else {
+							youdidthistoher.Instance.campaignLevelReached = ++levelReached;
+							youdidthistoher.Instance.Save ();
+							if ((levelReached) % 5 == 0) {
+								//////
+								//							AdManager.Instance.ShowVideo ();
+								/////
+								ShowInterAd = false;
 
+							}
 						}
 					}
 					//player is winner

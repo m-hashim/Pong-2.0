@@ -17,7 +17,7 @@ public class GameUI : MonoBehaviour {
 	private const int noOfPowerUps = 7;
 	private const float moveSpeed = 2f;
 
-	public GameObject pausePanel, gameoverPanel, pauseButton, gameoverAnimationButton, continueButton, blockGroup, themeSource, effectsSource, inputHandler;
+	public GameObject pausePanel, gameoverPanel, pauseButton, gameoverAnimationButton, continueButton, blockGroup, themeSource, effectsSource, inputHandler, comingSoon;
 	public GameObject soundButton, magnetButton, gunButton, multiBallButton, vipButton, bigBallButton, padLongButton, flareButton, gridLock, darknessPanel, iconHolder;
 
 	public Text goText, descriptionText, levelText, coinsEarned, highScore;
@@ -431,5 +431,10 @@ public class GameUI : MonoBehaviour {
 			soundButton.transform.GetChild (1).gameObject.SetActive (false);
 		}
 		youdidthistoher.Instance.Save ();
+	}
+
+	public void comingSoonBack()
+	{
+		comingSoon.SetActive (false);
 	}
 }

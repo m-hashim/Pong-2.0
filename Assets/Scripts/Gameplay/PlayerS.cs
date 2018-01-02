@@ -12,7 +12,6 @@ public class PlayerS : MonoBehaviour {
 
 	private const float PADDLE_BACK_ANIM_DUR = 0.12f;
 	private float MIN_X, MAX_X, MAX_Z, MIN_Z;
-
     
     private const float MAST_VALUE_PAD_NORMAL = 2.5f;
 	private const float MAST_VALUE_PAD_SHORT=1.5f;
@@ -41,6 +40,13 @@ public class PlayerS : MonoBehaviour {
 		
 		if (gameObject.name != "MCD") {
 			this.gameObject.GetComponent<Renderer> ().material = youdidthistoher.Instance.materials [youdidthistoher.Instance.currentSkinIndexPad];
+			if (youdidthistoher.Instance.currentSkinIndexPad == 6) {
+				//sides
+				transform.GetChild(3).gameObject.SetActive(true);
+			} else if (youdidthistoher.Instance.currentSkinIndexPad == 7) {
+				//horns
+				transform.GetChild(2).gameObject.SetActive(true);
+			}
 		}
 
 		InvokeRepeating ("CalculateMaximumZ", 0.0f, 0.5f);

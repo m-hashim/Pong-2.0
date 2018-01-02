@@ -59,6 +59,13 @@ public class AIS : MonoBehaviour {
 		gun = transform.GetChild (1).gameObject;
 
 		this.gameObject.GetComponent<Renderer>().material=youdidthistoher.Instance.materials[Random.Range(0,10)];
+		if (youdidthistoher.Instance.currentSkinIndexPad == 6) {
+			//sides
+			transform.GetChild(3).gameObject.SetActive(true);
+		} else if (youdidthistoher.Instance.currentSkinIndexPad == 7) {
+			//horns
+			transform.GetChild(2).gameObject.SetActive(true);
+		}
 	}
 
 

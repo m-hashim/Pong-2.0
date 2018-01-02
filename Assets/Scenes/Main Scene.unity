@@ -3729,6 +3729,8 @@ MonoBehaviour:
   shopPanel: {fileID: 1735518004}
   patt: {fileID: 813792262}
   ratingAnimatable: {fileID: 804484877}
+  gameSelectionAnimatable: {fileID: 1358286479}
+  mainAnimatable: {fileID: 241000432}
   LevelPage: {fileID: 1937245418}
   LevelButton: {fileID: 1981053500811222, guid: 3495e9011b0ea2943804918c21d5851c,
     type: 2}
@@ -13290,19 +13292,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1358286481}
-        m_MethodName: PanelActive
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 241000434}
-        m_MethodName: PanelInactive
+      - m_Target: {fileID: 485358709}
+        m_MethodName: start
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

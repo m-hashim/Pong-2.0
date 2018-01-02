@@ -890,7 +890,7 @@ MonoBehaviour:
   powerUpPriceDisplay: 30
   currentCameraMode: 0
   powerUpArray: 
-  campaignLevelReached: 50
+  campaignLevelReached: 401
   level: []
   startGame: 0
 --- !u!4 &1965091628

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class youdidthistoher : MonoBehaviour {
 
-	private const int NO_OF_MATERIALS = 10;
+	private const int NO_OF_MATERIALS = 8;
 	private const int NO_OF_MATERIALS_BLOKE = 15;
 
 	private static youdidthistoher instance;
@@ -52,7 +52,8 @@ public class youdidthistoher : MonoBehaviour {
 
 	public int currentCameraMode=2;		//0 for dynamic, 2 for first person
 	public int[] powerUpArray;
-	public int campaignLevelReached=80;
+	public int campaignLevelReached=401;
+	public int totalNoOfLevels = 401;
 	public string[] level;
 
 	public bool startGame=false;
