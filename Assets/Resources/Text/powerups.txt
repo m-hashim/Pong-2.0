@@ -1,9 +1,9 @@
 Power up Store
-Power up Store Description
-the quick brown fox jumps over the lazy dog 1
-the quick brown fox jumps over the lazy dog 2
-the quick brown fox jumps over the lazy dog 3
-the quick brown fox jumps over the lazy dog 4
-the quick brown fox jumps over the lazy dog 5
-the quick brown fox jumps over the lazy dog 6
-the quick brown fox jumps over the lazy dog 7
+This is where the Justice League buys their power ups from
+Big Ball Powerup: The Ball gets BIG and so does the score
+Flare Ball Powerup: The Ball goes wooooosssshhhhhh!!
+Gun Pad Powerup: Look out! This guy's got a gun!!
+Long Pad Powerup: Cover the field by thyself
+Magnet Pad Powerup: Because Gravity is overrated
+Trap Ball Powerup: Genjutsu ni tojikome rarenai
+Multi Ball Powerup: THERE'S JUST SO MANY OF THEM

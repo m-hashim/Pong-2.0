@@ -28,7 +28,7 @@ public class GameUI : MonoBehaviour {
 	private string[] parsed;
 	private TextAsset txt;
 	private float SET_VOLUME;
-	public AudioClip type01, type2;
+	public AudioClip type01, type2, gWin, gLose;
 
 	private Color tempCol;
 
@@ -36,7 +36,6 @@ public class GameUI : MonoBehaviour {
 		isSelected = new int[noOfPowerUps];
 		parsed = new string[noOfWinText];
 		tempCol = gridLock.GetComponent<Image> ().color;
-		levelText.text = (youdidthistoher.Instance.currentPlayingLevel).ToString ();
 		if (youdidthistoher.Instance.backgroundMusic == 0)
 			themeSource.SetActive(false);
 		if(youdidthistoher.Instance.effectsSound==0)
@@ -44,10 +43,14 @@ public class GameUI : MonoBehaviour {
 		if(youdidthistoher.Instance.backgroundMusic==0&&youdidthistoher.Instance.effectsSound==0)
 			soundButton.transform.GetChild (1).gameObject.SetActive (true);
 		if (youdidthistoher.Instance.gameplayType == 0) {
+			levelText.text = (youdidthistoher.Instance.currentPlayingLevel).ToString ();
 			themeSource.GetComponent<AudioSource> ().clip = type01;
 			iconHolder.transform.GetChild (0).gameObject.SetActive (true);
 		}
 		else if (youdidthistoher.Instance.gameplayType == 1) {
+			levelText.transform.parent.GetComponent<Text> ().color = Color.grey;
+			levelText.color = Color.grey;
+			levelText.text = "-";
 			themeSource.GetComponent<AudioSource> ().clip = type01;
 			themeSource.GetComponent<AudioSource> ().volume = SET_VOLUME_TYPE01_THEME;
 			effectsSource.GetComponent<AudioSource> ().volume = SET_VOLUME_TYPE01_EFFECTS;
@@ -59,6 +62,9 @@ public class GameUI : MonoBehaviour {
 //			continueButton.GetComponent<ButtonBackRotator> ().enabled = false;
 			iconHolder.transform.GetChild (1).gameObject.SetActive (true);
 		} else if (youdidthistoher.Instance.gameplayType == 2) {
+			levelText.transform.parent.GetComponent<Text> ().color = Color.grey;
+			levelText.color = Color.grey;
+			levelText.text = "-";
 			themeSource.GetComponent<AudioSource> ().Play ();
 			themeSource.GetComponent<AudioSource> ().clip = type2;
 			themeSource.GetComponent<AudioSource> ().volume = SET_VOLUME_TYPE2_THEME;
@@ -88,12 +94,13 @@ public class GameUI : MonoBehaviour {
 				parsed = txt.text.Split ("\n" [0]);
 				descriptionText.text = parsed [Random.Range (0, noOfWinText)];
 			} else if (youdidthistoher.Instance.gameplayType == 1) {
-				descriptionText.text = "High Score Broken!!!\nNew High Score: " + score.ToString();
+				descriptionText.text = "High Score Broken!!!\nNew High Score: " + score.ToString ();
 				descriptionText.transform.GetChild (0).GetComponent<Text> ().text = "Stats:";
 			} else {
-				descriptionText.text = "High Score Broken!!!\nNew High Score: " + score.ToString();
+				descriptionText.text = "High Score Broken!!!\nNew High Score: " + score.ToString ();
 				descriptionText.transform.GetChild (0).GetComponent<Text> ().text = "Stats:";
 			}
+			effectsSource.GetComponent<AudioSource> ().PlayOneShot (gWin, 0.5f);
 			goText.text = "SUSTAINED";
 			break;
 		case 1:
@@ -119,6 +126,7 @@ public class GameUI : MonoBehaviour {
 					descriptionText.text = "High Score: "+youdidthistoher.Instance.HighScoreDark.ToString() + "\nYour Score: "+ score.ToString();
 				descriptionText.transform.GetChild (0).GetComponent<Text> ().text = "Stats:";
 			}
+			effectsSource.GetComponent<AudioSource> ().PlayOneShot (gLose);
 			goText.text = "THUMPED";
 			break;
 		}

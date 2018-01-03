@@ -43,6 +43,8 @@ public class PlayerS : MonoBehaviour {
 			if (youdidthistoher.Instance.currentSkinIndexPad == 6) {
 				//sides
 				transform.GetChild(3).gameObject.SetActive(true);
+				transform.GetChild (3).GetChild(0).GetComponent<MeshRenderer> ().material = youdidthistoher.Instance.materials [6];
+				transform.GetChild (3).GetChild(1).GetComponent<MeshRenderer> ().material = youdidthistoher.Instance.materials [6];
 			} else if (youdidthistoher.Instance.currentSkinIndexPad == 7) {
 				//horns
 				transform.GetChild(2).gameObject.SetActive(true);

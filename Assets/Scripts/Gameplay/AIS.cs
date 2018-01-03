@@ -58,11 +58,14 @@ public class AIS : MonoBehaviour {
 		magnet = transform.GetChild (0).gameObject;
 		gun = transform.GetChild (1).gameObject;
 
-		this.gameObject.GetComponent<Renderer>().material=youdidthistoher.Instance.materials[Random.Range(0,10)];
-		if (youdidthistoher.Instance.currentSkinIndexPad == 6) {
+		int AIMat = Random.Range(0,8);
+		this.gameObject.GetComponent<Renderer>().material=youdidthistoher.Instance.materials[AIMat];
+		if (AIMat == 6) {
 			//sides
 			transform.GetChild(3).gameObject.SetActive(true);
-		} else if (youdidthistoher.Instance.currentSkinIndexPad == 7) {
+			transform.GetChild (3).GetChild(0).GetComponent<MeshRenderer> ().material = youdidthistoher.Instance.materials [6];
+			transform.GetChild (3).GetChild(1).GetComponent<MeshRenderer> ().material = youdidthistoher.Instance.materials [6];
+		} else if (AIMat == 7) {
 			//horns
 			transform.GetChild(2).gameObject.SetActive(true);
 		}

@@ -72,6 +72,10 @@ public class GameManager : MonoBehaviour {
 		AI_Point = player_Point = AI_BlokePoint = player_BlokePoint = AI_WallPoint = player_WallPoint =prevPlayerWallPoint =0;
 		currLimit = (youdidthistoher.Instance.gameplayType == 1) ? WIN_LIMIT_ENDLESS : WIN_LIMIT_DARK;
 		GameOver = false;
+
+		for(int i=0;i<3;i++)
+			blockMaterial [i] = youdidthistoher.Instance.blokeMaterials[youdidthistoher.Instance.currentSkinIndexBloke*3+i];
+
 		if (youdidthistoher.Instance.MCDActive == 1) {
 			PAD_MULTIPLIER = 0.5f;
 		} else if (youdidthistoher.Instance.DrunkActive == 1) {
@@ -237,11 +241,12 @@ public class GameManager : MonoBehaviour {
 						if (player_Point > AI_Point) {
 							youdidthistoher.Instance.HighScoreEndless = (int)player_Point;				//highscore is broken only if player points are greater than AI points
 							youdidthistoher.Instance.Save ();
+							gogoScreen (0, (int)player_Point);
 						}
 						else if (player_Point < AI_Point) {
 							player_Point = -1;
+							gogoScreen (1, (int)player_Point);
 						}
-						gogoScreen (0, (int)player_Point);
 					}else {
 						gogoScreen (1, (int)player_Point);
 					}
@@ -253,10 +258,11 @@ public class GameManager : MonoBehaviour {
 						if (player_Point > AI_Point) {
 							youdidthistoher.Instance.HighScoreDark = (int)player_Point;
 							youdidthistoher.Instance.Save ();
+							gogoScreen (0, (int)player_Point);
 						} else if (player_Point < AI_Point) {
 							player_Point = -1;
+							gogoScreen (1, (int)player_Point);
 						}
-						gogoScreen (0, (int)player_Point);
 					} else{
 						gogoScreen (1, (int)player_Point);
 					}
@@ -364,7 +370,7 @@ public class GameManager : MonoBehaviour {
 		if (chance < POWER_UP_PROB) {
 
 			int powerChoice = Random.Range (0, 33);
-			//powerChoice = 7;
+	//		powerChoice = 19;
 	//		var pu=new GameObject();
 			GameObject pu;
 			if (powerChoice < 4) pu = Instantiate(padLong, tempBloke.transform.position, Quaternion.identity);

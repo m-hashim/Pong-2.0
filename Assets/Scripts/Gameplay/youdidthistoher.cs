@@ -64,13 +64,9 @@ public class youdidthistoher : MonoBehaviour {
 		materials = new Material[NO_OF_MATERIALS]; 
 		blokeMaterials = new Material[NO_OF_MATERIALS_BLOKE];
 		powerUpArray = new int[7];
-//		PlayerPrefs.DeleteAll ();
+		PlayerPrefs.DeleteAll ();
 		materials = Resources.LoadAll<Material> ("Material/Pad_Materials");
 		blokeMaterials = Resources.LoadAll<Material> ("Material/Bloke_Materials");
-		pads = Resources.LoadAll<Sprite> ("Pads");
-		blokes = Resources.LoadAll<Sprite> ("Blokes");
-		extras = Resources.LoadAll<Sprite> ("Extras");
-		powerUps = Resources.LoadAll<Sprite> ("Power");
 		TextAsset txt = (TextAsset)Resources.Load ("LevelStore", typeof(TextAsset));
 		string content = txt.text;
 		level = content.Split ('\n');
@@ -107,6 +103,13 @@ public class youdidthistoher : MonoBehaviour {
 			gameplayType = PlayerPrefs.GetInt ("gameplayType");
 			gameOpenCount++;
 
+		/*			
+			if (!(PlayerPrefs.HasKey ("levelsUpdated"))) {
+				for (int i = 1; i<=level.Length; i++) {
+					PlayerPrefs.SetString ("level" + i, level [i - 1]);
+				}
+			}
+		*/
 		} else{
 			//pehli baar chalega bencho
 				for(int i=0;i<7;i++)
@@ -119,18 +122,6 @@ public class youdidthistoher : MonoBehaviour {
 			}
 			PlayerPrefs.SetInt ("HighScoreEndless", HighScoreEndless);
 			PlayerPrefs.SetInt ("HighScoreDark", HighScoreDark);
-		}
-
-	/*	if (backgroundMusic == 1)
-			AudioListener.volume = 1f;
-		else
-			AudioListener.volume = 0f;
-*/
-		if (!(PlayerPrefs.HasKey ("cameraChanging"))) 
-		{
-			PlayerPrefs.SetInt ("cameraChanging", 0);
-			PlayerPrefs.SetInt ("currentCameraMode",2);
-			currentCameraMode = 2;
 		}
 	}
 		

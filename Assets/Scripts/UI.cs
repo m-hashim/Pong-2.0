@@ -10,7 +10,7 @@ public class UI : MonoBehaviour {
 	private const int NO_OF_COLUMNS = 5;
 	private const int NO_OF_PAGES = 20;
 	private const int POWERUP_COUNT = 7;
-	private const int GROUND_COUNT = 4;
+	private const int GROUND_COUNT = 5;
 	private const int BLOKES_COUNT = 5;
 	private const int SPECIAL_COUNT = 4;
 	private const int PAD_COUNT = 8;
@@ -42,7 +42,7 @@ public class UI : MonoBehaviour {
 
 	public Text  descriptionText, itemDescriptionText, countText;
 
-	public GameObject mainPanel, gameSelectionPanel, settingsPanel, aboutPanel, helpPanel, shopPanel, patt, ratingAnimatable, gameSelectionAnimatable, mainAnimatable;
+	public GameObject mainPanel, gameSelectionPanel, settingsPanel, aboutPanel, helpPanel, shopPanel, patt, ratingAnimatable, gameSelectionAnimatable, mainAnimatable, aboutSound;
 	public GameObject LevelPage, LevelButton, LevelRow, StoreButton;
 	public GameObject GroundsPanel, BlokesPanel, PowerupsPanel, PadsPanel, SpecialPanel;
 	public GameObject soundButton, cameraButton, effectsButton;
@@ -164,6 +164,7 @@ public class UI : MonoBehaviour {
 			temp.transform.position = parentGameObject.transform.position;
 			temp.transform.SetParent (parentGameObject.transform.GetChild(0).transform);
 			temp.GetComponent<Image> ().sprite = images [j];
+		//	print (j+"  "+images [j]);
 			int tempItemNo = j;
 			temp.gameObject.GetComponent<Button> ().onClick.AddListener (() => StoreItem (temp, tempItemNo));
 			if ((boughtInStores [currentActiveStore] & 1 << tempItemNo) == 1 << tempItemNo && currentActiveStore != 0) {
@@ -220,8 +221,6 @@ public class UI : MonoBehaviour {
 				//powerups
 				if (youdidthistoher.Instance.currency >= POWERUP_COST) {
 					confirmBuy.transform.parent.GetComponent<Animation> ().Play ("boughtSuccessfully");
-					currentCheck[currentActiveStore].transform.SetParent (button.transform);
-					currentCheck[currentActiveStore].transform.localPosition = checkMarkHomePos;
 					youdidthistoher.Instance.currency -= POWERUP_COST;
 					intermediateMoneyAmount.GetComponent<Text>().text = shopMoneyAmount.GetComponent<Text> ().text = youdidthistoher.Instance.currency.ToString ();
 					youdidthistoher.Instance.powerUpArray [itemNo] += 1;
@@ -884,4 +883,20 @@ public class UI : MonoBehaviour {
 		youdidthistoher.Instance.Save ();
 	}
 
+	public void aboutEnable()
+	{
+		if (youdidthistoher.Instance.backgroundMusic == 1) {
+			themeSource.Stop ();
+			aboutSound.GetComponent<AudioSource>().enabled = (true);
+		}
+	}
+
+	public void aboutDisable()
+	{
+		if (youdidthistoher.Instance.backgroundMusic == 1) {
+			aboutSound.GetComponent<AudioSource>().enabled = (false);
+			themeSource.Play ();
+		}
+		aboutPanel.SetActive (false);
+	}
 }
