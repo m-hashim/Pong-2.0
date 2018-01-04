@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour {
 	private static GameManager instance;
 	public static GameManager Instance{get{ return instance;}}
 	private const float COIN_PROB=0.3f;
-	private float POWER_UP_PROB = 0.12f;
+	private float POWER_UP_PROB =  0.12f;
 	private float DARK_MODE_AI_POWERUP_PROB = 35f;
 	private float DARK_MODE_AI_POWERUP_TIME = 10f;
 	private const float SPAWN_RATE = 3f;
@@ -128,6 +128,8 @@ public class GameManager : MonoBehaviour {
             {
 				MCD.transform.parent.GetChild (0).gameObject.SetActive (false);
                 MCD.SetActive(true);
+				AIS.Instance.GetComponent<Rigidbody> ().isKinematic = false;
+				AIS.Instance.GetComponent<Rigidbody> ().useGravity = true;
             }
             else if (youdidthistoher.Instance.DrunkActive == 1)
             {
@@ -363,14 +365,14 @@ public class GameManager : MonoBehaviour {
 	}
     // power up created at bloke places	
 	public void makePowerUp(GameObject tempBloke,bool turn){
-		if (youdidthistoher.Instance.MCDActive == 1) {
+		if (youdidthistoher.Instance.MCDActive == 1 ||youdidthistoher.Instance.DrunkActive == 1) {
 			return;
 		}
 		float chance = Random.Range (0f, 1f);
 		if (chance < POWER_UP_PROB) {
 
 			int powerChoice = Random.Range (0, 33);
-	//		powerChoice = 19;
+	//		powerChoice = 15;
 	//		var pu=new GameObject();
 			GameObject pu;
 			if (powerChoice < 4) pu = Instantiate(padLong, tempBloke.transform.position, Quaternion.identity);
@@ -443,14 +445,11 @@ public class GameManager : MonoBehaviour {
 	{	/////
 		if(ShowInterAd){
 			ShowInterAd = false;
-			/////
-			//		AdManager.Instance.ShowInterstitial();
+			/////how
+			print("Working");
+			Invoke ("showAd", 1f);
 			///// 
 		}
-
-		/////
-		//	AdManager.Instance.ShowBanner();
-		/////
 		ObjectPool.Instance.Reset();
 
 		coinsEarned.gameObject.transform.parent.gameObject.SetActive(false);
@@ -458,6 +457,11 @@ public class GameManager : MonoBehaviour {
 		gameCanvas.GetComponent<GameUI> ().gameOver(state, GameManager.Instance.coinCount, score);
 		for (int i = 0; i < powerup.GetComponent<PowerUp> ().ballList.Length; i++)
 			powerup.GetComponent<PowerUp> ().ballList [i].SetActive (false);
+	}
+
+	private void showAd()
+	{
+		AdManager.Instance.ShowInterstitial();
 	}
 
 	private int BlokeRemaining(){

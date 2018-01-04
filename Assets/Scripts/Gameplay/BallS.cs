@@ -16,6 +16,12 @@ public class BallS : MonoBehaviour {
 	void Start()
 	{	ballRig = GetComponent<Rigidbody> ();
 		turn = true;
+	//	Invoke ("startTheGameMan", 0.5f);
+	}
+
+	void startTheGameMan()
+	{
+		GetComponent<Rigidbody> ().AddForce (Vector3.left * 5f);
 	}
 
 	void FixedUpdate(){

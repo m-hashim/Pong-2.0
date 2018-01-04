@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class padUdaDe : MonoBehaviour {
 
-	private const float CPU_CONFUSION_FORCE = 3.0f;
+	private const float CPU_CONFUSION_FORCE = 300.0f;
 	private GameObject ground;
 	private const float FORCE_MULTIPLIER = 300.0f;
 	private GameManager GMScript;
@@ -27,36 +27,18 @@ public class padUdaDe : MonoBehaviour {
 
 	void OnCollisionEnter(Collision col)
 	{
-		//	print (col.gameObject.name);
-		if (col.gameObject.CompareTag ("Bloke")) {
-			Destroy (this.gameObject);
-			GMScript.makeCoin (col.gameObject);
-			if (col.gameObject.name.Contains ("Bloke7")) {
-				GameObject.FindGameObjectWithTag("Ball").SendMessage ("Blast", col.gameObject, SendMessageOptions.DontRequireReceiver);
-			}
-			ground.SendMessage ("BlokePoint", true, SendMessageOptions.DontRequireReceiver);
-			col.gameObject.SetActive (false);
-
-		} 
-		//else if (col.gameObject.name.Contains ("CPU")) {
-		//	col.GetComponent<Rigidbody> ().AddForce (CPU_CONFUSION_FORCE, 0, 0);
-		//	Destroy (this.gameObject);
-		//}
-		/*else if (col.gameObject.name.Contains ("EastWall")||col.gameObject.CompareTag("AI")||col.gameObject.CompareTag("player")) {
+		if (col.gameObject.CompareTag ("Block")) {   
+			col.gameObject.GetComponent<Block> ().HitBlock (true);
+			col.gameObject.GetComponent<Block> ().ResetBlock (true);
+			GameManager.Instance.player_BlokePoint++;
+			Destroy (gameObject);
+		} else if (col.gameObject.CompareTag ("AI")) {
+			col.gameObject.GetComponent<Rigidbody> ().AddForce (Vector3.left*10f);
 			Destroy (this.gameObject);
 		}
-*/
-		//else if (col.gameObject.name.Contains ("CPU")) {
-		//	col.GetComponent<Rigidbody> ().AddForce (CPU_CONFUSION_FORCE, 0, 0);
-		//	Destroy (this.gameObject);
-		//}
-	//	else if (col.gameObject.name.Contains ("Wall")||col.gameObject.name.Contains("MCD")) {
-	//		Invoke ("destroy", 5.0f);
-	//	}
 	}
-
-	void destroy()
-	{
-		Destroy (this.gameObject);
+		void destroy()
+		{
+			Destroy (this.gameObject);
+		}
 	}
-}

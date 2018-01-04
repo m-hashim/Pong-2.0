@@ -38,7 +38,7 @@ public class PlayerS : MonoBehaviour {
 		MIN_Z=	-8.5f+transform.localScale.z/2;
 
 		
-		if (gameObject.name != "MCD") {
+		if (gameObject.name == "player") {
 			this.gameObject.GetComponent<Renderer> ().material = youdidthistoher.Instance.materials [youdidthistoher.Instance.currentSkinIndexPad];
 			if (youdidthistoher.Instance.currentSkinIndexPad == 6) {
 				//sides

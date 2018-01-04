@@ -20,7 +20,7 @@ public class youdidthistoher : MonoBehaviour {
 	public int currentSkinIndexPad=0;
 	public int currentSkinIndexBloke = 0;
 	public int currentGround = 0;
-	public int currency=2000;
+	public int currency=5000;
 	public int p_bigBall = 5;
 	public int p_flareBall = 5;
 	public int p_gun = 5;
@@ -52,8 +52,8 @@ public class youdidthistoher : MonoBehaviour {
 
 	public int currentCameraMode=2;		//0 for dynamic, 2 for first person
 	public int[] powerUpArray;
-	public int campaignLevelReached=401;
-	public int totalNoOfLevels = 401;
+	public int campaignLevelReached=120;
+	public int totalNoOfLevels = 120;
 	public string[] level;
 
 	public bool startGame=false;
@@ -64,7 +64,7 @@ public class youdidthistoher : MonoBehaviour {
 		materials = new Material[NO_OF_MATERIALS]; 
 		blokeMaterials = new Material[NO_OF_MATERIALS_BLOKE];
 		powerUpArray = new int[7];
-		PlayerPrefs.DeleteAll ();
+	//	PlayerPrefs.DeleteAll ();
 		materials = Resources.LoadAll<Material> ("Material/Pad_Materials");
 		blokeMaterials = Resources.LoadAll<Material> ("Material/Bloke_Materials");
 		TextAsset txt = (TextAsset)Resources.Load ("LevelStore", typeof(TextAsset));

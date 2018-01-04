@@ -29,15 +29,6 @@ public class PadS : MonoBehaviour {
 		//PadPrefab.transform.Rotate (new Vector3(0,90,0));
 	}
 
-	void FixedUpdate () {
-		//	if (Time.realtimeSinceStartup % 2 > 1) {
-		//	if (!PauseMenu.paused) {
-
-		//	StartCoroutine(ShootWait());
-		//	}
-		//	}
-	}
-
 	void Shoot()
 	{	if(this.gameObject.activeSelf){
 			Temporary_Pad_Handler_Left = Instantiate (PadPrefabLeft, Pad_Emmiter_Left.transform.position + MARGIN, Quaternion.Euler(0,90,0)) as GameObject; 

@@ -245,4 +245,11 @@ public class AIS : MonoBehaviour {
 		rb.velocity = Vector3.zero;
 		back_motion_mode = false;
 	}
+
+	public void pushBack()
+	{
+		Vector3 tempPos = transform.position;
+		tempPos.x += 0.5f;
+		transform.position = tempPos;
+	}
 }
