@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour {
 	private static GameManager instance;
 	public static GameManager Instance{get{ return instance;}}
 	private const float COIN_PROB=0.3f;
-	private float POWER_UP_PROB =  0.12f;
+	private float POWER_UP_PROB = 0.12f;
 	private float DARK_MODE_AI_POWERUP_PROB = 35f;
 	private float DARK_MODE_AI_POWERUP_TIME = 10f;
 	private const float SPAWN_RATE = 3f;
@@ -27,7 +27,8 @@ public class GameManager : MonoBehaviour {
 	private const int TYPE_OF_BLOKE=7;
 	private const int CORD_X_MAX = 12 ;
 	private const int CORD_Z_MAX= 16;
-    
+	private int MAX_POWERUP_COUNT = 33;
+
 	public bool BlokeHit, gameStarted;
 	public bool GameOver;
 
@@ -370,12 +371,13 @@ public class GameManager : MonoBehaviour {
 		}
 		float chance = Random.Range (0f, 1f);
 		if (chance < POWER_UP_PROB) {
-
-			int powerChoice = Random.Range (0, 33);
-	//		powerChoice = 15;
-	//		var pu=new GameObject();
-			GameObject pu;
-			if (powerChoice < 4) pu = Instantiate(padLong, tempBloke.transform.position, Quaternion.identity);
+			if (MAX_POWERUP_COUNT != -1) {
+			//	print ("chaling");
+				int powerChoice = Random.Range (0, MAX_POWERUP_COUNT);
+				//		powerChoice = 15;
+				//		var pu=new GameObject();
+				GameObject pu;
+				/*	if (powerChoice < 4) pu = Instantiate(padLong, tempBloke.transform.position, Quaternion.identity);
             else if (powerChoice < 8) pu = Instantiate(padShort, tempBloke.transform.position, Quaternion.identity);
             else if (powerChoice < 12) pu = Instantiate(bigBall, tempBloke.transform.position, Quaternion.identity);
             else if (powerChoice < 16) pu = Instantiate(speedUp, tempBloke.transform.position, Quaternion.identity);
@@ -386,8 +388,32 @@ public class GameManager : MonoBehaviour {
             else if (powerChoice < 31) pu = Instantiate(gunPad, tempBloke.transform.position, Quaternion.identity);
             else if (powerChoice < 33) pu = Instantiate(magnetPad, tempBloke.transform.position, Quaternion.identity);
             else return;
-			pu.GetComponent<rotator>().turn = turn;
+*/
+				if (powerChoice < 4)
+					pu = Instantiate (bigBall, tempBloke.transform.position, Quaternion.identity);
+				else if (powerChoice < 8)
+					pu = Instantiate (padShort, tempBloke.transform.position, Quaternion.identity);
+				else if (powerChoice < 12)
+					pu = Instantiate (padLong, tempBloke.transform.position, Quaternion.identity);
+				else if (powerChoice < 15)
+					pu = Instantiate (flareBall, tempBloke.transform.position, Quaternion.identity);
+				else if (powerChoice < 18)
+					pu = Instantiate (VIPBall, tempBloke.transform.position, Quaternion.identity);
+				else if (powerChoice < 22)
+					pu = Instantiate (speedUp, tempBloke.transform.position, Quaternion.identity);
+				else if (powerChoice < 26)
+					pu = Instantiate (speedDown, tempBloke.transform.position, Quaternion.identity);
+				else if (powerChoice < 28)
+					pu = Instantiate (gunPad, tempBloke.transform.position, Quaternion.identity);
+				else if (powerChoice < 31)
+					pu = Instantiate (multiBall, tempBloke.transform.position, Quaternion.identity);
+				else if (powerChoice < 33)
+					pu = Instantiate (magnetPad, tempBloke.transform.position, Quaternion.identity);
+				else
+					return;
 
+				pu.GetComponent<rotator> ().turn = turn;
+			}
         }
 
     }
@@ -504,5 +530,10 @@ public class GameManager : MonoBehaviour {
 				PowerUp.Instance.PU (PowerTypes.VipBall, false);
 			}
 		}
+	}
+
+	public void powerupTypeLimiter(int no)
+	{
+		MAX_POWERUP_COUNT = no;
 	}
 }

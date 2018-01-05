@@ -312,8 +312,15 @@
 				break;
 			case PowerTypes.FlareBall:
 				foreach (Transform child in BlokeGroup.transform)
-				{	child.GetComponent<Collider> ().isTrigger = false;
+				{	
+					if(child.GetComponent<BlockToggle>().isActiveAndEnabled&&child.GetComponent<BlockToggle>().state==0)
+						child.GetComponent<Collider> ().isTrigger = true;
+					else
+					{
+						child.GetComponent<Collider> ().isTrigger = false;
+					}	
 				}
+				
 				for (int i = 0; i < 3; i++) {
 					ballList [i].transform.GetChild (1).gameObject.SetActive (false);
 				}

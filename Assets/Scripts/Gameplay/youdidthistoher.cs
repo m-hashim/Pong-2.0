@@ -56,7 +56,14 @@ public class youdidthistoher : MonoBehaviour {
 	public int totalNoOfLevels = 120;
 	public string[] level;
 
-	public bool startGame=false;
+	public int tutorialLevel = 1;
+	public int forceTutorialLevel = 0;
+	public int firstEndlessPlay = 1;
+	public int firstDarkPlay = 1;
+	public int firstMCDPlay = 1;
+	public int firstDrunkPlay = 1;
+
+	public bool startGame = false;
 
 	void Awake () {
 		instance = this;
@@ -101,6 +108,11 @@ public class youdidthistoher : MonoBehaviour {
 			HighScoreEndless = PlayerPrefs.GetInt ("HighScoreEndless");
 			HighScoreDark = PlayerPrefs.GetInt ("HighScoreDark");
 			gameplayType = PlayerPrefs.GetInt ("gameplayType");
+			tutorialLevel = PlayerPrefs.GetInt ("tutorialLevel");
+			firstEndlessPlay = PlayerPrefs.GetInt ("firstEndlessPlay");
+			firstDarkPlay = PlayerPrefs.GetInt ("firstDarkPlay");
+			firstMCDPlay = PlayerPrefs.GetInt ("firstMCDPlay");
+			firstDrunkPlay = PlayerPrefs.GetInt ("firstDrunkPlay");
 			gameOpenCount++;
 
 		/*			
@@ -156,7 +168,11 @@ public class youdidthistoher : MonoBehaviour {
 		PlayerPrefs.SetInt ("currentPlayingLevel", currentPlayingLevel);
 		PlayerPrefs.SetInt ("campaignLevelReached", campaignLevelReached);
 		PlayerPrefs.SetInt ("gameplayType", gameplayType);
-
+		PlayerPrefs.SetInt ("tutorialLevel", tutorialLevel);
+		PlayerPrefs.SetInt ("firstEndlessPlay", firstEndlessPlay);
+		PlayerPrefs.SetInt ("firstDarkPlay", firstDarkPlay);
+		PlayerPrefs.SetInt ("firstMCDPlay", firstMCDPlay);
+		PlayerPrefs.SetInt ("firstDrunkPlay", firstDrunkPlay);
 
 	//	print ("currentPlayingLevel "+currentPlayingLevel);
 	//	print ("campaignLevelReached "+campaignLevelReached);

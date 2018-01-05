@@ -27,7 +27,8 @@ public class goliUdaDe : MonoBehaviour
 
             col.GetComponent<Block>().ResetBlock(turn);
            
-            Destroy(this.gameObject);
+			if(!col.GetComponent<BlockToggle>().isActiveAndEnabled)
+            	Destroy(this.gameObject);
         }
         else if (col.gameObject.name.Contains("Wall"))
         {
@@ -51,11 +52,14 @@ public class goliUdaDe : MonoBehaviour
         {   col.gameObject.GetComponent<Block>().HitBlock(turn);
 
             col.gameObject.GetComponent<Block>().ResetBlock(turn);
-            if (turn)
-                GameManager.Instance.player_BlokePoint++;
-            else
-                GameManager.Instance.AI_BlokePoint++;
-            Destroy(this.gameObject);
+			if(!col.gameObject.GetComponent<BlockToggle>().isActiveAndEnabled)
+			{
+				if (turn)
+	                GameManager.Instance.player_BlokePoint++;
+	            else
+	                GameManager.Instance.AI_BlokePoint++;
+				Destroy(this.gameObject);
+			}
         }
         else if (col.gameObject.name.Contains("Wall"))
         {

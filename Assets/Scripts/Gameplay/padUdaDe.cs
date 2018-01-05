@@ -11,7 +11,7 @@ public class padUdaDe : MonoBehaviour {
 	void Start(){
 		ground = GameObject.Find ("Ground");
 		GMScript = ground.GetComponent<GameManager> ();
-		Invoke ("destroy", 3.0f);
+		Invoke ("destroy", 4.0f);
 	}
 
 	void Update()
@@ -30,8 +30,11 @@ public class padUdaDe : MonoBehaviour {
 		if (col.gameObject.CompareTag ("Block")) {   
 			col.gameObject.GetComponent<Block> ().HitBlock (true);
 			col.gameObject.GetComponent<Block> ().ResetBlock (true);
-			GameManager.Instance.player_BlokePoint++;
-			Destroy (gameObject);
+			if(!col.gameObject.GetComponent<BlockToggle>().isActiveAndEnabled)
+			{
+				GameManager.Instance.player_BlokePoint++;
+				Destroy (gameObject);
+			}
 		} else if (col.gameObject.CompareTag ("AI")) {
 			col.gameObject.GetComponent<Rigidbody> ().AddForce (Vector3.left*10f);
 			Destroy (this.gameObject);

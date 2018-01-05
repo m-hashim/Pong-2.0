@@ -915,9 +915,13 @@ MonoBehaviour:
   powerUpPriceDisplay: 30
   currentCameraMode: 0
   powerUpArray: 
-  campaignLevelReached: 120
+  campaignLevelReached: 20
   totalNoOfLevels: 120
   level: []
+  tutorialLevel: 1
+  forceTutorialLevel: 0
+  firstEndlessPlay: 1
+  firstDarkPlay: 1
   startGame: 0
 --- !u!4 &1965091628
 Transform:

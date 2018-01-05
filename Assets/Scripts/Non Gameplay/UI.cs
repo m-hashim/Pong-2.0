@@ -726,21 +726,25 @@ public class UI : MonoBehaviour {
 			youdidthistoher.Instance.Save ();
 		} else {
 			if (purchaseModeOn && prevButton == mcdButton) {
-				if (youdidthistoher.Instance.currency >= MCD_COST) {
-					confirmBuy.transform.parent.GetComponent<Animation> ().Play ("boughtSuccessfully");
-					youdidthistoher.Instance.currency -= MCD_COST;
-					intermediateMoneyAmount.GetComponent<Text> ().text = shopMoneyAmount.GetComponent<Text> ().text = youdidthistoher.Instance.currency.ToString ();
-					youdidthistoher.Instance.skinAvailabilityMCD = 1;
-					youdidthistoher.Instance.MCDActive = 1;
-					mcdButton.transform.GetChild (0).gameObject.SetActive (true);
-					mcdButton.transform.GetChild (1).gameObject.SetActive (false);
-					youdidthistoher.Instance.DrunkActive = 0;
-					drunkButton.transform.GetChild (0).gameObject.SetActive (false);
-					drunkButton.transform.GetChild (1).gameObject.SetActive (true);
-					youdidthistoher.Instance.Save ();
+				if (youdidthistoher.Instance.campaignLevelReached > 20) {
+					if (youdidthistoher.Instance.currency >= MCD_COST) {
+						confirmBuy.transform.parent.GetComponent<Animation> ().Play ("boughtSuccessfully");
+						youdidthistoher.Instance.currency -= MCD_COST;
+						intermediateMoneyAmount.GetComponent<Text> ().text = shopMoneyAmount.GetComponent<Text> ().text = youdidthistoher.Instance.currency.ToString ();
+						youdidthistoher.Instance.skinAvailabilityMCD = 1;
+						youdidthistoher.Instance.MCDActive = 1;
+						mcdButton.transform.GetChild (0).gameObject.SetActive (true);
+						mcdButton.transform.GetChild (1).gameObject.SetActive (false);
+						youdidthistoher.Instance.DrunkActive = 0;
+						drunkButton.transform.GetChild (0).gameObject.SetActive (false);
+						drunkButton.transform.GetChild (1).gameObject.SetActive (true);
+						youdidthistoher.Instance.Save ();
+					} else {
+						//insufficient funds
+						coinPurchaseActivator.GetComponent<UIAnimController> ().PanelActive ();
+					}
 				} else {
-					//insufficient funds
-					coinPurchaseActivator.GetComponent<UIAnimController>().PanelActive();
+					confirmBuy.transform.parent.GetComponent<Animation> ().Play ("notBefore20");
 				}
 			}
 			else {
@@ -771,22 +775,25 @@ public class UI : MonoBehaviour {
 			youdidthistoher.Instance.Save ();
 		} else {
 			if (purchaseModeOn && prevButton == drunkButton) {
-				if (youdidthistoher.Instance.currency >= DRUNK_COST) {
-					confirmBuy.transform.parent.GetComponent<Animation> ().Play ("boughtSuccessfully");
-					youdidthistoher.Instance.currency -= DRUNK_COST;
-					intermediateMoneyAmount.GetComponent<Text>().text = shopMoneyAmount.GetComponent<Text> ().text = youdidthistoher.Instance.currency.ToString ();
-					youdidthistoher.Instance.skinAvailabilityDrunk = 1;
-					youdidthistoher.Instance.DrunkActive = 1;
-					drunkButton.transform.GetChild (0).gameObject.SetActive (true);
-					drunkButton.transform.GetChild (1).gameObject.SetActive (false);
-					youdidthistoher.Instance.MCDActive = 0;
-					mcdButton.transform.GetChild (0).gameObject.SetActive (false);
-					mcdButton.transform.GetChild (1).gameObject.SetActive (true);
-					youdidthistoher.Instance.Save ();
-				}
-				else {
-					//insufficient funds
-					coinPurchaseActivator.GetComponent<UIAnimController>().PanelActive();
+				if (youdidthistoher.Instance.campaignLevelReached > 20) {
+					if (youdidthistoher.Instance.currency >= DRUNK_COST) {
+						confirmBuy.transform.parent.GetComponent<Animation> ().Play ("boughtSuccessfully");
+						youdidthistoher.Instance.currency -= DRUNK_COST;
+						intermediateMoneyAmount.GetComponent<Text> ().text = shopMoneyAmount.GetComponent<Text> ().text = youdidthistoher.Instance.currency.ToString ();
+						youdidthistoher.Instance.skinAvailabilityDrunk = 1;
+						youdidthistoher.Instance.DrunkActive = 1;
+						drunkButton.transform.GetChild (0).gameObject.SetActive (true);
+						drunkButton.transform.GetChild (1).gameObject.SetActive (false);
+						youdidthistoher.Instance.MCDActive = 0;
+						mcdButton.transform.GetChild (0).gameObject.SetActive (false);
+						mcdButton.transform.GetChild (1).gameObject.SetActive (true);
+						youdidthistoher.Instance.Save ();
+					} else {
+						//insufficient funds
+						coinPurchaseActivator.GetComponent<UIAnimController> ().PanelActive ();
+					}
+				} else {
+					confirmBuy.transform.parent.GetComponent<Animation> ().Play ("notBefore20");
 				}
 			} else {
 				prevButton = drunkButton;
