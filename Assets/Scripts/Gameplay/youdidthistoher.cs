@@ -62,6 +62,7 @@ public class youdidthistoher : MonoBehaviour {
 	public int firstDarkPlay = 1;
 	public int firstMCDPlay = 1;
 	public int firstDrunkPlay = 1;
+	public int firstShopVisit = 1;
 
 	public bool startGame = false, helpOn=false, tutorialOnly=false;
 
@@ -113,6 +114,7 @@ public class youdidthistoher : MonoBehaviour {
 			firstDarkPlay = PlayerPrefs.GetInt ("firstDarkPlay");
 			firstMCDPlay = PlayerPrefs.GetInt ("firstMCDPlay");
 			firstDrunkPlay = PlayerPrefs.GetInt ("firstDrunkPlay");
+			firstShopVisit = PlayerPrefs.GetInt ("firstShopVisit");
 			gameOpenCount++;
 
 		/*			
@@ -173,6 +175,7 @@ public class youdidthistoher : MonoBehaviour {
 		PlayerPrefs.SetInt ("firstDarkPlay", firstDarkPlay);
 		PlayerPrefs.SetInt ("firstMCDPlay", firstMCDPlay);
 		PlayerPrefs.SetInt ("firstDrunkPlay", firstDrunkPlay);
+		PlayerPrefs.SetInt ("firstShopVisit", firstShopVisit);
 
 	//	print ("currentPlayingLevel "+currentPlayingLevel);
 	//	print ("campaignLevelReached "+campaignLevelReached);

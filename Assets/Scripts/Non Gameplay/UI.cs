@@ -43,7 +43,7 @@ public class UI : MonoBehaviour {
 	public Text  descriptionText, itemDescriptionText, countText;
 
 	public GameObject mainPanel, gameSelectionPanel, levelSelectionPanel, settingsPanel, aboutPanel, helpPanel, shopPanel, patt, ratingAnimatable, gameSelectionAnimatable, mainAnimatable, aboutSound;
-	public GameObject LevelPage, LevelButton, LevelRow, StoreButton, helpTitleText ,helpDescriptionText, helpImage, helpPowerUp, helpBlocks, helpOthers, ratingPanel, coinPanel;
+	public GameObject LevelPage, LevelButton, LevelRow, StoreButton, helpTitleText ,helpDescriptionText, helpImage, helpPowerUp, helpBlocks, helpOthers, ratingPanel, coinPanel, firstShopVisit;
 	public GameObject GroundsPanel, BlokesPanel, PowerupsPanel, PadsPanel, SpecialPanel;
 	public GameObject soundButton, cameraButton, effectsButton;
 	public GameObject practiceButton, endlessButton, campaignButton, forwardCampaignButton, backwardCampaignButton, mcdButton, drunkButton;
@@ -75,6 +75,7 @@ public class UI : MonoBehaviour {
 			mainPanel.SetActive (false);
 			helpPanel.SetActive (true);
 			hPowerup ();
+			AdManager.Instance.HideBanner ();
 		}
 		else if (youdidthistoher.Instance.startGame == true) {
 			mainPanel.SetActive (false);
@@ -1070,5 +1071,21 @@ public class UI : MonoBehaviour {
 			break;
 		}
 		SceneManager.LoadScene ("Pong_Breaker");
+	}
+
+	public void firstShopVisitChecker()
+	{
+		if (youdidthistoher.Instance.firstShopVisit == 1) {
+			firstShopVisit.SetActive (true);
+		}
+	}
+
+	public void firstShopVisitCompleted()
+	{
+		if (youdidthistoher.Instance.firstShopVisit == 1) {
+			firstShopVisit.SetActive (false);
+			youdidthistoher.Instance.firstShopVisit = 0;
+			youdidthistoher.Instance.Save ();
+		}
 	}
 }

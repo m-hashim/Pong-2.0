@@ -222,6 +222,7 @@ public class GameUI : MonoBehaviour {
 
 	public void back()
 	{
+		AdManager.Instance.HideBanner ();
 		youdidthistoher.Instance.tutorialOnly = false;
 		for (int i = 0; i < noOfPowerUps; i++) {
 			if (isSelected [i] == 1) {
