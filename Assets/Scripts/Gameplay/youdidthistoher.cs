@@ -63,7 +63,7 @@ public class youdidthistoher : MonoBehaviour {
 	public int firstMCDPlay = 1;
 	public int firstDrunkPlay = 1;
 
-	public bool startGame = false;
+	public bool startGame = false, helpOn=false, tutorialOnly=false;
 
 	void Awake () {
 		instance = this;

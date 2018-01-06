@@ -8100,7 +8100,7 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 172390451}
-  m_LocalRotation: {x: 0.65328157, y: 0.270598, z: -0.27059796, w: 0.65328145}
+  m_LocalRotation: {x: 0.6532816, y: 0.27059802, z: -0.270598, w: 0.6532815}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -11374,6 +11374,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c6ec29fc7808812409099bf82e641d1c, type: 3}
   - {fileID: 21300000, guid: 93005275db330e548b77d905e24462dc, type: 3}
   - {fileID: 21300000, guid: 6cca146e2ddd81f4a928463b23e08013, type: 3}
+  - {fileID: 21300000, guid: 6eac27ada82abc14794590d3e79cb776, type: 3}
+  - {fileID: 21300000, guid: a1f37c3bd8e7a1344bb47079a844b9fa, type: 3}
 --- !u!114 &177256529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11393,7 +11395,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 93005275db330e548b77d905e24462dc, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -18272,6 +18274,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c6ec29fc7808812409099bf82e641d1c, type: 3}
   - {fileID: 21300000, guid: 93005275db330e548b77d905e24462dc, type: 3}
   - {fileID: 21300000, guid: 6cca146e2ddd81f4a928463b23e08013, type: 3}
+  - {fileID: 21300000, guid: 6eac27ada82abc14794590d3e79cb776, type: 3}
+  - {fileID: 21300000, guid: a1f37c3bd8e7a1344bb47079a844b9fa, type: 3}
 --- !u!114 &210188630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18291,7 +18295,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: c6ec29fc7808812409099bf82e641d1c, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -31256,6 +31260,8 @@ MonoBehaviour:
   pauseButton: {fileID: 1545992042}
   gameoverAnimationButton: {fileID: 685790271}
   continueButton: {fileID: 1308544490}
+  restartButtonGO: {fileID: 1802977623}
+  restartButtonPause: {fileID: 347721354}
   blockGroup: {fileID: 298427127}
   themeSource: {fileID: 1332098308}
   effectsSource: {fileID: 494860654}
@@ -31273,6 +31279,7 @@ MonoBehaviour:
   gridLock: {fileID: 1819638008}
   darknessPanel: {fileID: 867307448}
   iconHolder: {fileID: 1727077024}
+  pauseAnimatable: {fileID: 1742000506}
   goText: {fileID: 168194021}
   descriptionText: {fileID: 1089545295}
   levelText: {fileID: 1136792581}
@@ -47210,7 +47217,7 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 847953605}
-  m_LocalRotation: {x: 0.65328157, y: 0.270598, z: -0.27059796, w: 0.65328145}
+  m_LocalRotation: {x: 0.6532816, y: 0.27059802, z: -0.270598, w: 0.6532815}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -68868,6 +68875,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c6ec29fc7808812409099bf82e641d1c, type: 3}
   - {fileID: 21300000, guid: 93005275db330e548b77d905e24462dc, type: 3}
   - {fileID: 21300000, guid: 6cca146e2ddd81f4a928463b23e08013, type: 3}
+  - {fileID: 21300000, guid: 6eac27ada82abc14794590d3e79cb776, type: 3}
+  - {fileID: 21300000, guid: a1f37c3bd8e7a1344bb47079a844b9fa, type: 3}
 --- !u!114 &1170134933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68887,7 +68896,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: c6ec29fc7808812409099bf82e641d1c, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -104151,7 +104160,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -116696,7 +116705,7 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2090503605}
-  m_LocalRotation: {x: 0.65328157, y: 0.270598, z: -0.27059796, w: 0.65328145}
+  m_LocalRotation: {x: 0.6532816, y: 0.27059802, z: -0.270598, w: 0.6532815}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []

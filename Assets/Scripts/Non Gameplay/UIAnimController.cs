@@ -37,6 +37,7 @@ public class UIAnimController : MonoBehaviour {
 	public void PanelInactive(){
 		panelRT.position = finalPos;
 		StartCoroutine (panelGhatao ());
+		panel.SetActive (false);
 	}
 	IEnumerator panelGhatao(){
 		for (int i = 1; i <= steps; i++) {

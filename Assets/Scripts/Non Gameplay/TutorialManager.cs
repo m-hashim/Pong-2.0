@@ -36,13 +36,23 @@ public class TutorialManager : MonoBehaviour {
 			MCDPlay = true;
 			MCD.SetActive (false);
 			loadData (-2);
+			youdidthistoher.Instance.tutorialOnly = true;
 		}
 		else if (youdidthistoher.Instance.DrunkActive == 1 && youdidthistoher.Instance.firstDrunkPlay == 1) {
 			drunkPlay = true;
 			loadData (-1);
+			youdidthistoher.Instance.tutorialOnly = true;
 		}
 		else if (youdidthistoher.Instance.forceTutorialLevel != 0) {
 			loadData (youdidthistoher.Instance.forceTutorialLevel - 1);
+			youdidthistoher.Instance.tutorialOnly = true;
+		}
+	}
+
+	void Update()
+	{
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			skip ();
 		}
 	}
 
@@ -79,11 +89,9 @@ public class TutorialManager : MonoBehaviour {
 			darkPlay = false;
 			youdidthistoher.Instance.firstDarkPlay = 0;
 		} else if (MCDPlay) {
-			MCDPlay = false;
 			youdidthistoher.Instance.firstMCDPlay = 0;
 			MCD.SetActive (true);
 		} else if (drunkPlay) {
-			drunkPlay = false;
 			youdidthistoher.Instance.firstDrunkPlay = 0;
 		}
 		else
@@ -165,6 +173,16 @@ public class TutorialManager : MonoBehaviour {
 		}
 	}
 
+	void OnDestroy()
+	{
+		if(MCDPlay && youdidthistoher.Instance.skinAvailabilityMCD == 0) {
+			youdidthistoher.Instance.MCDActive = 0;
+		}
+		if (drunkPlay && youdidthistoher.Instance.skinAvailabilityDrunk == 0) {
+			youdidthistoher.Instance.DrunkActive = 0;
+		}
+		youdidthistoher.Instance.Save ();
+	}
 
 	void disablePowerupFromPause(int limit)
 	{

@@ -17,8 +17,8 @@ public class GameUI : MonoBehaviour {
 	private const int noOfPowerUps = 7;
 	private const float moveSpeed = 2f;
 
-	public GameObject pausePanel, gameoverPanel, pauseButton, gameoverAnimationButton, continueButton, blockGroup, themeSource, effectsSource, inputHandler, comingSoon, doubleCoins;
-	public GameObject soundButton, magnetButton, gunButton, multiBallButton, vipButton, bigBallButton, padLongButton, flareButton, gridLock, darknessPanel, iconHolder;
+	public GameObject pausePanel, gameoverPanel, pauseButton, gameoverAnimationButton, continueButton, restartButtonGO, restartButtonPause, blockGroup, themeSource, effectsSource, inputHandler, comingSoon, doubleCoins;
+	public GameObject soundButton, magnetButton, gunButton, multiBallButton, vipButton, bigBallButton, padLongButton, flareButton, gridLock, darknessPanel, iconHolder, pauseAnimatable;
 
 	public Text goText, descriptionText, levelText, coinsEarned, highScore;
 
@@ -36,6 +36,8 @@ public class GameUI : MonoBehaviour {
 		isSelected = new int[noOfPowerUps];
 		parsed = new string[noOfWinText];
 		tempCol = gridLock.GetComponent<Image> ().color;
+		if(youdidthistoher.Instance.tutorialOnly)
+			restartButtonPause.GetComponent<Button> ().interactable = false;
 		if (youdidthistoher.Instance.backgroundMusic == 0)
 			themeSource.SetActive(false);
 		if(youdidthistoher.Instance.effectsSound==0)
@@ -80,6 +82,20 @@ public class GameUI : MonoBehaviour {
 		}
 	}
 
+	void Update()
+	{
+		if(Input.GetKeyDown(KeyCode.Escape))
+		{
+			if (pausePanel.activeInHierarchy || gameoverPanel.activeInHierarchy) {
+				SceneManager.LoadScene ("Main Scene");
+			} else {
+				pauseAnimatable.GetComponent<UIAnimController> ().PanelActive ();
+				AdManager.Instance.ShowBanner ();
+			}
+		}
+			
+	}
+
 	public void gameOver(int state, int coinCount, int score=0)
 	{
 		showAd ();
@@ -87,6 +103,10 @@ public class GameUI : MonoBehaviour {
 		inputHandler.SetActive (false);
 		coinsEarned.text = coinCount.ToString ();
 		pauseButton.GetComponent<Button> ().interactable = false;
+		if (youdidthistoher.Instance.tutorialOnly) {
+			continueButton.GetComponent<Button> ().interactable = false;
+			restartButtonGO.GetComponent<Button> ().interactable = false;
+		}
 		switch (state) 
 		{
 		case 0:
@@ -202,6 +222,7 @@ public class GameUI : MonoBehaviour {
 
 	public void back()
 	{
+		youdidthistoher.Instance.tutorialOnly = false;
 		for (int i = 0; i < noOfPowerUps; i++) {
 			if (isSelected [i] == 1) {
 				youdidthistoher.Instance.powerUpArray [i]++;

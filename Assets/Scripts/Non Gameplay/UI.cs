@@ -36,14 +36,14 @@ public class UI : MonoBehaviour {
 	private int[] selectedInStores = new int[5];
 	private GameObject[] currentCheck = new GameObject[5];
 
-	private string[] parsed;
+	private string[] parsed, helpParsed;
 
-	private TextAsset txt;
+	private TextAsset txt, helpTxt;
 
 	public Text  descriptionText, itemDescriptionText, countText;
 
-	public GameObject mainPanel, gameSelectionPanel, settingsPanel, aboutPanel, helpPanel, shopPanel, patt, ratingAnimatable, gameSelectionAnimatable, mainAnimatable, aboutSound;
-	public GameObject LevelPage, LevelButton, LevelRow, StoreButton;
+	public GameObject mainPanel, gameSelectionPanel, levelSelectionPanel, settingsPanel, aboutPanel, helpPanel, shopPanel, patt, ratingAnimatable, gameSelectionAnimatable, mainAnimatable, aboutSound;
+	public GameObject LevelPage, LevelButton, LevelRow, StoreButton, helpTitleText ,helpDescriptionText, helpImage, helpPowerUp, helpBlocks, helpOthers, ratingPanel, coinPanel;
 	public GameObject GroundsPanel, BlokesPanel, PowerupsPanel, PadsPanel, SpecialPanel;
 	public GameObject soundButton, cameraButton, effectsButton;
 	public GameObject practiceButton, endlessButton, campaignButton, forwardCampaignButton, backwardCampaignButton, mcdButton, drunkButton;
@@ -55,6 +55,7 @@ public class UI : MonoBehaviour {
 	public Sprite[] groundSprites = new Sprite[GROUND_COUNT];
 	public Sprite[] blokeSprites = new Sprite[BLOKES_COUNT];
 	public Sprite[] padSprites = new Sprite[PAD_COUNT];
+	public Sprite[] helpSprites;
 
 	public AudioSource themeSource, effectsSource;
 	public AudioClip loadingSoundEffect;
@@ -62,12 +63,20 @@ public class UI : MonoBehaviour {
 	private GameObject[] row = new GameObject[NO_OF_ROWS];
 	private GameObject[,] levels = new GameObject[NO_OF_ROWS,NO_OF_COLUMNS];
 	private GameObject prevButton;
-	private int prevItemNo;
+	private int prevItemNo, curHelpSel, GameType;
 	private bool canAskForRating=true, selected=false;
 
 	void Awake () 
 	{
-		if (youdidthistoher.Instance.startGame == true) {
+		helpTxt = (TextAsset)Resources.Load ("Text/help",typeof(TextAsset));
+		string content = helpTxt.text;
+		helpParsed = content.Split ('\n');
+		if (youdidthistoher.Instance.helpOn) {
+			mainPanel.SetActive (false);
+			helpPanel.SetActive (true);
+			hPowerup ();
+		}
+		else if (youdidthistoher.Instance.startGame == true) {
 			mainPanel.SetActive (false);
 			gameSelectionPanel.SetActive (true);
 			showAd ();
@@ -131,6 +140,49 @@ public class UI : MonoBehaviour {
 			}
 		}
 */	}
+
+	void Update()
+	{
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			if (mainPanel.activeInHierarchy) {
+				Application.Quit ();
+			}
+			else if (coinPanel.activeInHierarchy) {
+				coinPanel.SetActive (false);
+				shopPanel.SetActive (false);
+				gameSelectionPanel.SetActive (false);
+				mainAnimatable.GetComponent<UIAnimController> ().PanelActive ();
+			}
+			else if (levelSelectionPanel.activeInHierarchy) {
+				levelSelectionPanel.SetActive (false);
+				gameSelectionAnimatable.GetComponent<UIAnimController> ().PanelActive ();
+				AdManager.Instance.ShowBanner ();
+			} else if (gameSelectionPanel.activeInHierarchy) {
+				gameSelectionAnimatable.GetComponent<UIAnimController> ().PanelInactive ();
+				mainAnimatable.GetComponent<UIAnimController> ().PanelActive ();
+			} else if (helpPanel.activeInHierarchy) {
+				helpPanel.SetActive (false);
+				mainAnimatable.GetComponent<UIAnimController> ().PanelActive ();
+			} else if (shopPanel.activeInHierarchy) {
+				shopPanel.SetActive (false);
+				mainAnimatable.GetComponent<UIAnimController> ().PanelActive ();
+			}
+			else if (aboutPanel.activeInHierarchy) {
+				aboutPanel.SetActive (false);
+				mainAnimatable.GetComponent<UIAnimController> ().PanelActive ();
+			}
+			else if (settingsPanel.activeInHierarchy) {
+				settingsPanel.SetActive (false);
+				mainAnimatable.GetComponent<UIAnimController> ().PanelActive ();
+			}
+			else if (ratingPanel.activeInHierarchy) {
+				ratingPanel.SetActive (false);
+				mainAnimatable.GetComponent<UIAnimController> ().PanelActive ();
+			}
+
+
+		}
+	}
 
 	int price(int storeActive)
 	{
@@ -927,5 +979,96 @@ public class UI : MonoBehaviour {
 	public void showAd()
 	{
 		AdManager.Instance.ShowBanner ();
+	}
+
+	void helpReset()
+	{
+		helpPowerUp.SetActive (false);
+		helpBlocks.SetActive (false);
+		helpOthers.SetActive (false);
+	}
+
+	public void hPowerup()
+	{
+		helpReset ();
+		helpPowerUp.SetActive (true);
+		//selecting big ball
+		helpParse (0);
+		levelSpecifier (4);
+		setGameType (0);
+	}
+
+	public void hBlocks()
+	{
+		helpReset ();
+		helpBlocks.SetActive (true);
+		//selecting basic block 1
+		helpParse (10);
+		levelSpecifier (1);
+		setGameType (0);
+	}
+
+	public void hOthers()
+	{
+		helpReset ();
+		helpOthers.SetActive (true);
+		//selecting big ball
+		helpParse (17);
+		levelSpecifier (1);
+		setGameType (0);
+	}
+
+	public void helpParse(int no)
+	{
+		string[] s = helpParsed [no].Split ('*');
+		helpTitleText.GetComponent<Text> ().text = s [0];
+		helpDescriptionText.GetComponent<Text> ().text = s[1];
+		helpImage.GetComponent<Image>().sprite = helpSprites [no];
+	}
+
+	public void levelSpecifier(int tutData)
+	{
+		curHelpSel = tutData;
+	}
+
+	public void setGameType(int type)
+	{
+		GameType = type;
+	}
+
+	public void tutorial()
+	{
+		youdidthistoher.Instance.helpOn = true;
+		youdidthistoher.Instance.tutorialOnly = true;
+		switch (GameType) {
+		case 0:
+			youdidthistoher.Instance.forceTutorialLevel = curHelpSel;
+			youdidthistoher.Instance.currentPlayingLevel = curHelpSel;
+			youdidthistoher.Instance.gameplayType = 0;
+			break;
+		case 1:
+			youdidthistoher.Instance.firstEndlessPlay = 1;
+			youdidthistoher.Instance.gameplayType = 1;
+			break;
+		case 2:
+			youdidthistoher.Instance.firstDarkPlay = 1;
+			youdidthistoher.Instance.gameplayType = 2;
+			break;
+		case 3:
+			youdidthistoher.Instance.currentPlayingLevel = curHelpSel;
+			youdidthistoher.Instance.currentPlayingLevel = 21;
+			youdidthistoher.Instance.gameplayType = 0;
+			youdidthistoher.Instance.MCDActive = 1;
+			youdidthistoher.Instance.firstMCDPlay = 1;
+			break;
+		case 4:
+			youdidthistoher.Instance.currentPlayingLevel = curHelpSel;
+			youdidthistoher.Instance.currentPlayingLevel = 21;
+			youdidthistoher.Instance.gameplayType = 0;
+			youdidthistoher.Instance.DrunkActive = 1;
+			youdidthistoher.Instance.firstDrunkPlay = 1;
+			break;
+		}
+		SceneManager.LoadScene ("Pong_Breaker");
 	}
 }
