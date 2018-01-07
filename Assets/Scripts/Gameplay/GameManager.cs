@@ -77,11 +77,6 @@ public class GameManager : MonoBehaviour {
 		for(int i=0;i<3;i++)
 			blockMaterial [i] = youdidthistoher.Instance.blokeMaterials[youdidthistoher.Instance.currentSkinIndexBloke*3+i];
 
-		if (youdidthistoher.Instance.MCDActive == 1) {
-			PAD_MULTIPLIER = 0.5f;
-		} else if (youdidthistoher.Instance.DrunkActive == 1) {
-			PAD_MULTIPLIER = 2f;
-		}
 		instance = this;
 		DeadPool = GameObject.Find ("DeadPool").transform;
 		resetTriggers ();												//flare powerup reset correction
@@ -123,10 +118,11 @@ public class GameManager : MonoBehaviour {
 			POWER_UP_PROB = 0f;													//disable powerups
 		}
 
-		if (youdidthistoher.Instance.gameplayType<=1)
+		if (youdidthistoher.Instance.gameplayType<=1 && youdidthistoher.Instance.forceTutorialLevel==0)
         {
             if (youdidthistoher.Instance.MCDActive == 1)
             {
+				PAD_MULTIPLIER = 0.5f;
 				MCD.transform.parent.GetChild (0).gameObject.SetActive (false);
                 MCD.SetActive(true);
 				AIS.Instance.GetComponent<Rigidbody> ().isKinematic = false;
@@ -134,6 +130,7 @@ public class GameManager : MonoBehaviour {
             }
             else if (youdidthistoher.Instance.DrunkActive == 1)
             {
+				PAD_MULTIPLIER = 2f;
 				MCD.transform.parent.GetChild (0).gameObject.SetActive (false);
                 drunk.SetActive(true);
             }
@@ -190,6 +187,11 @@ public class GameManager : MonoBehaviour {
 				GameOver = true;
 				if (player_Point > AI_Point) {
 
+					if (player_Point - AI_Point >= 100) {
+						Social.ReportProgress (GPGSIds.achievement_im_just_so_good, 100.0f, (bool success) => {
+						});
+					}
+
 					int levelReached =PlayerPrefs.GetInt ("campaignLevelReached");
 					int currentLevel = PlayerPrefs.GetInt ("currentPlayingLevel");
 
@@ -198,9 +200,25 @@ public class GameManager : MonoBehaviour {
 							comingSoon.SetActive (true);
 							youdidthistoher.Instance.currency += 2000;
 							youdidthistoher.Instance.Save ();
+							Social.ReportProgress (GPGSIds.achievement_pong_maniac, 100.0f, (bool success) => {
+							});
 						} else {
 							youdidthistoher.Instance.campaignLevelReached = ++levelReached;
 							youdidthistoher.Instance.Save ();
+							if (levelReached == 50) {
+								Social.ReportProgress (GPGSIds.achievement_getting_the_hang_of_it, 100.0f, (bool success) => {
+								});			
+							} else if (levelReached == 100) {
+								Social.ReportProgress (GPGSIds.achievement_professional_ponger, 100.0f, (bool success) => {
+								});			
+							} else if (levelReached == 150) {
+								Social.ReportProgress (GPGSIds.achievement_master_mcawesomeville, 100.0f, (bool success) => {
+								});		
+							}
+							else if (levelReached == 200) {
+								Social.ReportProgress (GPGSIds.achievement_pong_jedi, 100.0f, (bool success) => {
+								});			
+							}
 							if ((levelReached) % 5 == 0) {
 								//////
 								//							AdManager.Instance.ShowVideo ();
@@ -211,7 +229,9 @@ public class GameManager : MonoBehaviour {
 						}
 					}
 					//player is winner
+
 					gogoScreen(0);
+				
 				}else{
 					gogoScreen(1);
 				}				
@@ -240,10 +260,19 @@ public class GameManager : MonoBehaviour {
 			if (youdidthistoher.Instance.gameplayType == 1) {
 				if (player_WallPoint >= WIN_LIMIT_ENDLESS) {
 					GameOver = true;
+
+					if (player_Point - AI_Point >= 100) {
+						Social.ReportProgress (GPGSIds.achievement_im_just_so_good, 100.0f, (bool success) => {
+						});
+					}
+
 					if (youdidthistoher.Instance.HighScoreEndless < player_Point) {
 						if (player_Point > AI_Point) {
 							youdidthistoher.Instance.HighScoreEndless = (int)player_Point;				//highscore is broken only if player points are greater than AI points
 							youdidthistoher.Instance.Save ();
+
+							Social.ReportScore((long)player_Point, GPGSIds.leaderboard_endless_mode, (bool success) => {});
+
 							gogoScreen (0, (int)player_Point);
 						}
 						else if (player_Point < AI_Point) {
@@ -257,10 +286,24 @@ public class GameManager : MonoBehaviour {
 			}else {
 				if (player_WallPoint >= WIN_LIMIT_DARK) {
 					GameOver = true;
+
+					if (player_Point - AI_Point >= 100) {
+						Social.ReportProgress (GPGSIds.achievement_im_just_so_good, 100.0f, (bool success) => {
+						});
+					}
+
+					if (player_Point >= 100) {
+						Social.ReportProgress (GPGSIds.achievement_shadow_fighter, 100.0f, (bool success) => {
+						});
+					}
+
 					if (youdidthistoher.Instance.HighScoreDark < player_Point) {
 						if (player_Point > AI_Point) {
 							youdidthistoher.Instance.HighScoreDark = (int)player_Point;
 							youdidthistoher.Instance.Save ();
+
+							Social.ReportScore((long)player_Point, GPGSIds.leaderboard_dark_mode, (bool success) => {});
+
 							gogoScreen (0, (int)player_Point);
 						} else if (player_Point < AI_Point) {
 							player_Point = -1;

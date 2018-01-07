@@ -18,6 +18,7 @@ public class TutorialManager : MonoBehaviour {
 	TextAsset txt;
 
 	void Start () {
+		powerupAdjuster (youdidthistoher.Instance.currentPlayingLevel);
 		if (youdidthistoher.Instance.firstEndlessPlay == 1 && youdidthistoher.Instance.gameplayType == 1) {
 			endlessPlay = true;
 			loadData (-4);
@@ -65,7 +66,6 @@ public class TutorialManager : MonoBehaviour {
 		tutorialPanel.SetActive (true);
 		ball.SetActive (false);
 		tutorialPanel.transform.GetChild (0).GetComponent<Text> ().text = curData [curDataElement];
-		powerupAdjuster (levelNo);
 	}
 
 	public void nextData()
@@ -96,7 +96,6 @@ public class TutorialManager : MonoBehaviour {
 		}
 		else
 		{
-			youdidthistoher.Instance.forceTutorialLevel = 0;
 			if (curTutElement + 1 < tutorialLevels.Length)
 				youdidthistoher.Instance.tutorialLevel = tutorialLevels [curTutElement + 1];
 			else
@@ -182,6 +181,11 @@ public class TutorialManager : MonoBehaviour {
 			youdidthistoher.Instance.DrunkActive = 0;
 		}
 		youdidthistoher.Instance.Save ();
+
+		if (youdidthistoher.Instance.firstEndlessPlay == 1 && youdidthistoher.Instance.firstDarkPlay == 1 && youdidthistoher.Instance.tutorialLevel == -1 && youdidthistoher.Instance.tutorialFinished==0) {
+			Social.ReportProgress (GPGSIds.achievement_baby_steps, 100.0f, (bool success) => {
+			});			
+		}
 	}
 
 	void disablePowerupFromPause(int limit)

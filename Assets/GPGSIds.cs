@@ -24,11 +24,18 @@
 
 public static class GPGSIds
 {
-        public const string achievement_level_25 = "CgkI96rii5sYEAIQAg"; // <GPGSID>
-        public const string achievement_level_1 = "CgkI96rii5sYEAIQAA"; // <GPGSID>
-        public const string achievement_level_100 = "CgkI96rii5sYEAIQAw"; // <GPGSID>
-        public const string achievement_level_5 = "CgkI96rii5sYEAIQAQ"; // <GPGSID>
-        public const string achievement_level_400 = "CgkI96rii5sYEAIQBA"; // <GPGSID>
+        public const string achievement_master_mcawesomeville = "CgkI7IC_ubMcEAIQAw"; // <GPGSID>
+        public const string achievement_baby_steps = "CgkI7IC_ubMcEAIQAQ"; // <GPGSID>
+        public const string achievement_shadow_fighter = "CgkI7IC_ubMcEAIQDA"; // <GPGSID>
+        public const string achievement_pong_jedi = "CgkI7IC_ubMcEAIQCQ"; // <GPGSID>
+        public const string achievement_professional_ponger = "CgkI7IC_ubMcEAIQCg"; // <GPGSID>
+        public const string achievement_marine_cruiser_destroyer_inbound = "CgkI7IC_ubMcEAIQBQ"; // <GPGSID>
+        public const string leaderboard_dark_mode = "CgkI7IC_ubMcEAIQCA"; // <GPGSID>
+        public const string achievement_pong_maniac = "CgkI7IC_ubMcEAIQBA"; // <GPGSID>
+        public const string achievement_im_just_so_good = "CgkI7IC_ubMcEAIQCw"; // <GPGSID>
+        public const string achievement_drunk = "CgkI7IC_ubMcEAIQBg"; // <GPGSID>
+        public const string leaderboard_endless_mode = "CgkI7IC_ubMcEAIQBw"; // <GPGSID>
+        public const string achievement_getting_the_hang_of_it = "CgkI7IC_ubMcEAIQAg"; // <GPGSID>
 
 }
 

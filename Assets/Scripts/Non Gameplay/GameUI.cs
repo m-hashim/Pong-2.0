@@ -44,9 +44,20 @@ public class GameUI : MonoBehaviour {
 			effectsSource.SetActive(false);
 		if(youdidthistoher.Instance.backgroundMusic==0&&youdidthistoher.Instance.effectsSound==0)
 			soundButton.transform.GetChild (1).gameObject.SetActive (true);
+
+		if (youdidthistoher.Instance.DrunkActive == 1 || youdidthistoher.Instance.MCDActive == 1) {
+		//	gunButton.GetComponent<Button> ().interactable = false;
+		//	magnetButton.GetComponent<Button> ().interactable = false;
+		//	padLongButton.GetComponent<Button> ().interactable = false;
+			gunButton.SetActive(false);
+			magnetButton.SetActive (false);
+			padLongButton.SetActive (false);
+		}
+
 		if (youdidthistoher.Instance.gameplayType == 0) {
 			levelText.text = (youdidthistoher.Instance.currentPlayingLevel).ToString ();
 			themeSource.GetComponent<AudioSource> ().clip = type01;
+			SET_VOLUME = SET_VOLUME_TYPE01_THEME;
 			iconHolder.transform.GetChild (0).gameObject.SetActive (true);
 		}
 		else if (youdidthistoher.Instance.gameplayType == 1) {
@@ -72,7 +83,7 @@ public class GameUI : MonoBehaviour {
 			themeSource.GetComponent<AudioSource> ().volume = SET_VOLUME_TYPE2_THEME;
 			effectsSource.GetComponent<AudioSource> ().volume = SET_VOLUME_TYPE2_EFFECTS;
 			themeSource.GetComponent<AudioSource> ().Play ();
-			SET_VOLUME = SET_VOLUME_TYPE01_THEME;
+			SET_VOLUME = SET_VOLUME_TYPE2_THEME;
 			highScore.transform.parent.gameObject.SetActive (true);
 			highScore.text = youdidthistoher.Instance.HighScoreDark.ToString ();
 			highScore.transform.parent.GetChild(1).GetChild(0).GetComponent<Text>().text = GameManager.WIN_LIMIT_DARK.ToString();
@@ -99,10 +110,15 @@ public class GameUI : MonoBehaviour {
 	public void gameOver(int state, int coinCount, int score=0)
 	{
 		showAd ();
+		youdidthistoher.Instance.forceTutorialLevel = 0;
 		themeSource.GetComponent<AudioSource> ().volume = 0f;
 		inputHandler.SetActive (false);
 		coinsEarned.text = coinCount.ToString ();
 		pauseButton.GetComponent<Button> ().interactable = false;
+
+		if(coinCount==0)
+			doubleCoins.SetActive (false);
+
 		if (youdidthistoher.Instance.tutorialOnly) {
 			continueButton.GetComponent<Button> ().interactable = false;
 			restartButtonGO.GetComponent<Button> ().interactable = false;
@@ -206,8 +222,8 @@ public class GameUI : MonoBehaviour {
 			}
 		}
 		youdidthistoher.Instance.Save ();
-		themeSource.GetComponent<AudioSource> ().volume = SET_VOLUME;
 		Time.timeScale = 1f;
+		themeSource.GetComponent<AudioSource> ().volume = SET_VOLUME;
 		pauseButton.GetComponent<Button> ().interactable = true;
 	}
 
@@ -222,6 +238,7 @@ public class GameUI : MonoBehaviour {
 
 	public void back()
 	{
+		youdidthistoher.Instance.forceTutorialLevel = 0;
 		AdManager.Instance.HideBanner ();
 		youdidthistoher.Instance.tutorialOnly = false;
 		for (int i = 0; i < noOfPowerUps; i++) {

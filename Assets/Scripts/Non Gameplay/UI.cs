@@ -17,12 +17,12 @@ public class UI : MonoBehaviour {
 	private const float gameSelectionWaitTime = 3.5f;
 	private const float purchaseWaitTime = 1.5f;
 	private const int maxDescriptionSizeParsed=15;
-	private const int MCD_COST=500;
-	private const int DRUNK_COST=500;
-	private const int GROUND_COST=500;
+	private const int MCD_COST=600;
+	private const int DRUNK_COST=600;
+	private const int GROUND_COST=300;
 	private const int BLOCK_COST=150;
 	private const int PAD_COST=200;
-	private const int POWERUP_COST=40;
+	private const int POWERUP_COST=30;
 	private const int RATE_US_FREQUENCY = 4;
 	private const float RATE_US_DELAY = 0f;
 
@@ -42,7 +42,7 @@ public class UI : MonoBehaviour {
 
 	public Text  descriptionText, itemDescriptionText, countText;
 
-	public GameObject mainPanel, gameSelectionPanel, levelSelectionPanel, settingsPanel, aboutPanel, helpPanel, shopPanel, patt, ratingAnimatable, gameSelectionAnimatable, mainAnimatable, aboutSound;
+	public GameObject mainPanel, gameSelectionPanel, levelSelectionPanel, settingsPanel, aboutPanel, helpPanel, shopPanel, patt, ratingAnimatable, gameSelectionAnimatable, mainAnimatable, aboutSound, notConnectedPanel;
 	public GameObject LevelPage, LevelButton, LevelRow, StoreButton, helpTitleText ,helpDescriptionText, helpImage, helpPowerUp, helpBlocks, helpOthers, ratingPanel, coinPanel, firstShopVisit;
 	public GameObject GroundsPanel, BlokesPanel, PowerupsPanel, PadsPanel, SpecialPanel;
 	public GameObject soundButton, cameraButton, effectsButton;
@@ -145,7 +145,10 @@ public class UI : MonoBehaviour {
 	void Update()
 	{
 		if (Input.GetKeyDown (KeyCode.Escape)) {
-			if (mainPanel.activeInHierarchy) {
+			if (notConnectedPanel.activeInHierarchy) {
+				closeNotConnectedPanel ();
+			}
+			else if (mainPanel.activeInHierarchy) {
 				Application.Quit ();
 			}
 			else if (coinPanel.activeInHierarchy) {
@@ -792,6 +795,8 @@ public class UI : MonoBehaviour {
 						drunkButton.transform.GetChild (0).gameObject.SetActive (false);
 						drunkButton.transform.GetChild (1).gameObject.SetActive (true);
 						youdidthistoher.Instance.Save ();
+						Social.ReportProgress (GPGSIds.achievement_marine_cruiser_destroyer_inbound, 100.0f, (bool success) => {
+						});		
 					} else {
 						//insufficient funds
 						coinPurchaseActivator.GetComponent<UIAnimController> ().PanelActive ();
@@ -841,6 +846,8 @@ public class UI : MonoBehaviour {
 						mcdButton.transform.GetChild (0).gameObject.SetActive (false);
 						mcdButton.transform.GetChild (1).gameObject.SetActive (true);
 						youdidthistoher.Instance.Save ();
+						Social.ReportProgress (GPGSIds.achievement_drunk, 100.0f, (bool success) => {
+						});		
 					} else {
 						//insufficient funds
 						coinPurchaseActivator.GetComponent<UIAnimController> ().PanelActive ();
@@ -1087,5 +1094,32 @@ public class UI : MonoBehaviour {
 			youdidthistoher.Instance.firstShopVisit = 0;
 			youdidthistoher.Instance.Save ();
 		}
+	}
+
+	public void achievements()
+	{
+		if (Social.localUser.authenticated)
+			youdidthistoher.ShowAchievementsUI ();
+		else
+			notConnectedPanel.SetActive (true);
+	}
+
+	public void leaderboard()
+	{
+		if (Social.localUser.authenticated)
+			youdidthistoher.ShowLeaderboardsUI ();
+		else
+			notConnectedPanel.SetActive (true);
+	}
+
+	public void closeNotConnectedPanel()
+	{
+		notConnectedPanel.SetActive (false);
+	}
+
+	public void signIn()
+	{
+		youdidthistoher.Instance.SignIn ();
+		notConnectedPanel.SetActive (false);
 	}
 }

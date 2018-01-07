@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
 
 public class youdidthistoher : MonoBehaviour {
 
@@ -63,12 +65,14 @@ public class youdidthistoher : MonoBehaviour {
 	public int firstMCDPlay = 1;
 	public int firstDrunkPlay = 1;
 	public int firstShopVisit = 1;
+	public int tutorialFinished = 0;
 
 	public bool startGame = false, helpOn=false, tutorialOnly=false;
 
 	void Awake () {
 		instance = this;
 		DontDestroyOnLoad(gameObject);
+
 		materials = new Material[NO_OF_MATERIALS]; 
 		blokeMaterials = new Material[NO_OF_MATERIALS_BLOKE];
 		powerUpArray = new int[7];
@@ -115,6 +119,7 @@ public class youdidthistoher : MonoBehaviour {
 			firstMCDPlay = PlayerPrefs.GetInt ("firstMCDPlay");
 			firstDrunkPlay = PlayerPrefs.GetInt ("firstDrunkPlay");
 			firstShopVisit = PlayerPrefs.GetInt ("firstShopVisit");
+			tutorialFinished = PlayerPrefs.GetInt ("tutorialFinished");
 			gameOpenCount++;
 
 		/*			
@@ -137,6 +142,12 @@ public class youdidthistoher : MonoBehaviour {
 			PlayerPrefs.SetInt ("HighScoreEndless", HighScoreEndless);
 			PlayerPrefs.SetInt ("HighScoreDark", HighScoreDark);
 		}
+
+		PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().Build();
+		PlayGamesPlatform.InitializeInstance(config);
+		PlayGamesPlatform.Activate();
+		SignIn();
+
 	}
 		
 	public void Save()
@@ -176,10 +187,54 @@ public class youdidthistoher : MonoBehaviour {
 		PlayerPrefs.SetInt ("firstMCDPlay", firstMCDPlay);
 		PlayerPrefs.SetInt ("firstDrunkPlay", firstDrunkPlay);
 		PlayerPrefs.SetInt ("firstShopVisit", firstShopVisit);
+		PlayerPrefs.SetInt ("tutorialFinished", tutorialFinished);
 
 	//	print ("currentPlayingLevel "+currentPlayingLevel);
 	//	print ("campaignLevelReached "+campaignLevelReached);
 	}
+
+	public void SignIn()
+	{
+		if (!Social.localUser.authenticated) {
+			Social.localUser.Authenticate ((bool success) => {
+
+				if (success) {
+					Debug.Log (Social.localUser.userName);
+				} else
+					Debug.Log ("LOL");
+			});
+		}
+	}
+
+	#region Achievements
+	public static void UnlockAchievement(string id)
+	{
+		Social.ReportProgress(id, 100, success => { });
+	}
+
+	public static void IncrementAchievement(string id, int stepsToIncrement)
+	{
+		PlayGamesPlatform.Instance.IncrementAchievement(id, stepsToIncrement, success => { });
+	}
+
+	public static void ShowAchievementsUI()
+	{
+		Social.ShowAchievementsUI();
+	}
+	#endregion /Achievements
+
+	#region Leaderboards
+	public static void AddScoreToLeaderboard(string leaderboardId, long score)
+	{
+		Social.ReportScore(score, leaderboardId, success => { });
+	}
+
+	public static void ShowLeaderboardsUI()
+	{
+		Social.ShowLeaderboardUI();
+	}
+	#endregion /Leaderboards
+
 /*
 	public void backgroundSound()
 	{

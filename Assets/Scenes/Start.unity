@@ -915,7 +915,7 @@ MonoBehaviour:
   powerUpPriceDisplay: 30
   currentCameraMode: 0
   powerUpArray: 
-  campaignLevelReached: 1
+  campaignLevelReached: 33
   totalNoOfLevels: 150
   level: []
   tutorialLevel: 1
@@ -924,6 +924,7 @@ MonoBehaviour:
   firstDarkPlay: 1
   firstMCDPlay: 1
   firstDrunkPlay: 1
+  firstShopVisit: 1
   startGame: 0
   helpOn: 0
   tutorialOnly: 0
