@@ -18,8 +18,8 @@ public class PlayerS : MonoBehaviour {
 	private const float MAST_VALUE_PAD_LONG=3.5f;
    
 	private float dirZ=0;
-	private float zForce;
-	private float xForce;
+	public float zForce;
+	public float xForce;
 	public Vector3 oldPosition;
 
 	private Rigidbody rb;

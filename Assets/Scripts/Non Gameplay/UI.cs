@@ -17,12 +17,12 @@ public class UI : MonoBehaviour {
 	private const float gameSelectionWaitTime = 3.5f;
 	private const float purchaseWaitTime = 1.5f;
 	private const int maxDescriptionSizeParsed=15;
-	private const int MCD_COST=600;
-	private const int DRUNK_COST=600;
-	private const int GROUND_COST=300;
-	private const int BLOCK_COST=150;
-	private const int PAD_COST=200;
-	private const int POWERUP_COST=30;
+	private int MCD_COST=600;
+	private int DRUNK_COST=600;
+	private int GROUND_COST=youdidthistoher.Instance.extraPriceDisplay;
+	private int BLOCK_COST=youdidthistoher.Instance.blokePriceDisplay;
+	private int PAD_COST=youdidthistoher.Instance.padPriceDisplay;
+	private int POWERUP_COST=youdidthistoher.Instance.powerUpPriceDisplay;
 	private const int RATE_US_FREQUENCY = 4;
 	private const float RATE_US_DELAY = 0f;
 

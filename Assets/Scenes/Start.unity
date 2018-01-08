@@ -885,7 +885,7 @@ MonoBehaviour:
   currentSkinIndexPad: 0
   currentSkinIndexBloke: 0
   currentGround: 0
-  currency: 5000
+  currency: 400
   p_bigBall: 0
   p_flareBall: 0
   p_gun: 0
@@ -909,14 +909,14 @@ MonoBehaviour:
   backgroundMusic: 1
   effectsSound: 1
   gameplayType: 0
-  padPriceDisplay: 100
-  blokePriceDisplay: 50
-  extraPriceDisplay: 150
+  padPriceDisplay: 200
+  blokePriceDisplay: 150
+  extraPriceDisplay: 300
   powerUpPriceDisplay: 30
   currentCameraMode: 0
   powerUpArray: 
-  campaignLevelReached: 33
-  totalNoOfLevels: 150
+  campaignLevelReached: 1
+  totalNoOfLevels: 251
   level: []
   tutorialLevel: 1
   forceTutorialLevel: 0
@@ -925,6 +925,7 @@ MonoBehaviour:
   firstMCDPlay: 1
   firstDrunkPlay: 1
   firstShopVisit: 1
+  tutorialFinished: 0
   startGame: 0
   helpOn: 0
   tutorialOnly: 0

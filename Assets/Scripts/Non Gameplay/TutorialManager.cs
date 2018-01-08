@@ -18,7 +18,8 @@ public class TutorialManager : MonoBehaviour {
 	TextAsset txt;
 
 	void Start () {
-		powerupAdjuster (youdidthistoher.Instance.currentPlayingLevel);
+		if(youdidthistoher.Instance.currentPlayingLevel<=tutorialLevels[tutorialLevels.Length-1])
+			powerupAdjuster (youdidthistoher.Instance.currentPlayingLevel);
 		if (youdidthistoher.Instance.firstEndlessPlay == 1 && youdidthistoher.Instance.gameplayType == 1) {
 			endlessPlay = true;
 			loadData (-4);
@@ -168,6 +169,8 @@ public class TutorialManager : MonoBehaviour {
 		case 15:
 		case 20:
 			GameManager.Instance.powerupTypeLimiter(33);
+			break;
+		default:
 			break;
 		}
 	}

@@ -22,7 +22,7 @@ public class youdidthistoher : MonoBehaviour {
 	public int currentSkinIndexPad=0;
 	public int currentSkinIndexBloke = 0;
 	public int currentGround = 0;
-	public int currency=5000;
+	public int currency=400;
 	public int p_bigBall = 5;
 	public int p_flareBall = 5;
 	public int p_gun = 5;
@@ -47,15 +47,15 @@ public class youdidthistoher : MonoBehaviour {
 	public int effectsSound =1;
 	public int gameplayType = 0;
 
-	public int padPriceDisplay = 100;
-	public int blokePriceDisplay = 50;
-	public int extraPriceDisplay = 150;
+	public int padPriceDisplay = 200;
+	public int blokePriceDisplay = 150;
+	public int extraPriceDisplay = 300;
 	public int powerUpPriceDisplay = 30;
 
 	public int currentCameraMode=2;		//0 for dynamic, 2 for first person
 	public int[] powerUpArray;
-	public int campaignLevelReached=120;
-	public int totalNoOfLevels = 120;
+	public int campaignLevelReached=1;
+	public int totalNoOfLevels = 251;
 	public string[] level;
 
 	public int tutorialLevel = 1;
@@ -122,25 +122,15 @@ public class youdidthistoher : MonoBehaviour {
 			tutorialFinished = PlayerPrefs.GetInt ("tutorialFinished");
 			gameOpenCount++;
 
-		/*			
+				
 			if (!(PlayerPrefs.HasKey ("levelsUpdated"))) {
-				for (int i = 1; i<=level.Length; i++) {
-					PlayerPrefs.SetString ("level" + i, level [i - 1]);
-				}
+				PlayerPrefs.DeleteAll ();							// game reset in second update if already on some phone, 10 active devices
+				firstRun();
 			}
-		*/
+		
 		} else{
 			//pehli baar chalega bencho
-				for(int i=0;i<7;i++)
-					powerUpArray[i]=7;
-			Save();
-			PlayerPrefs.SetInt ("currentPlayingLevel", currentPlayingLevel);
-			PlayerPrefs.SetInt ("campaignLevelReached", campaignLevelReached);
-			for (int i = 1; i<=level.Length; i++) {
-				PlayerPrefs.SetString ("level" + i, level [i - 1]);
-			}
-			PlayerPrefs.SetInt ("HighScoreEndless", HighScoreEndless);
-			PlayerPrefs.SetInt ("HighScoreDark", HighScoreDark);
+			firstRun();
 		}
 
 		PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().Build();
@@ -150,6 +140,17 @@ public class youdidthistoher : MonoBehaviour {
 
 	}
 		
+	void firstRun()
+	{
+		for(int i=0;i<7;i++)
+			powerUpArray[i]=4;
+		Save();
+		PlayerPrefs.SetInt ("levelsUpdated", 1);
+		for (int i = 1; i<=level.Length; i++) {
+			PlayerPrefs.SetString ("level" + i, level [i - 1]);
+		}
+	}
+
 	public void Save()
 	{
 		PlayerPrefs.SetInt ("CurrentSkinPad", currentSkinIndexPad);
