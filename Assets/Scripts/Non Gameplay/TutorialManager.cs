@@ -29,7 +29,7 @@ public class TutorialManager : MonoBehaviour {
 			loadData (-3);
 		} else if (youdidthistoher.Instance.tutorialLevel <= tutorialLevels [tutorialLevels.Length - 1] && youdidthistoher.Instance.currentPlayingLevel == youdidthistoher.Instance.tutorialLevel && youdidthistoher.Instance.gameplayType == 0) {
 			if(youdidthistoher.Instance.currentPlayingLevel<=tutorialLevels[tutorialLevels.Length-1])
-				powerupAdjuster (youdidthistoher.Instance.currentPlayingLevel);
+				powerupAdjuster (youdidthistoher.Instance.currentPlayingLevel-1);
 			for (int i = 0; i < tutorialLevels.Length; i++) {
 				if (youdidthistoher.Instance.tutorialLevel == tutorialLevels [i]) {
 					curTutElement = i;
