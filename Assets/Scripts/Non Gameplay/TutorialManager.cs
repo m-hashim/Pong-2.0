@@ -18,8 +18,9 @@ public class TutorialManager : MonoBehaviour {
 	TextAsset txt;
 
 	void Start () {
-		if(youdidthistoher.Instance.currentPlayingLevel<=tutorialLevels[tutorialLevels.Length-1])
+		if(youdidthistoher.Instance.currentPlayingLevel == youdidthistoher.Instance.campaignLevelReached || youdidthistoher.Instance.currentPlayingLevel<=tutorialLevels[tutorialLevels.Length-1])
 			powerupAdjuster (youdidthistoher.Instance.currentPlayingLevel);
+
 		if (youdidthistoher.Instance.firstEndlessPlay == 1 && youdidthistoher.Instance.gameplayType == 1) {
 			endlessPlay = true;
 			loadData (-4);
@@ -27,6 +28,8 @@ public class TutorialManager : MonoBehaviour {
 			darkPlay = true;
 			loadData (-3);
 		} else if (youdidthistoher.Instance.tutorialLevel <= tutorialLevels [tutorialLevels.Length - 1] && youdidthistoher.Instance.currentPlayingLevel == youdidthistoher.Instance.tutorialLevel && youdidthistoher.Instance.gameplayType == 0) {
+			if(youdidthistoher.Instance.currentPlayingLevel<=tutorialLevels[tutorialLevels.Length-1])
+				powerupAdjuster (youdidthistoher.Instance.currentPlayingLevel);
 			for (int i = 0; i < tutorialLevels.Length; i++) {
 				if (youdidthistoher.Instance.tutorialLevel == tutorialLevels [i]) {
 					curTutElement = i;
@@ -47,6 +50,7 @@ public class TutorialManager : MonoBehaviour {
 		}
 		else if (youdidthistoher.Instance.forceTutorialLevel != 0) {
 			loadData (youdidthistoher.Instance.forceTutorialLevel - 1);
+			powerupAdjuster (youdidthistoher.Instance.forceTutorialLevel);
 			youdidthistoher.Instance.tutorialOnly = true;
 		}
 	}
@@ -107,7 +111,12 @@ public class TutorialManager : MonoBehaviour {
 
 	void powerupAdjuster (int levelNo) {
 		GameObject pu;
-		switch (tutorialLevels[levelNo]) {
+		bool powerupDu;
+		if (youdidthistoher.Instance.campaignLevelReached == levelNo || youdidthistoher.Instance.forceTutorialLevel!=0)
+			powerupDu = true;
+		else
+			powerupDu = false;
+		switch (levelNo) {
 		case 1:
 		case 2:
 		case 3:
@@ -117,38 +126,50 @@ public class TutorialManager : MonoBehaviour {
 			break;
 		case 4:
 			GameManager.Instance.powerupTypeLimiter (4);
-			pu = Instantiate (GameManager.Instance.bigBall, GameManager.Instance.gameObject.transform.position, Quaternion.identity);
-			pu.GetComponent<rotator> ().turn = true;
+			if (powerupDu) {
+				pu = Instantiate (GameManager.Instance.bigBall, GameManager.Instance.gameObject.transform.position, Quaternion.identity);
+				pu.GetComponent<rotator> ().turn = true;
+			}
 			disablePowerupFromPause (6);
 			break;
 		case 5:
 			GameManager.Instance.powerupTypeLimiter (12);
-			pu = Instantiate (GameManager.Instance.padLong, GameManager.Instance.gameObject.transform.position, Quaternion.identity);
-			pu.GetComponent<rotator> ().turn = true;
+			if (powerupDu) {
+				pu = Instantiate (GameManager.Instance.padLong, GameManager.Instance.gameObject.transform.position, Quaternion.identity);
+				pu.GetComponent<rotator> ().turn = true;
+			}
 			disablePowerupFromPause (5);
 			break;
 		case 6:
 			GameManager.Instance.powerupTypeLimiter (15);
-			pu = Instantiate (GameManager.Instance.flareBall, GameManager.Instance.gameObject.transform.position, Quaternion.identity);
-			pu.GetComponent<rotator> ().turn = true;
+			if (powerupDu) {
+				pu = Instantiate (GameManager.Instance.flareBall, GameManager.Instance.gameObject.transform.position, Quaternion.identity);
+				pu.GetComponent<rotator> ().turn = true;
+			}
 			disablePowerupFromPause (4);
 			break;
 		case 7:
 			GameManager.Instance.powerupTypeLimiter (18);
-			pu = Instantiate (GameManager.Instance.VIPBall, GameManager.Instance.gameObject.transform.position, Quaternion.identity);
-			pu.GetComponent<rotator> ().turn = true;
+			if (powerupDu) {
+				pu = Instantiate (GameManager.Instance.VIPBall, GameManager.Instance.gameObject.transform.position, Quaternion.identity);
+				pu.GetComponent<rotator> ().turn = true;
+			}
 			disablePowerupFromPause (3);
 			break;
 		case 8:
 			GameManager.Instance.powerupTypeLimiter (26);
-			pu = Instantiate (GameManager.Instance.speedDown, GameManager.Instance.gameObject.transform.position, Quaternion.identity);
-			pu.GetComponent<rotator> ().turn = true;
+			if (powerupDu) {
+				pu = Instantiate (GameManager.Instance.speedDown, GameManager.Instance.gameObject.transform.position, Quaternion.identity);
+				pu.GetComponent<rotator> ().turn = true;
+			}
 			disablePowerupFromPause (3);
 			break;
 		case 9:
-			GameManager.Instance.powerupTypeLimiter(28);
-			pu = Instantiate(GameManager.Instance.gunPad, GameManager.Instance.gameObject.transform.position, Quaternion.identity);
-			pu.GetComponent<rotator> ().turn = true;
+			GameManager.Instance.powerupTypeLimiter (28);
+			if (powerupDu) {
+				pu = Instantiate (GameManager.Instance.gunPad, GameManager.Instance.gameObject.transform.position, Quaternion.identity);
+				pu.GetComponent<rotator> ().turn = true;
+			}
 			disablePowerupFromPause (2);
 			break;
 		case 10:
@@ -156,15 +177,19 @@ public class TutorialManager : MonoBehaviour {
 			disablePowerupFromPause (2);
 			break;
 		case 11:
-			GameManager.Instance.powerupTypeLimiter(31);
-			pu = Instantiate(GameManager.Instance.multiBall, GameManager.Instance.gameObject.transform.position, Quaternion.identity);
-			pu.GetComponent<rotator> ().turn = true;
+			GameManager.Instance.powerupTypeLimiter (31);
+			if (powerupDu) {
+				pu = Instantiate (GameManager.Instance.multiBall, GameManager.Instance.gameObject.transform.position, Quaternion.identity);
+				pu.GetComponent<rotator> ().turn = true;
+			}
 			disablePowerupFromPause (1);
 			break;
 		case 12:
-			GameManager.Instance.powerupTypeLimiter(33);
-			pu = Instantiate(GameManager.Instance.magnetPad, GameManager.Instance.gameObject.transform.position, Quaternion.identity);
-			pu.GetComponent<rotator> ().turn = true;
+			GameManager.Instance.powerupTypeLimiter (33);
+			if (powerupDu) {
+				pu = Instantiate (GameManager.Instance.magnetPad, GameManager.Instance.gameObject.transform.position, Quaternion.identity);
+				pu.GetComponent<rotator> ().turn = true;
+			}
 			break;
 		case 15:
 		case 20:

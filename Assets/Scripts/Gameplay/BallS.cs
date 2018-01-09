@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class BallS : MonoBehaviour {
 	private const float NORMAL_BALL_SIZE = 1f;
 
-	public float currentVelocity = 12f;
+	public float currentVelocity = 13.5f;
 
 	public Rigidbody ballRig;
 	private Vector3 direction;

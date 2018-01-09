@@ -6,7 +6,7 @@ public class AIS : MonoBehaviour {
 	private static AIS instance;
 	public static AIS Instance{get{ return instance;}}
 
-	private float SMOOTH_MOVEMENT=0.225f;
+	private float SMOOTH_MOVEMENT=0.252f;
 	private float ORIGINAL_FORCE_MODIFIER = 0.3f;
 	private float MAX_FORCE = 500.0f;
 

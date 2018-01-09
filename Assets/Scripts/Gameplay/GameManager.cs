@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour {
 
 	public float HighScore;
 	private bool HighScoreTuta;
+	public bool goGameManager=true;
 
     void Start () {
 		gameStartTime = Time.time;
@@ -175,7 +176,7 @@ public class GameManager : MonoBehaviour {
 				player_Score.GetComponent<Text> ().color = Color.red;
 			}
 
-			if (BlokeRemaining() == 0) {
+			if (BlokeRemaining() == 0 && goGameManager) {
 				//if(false){	
 
 				int levelLooseCount=PlayerPrefs.GetInt("levelLooseCount");
@@ -231,7 +232,7 @@ public class GameManager : MonoBehaviour {
 					//player is winner
 
 					gogoScreen(0);
-				
+					print ("It is indeed coming here");
 				}else{
 					gogoScreen(1);
 				}				
@@ -544,6 +545,7 @@ public class GameManager : MonoBehaviour {
 		}
 		return count;
 	}
+
 	public void BlokePoint(bool turn){
 		if (turn) {
 			player_BlokePoint++;	

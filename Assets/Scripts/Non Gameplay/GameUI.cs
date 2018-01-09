@@ -174,6 +174,7 @@ public class GameUI : MonoBehaviour {
 		
 	public void pause()
 	{
+		GameManager.Instance.goGameManager = false;
 		Time.timeScale = 0f;
 		inputHandler.SetActive (false);
 		themeSource.GetComponent<AudioSource> ().volume = 0f;
@@ -190,6 +191,7 @@ public class GameUI : MonoBehaviour {
 
 	public void unPause()
 	{
+		GameManager.Instance.goGameManager = true;
 		secondPause = true;
 		inputHandler.SetActive (true);
 		for (int i = 0; i < noOfPowerUps; i++) {

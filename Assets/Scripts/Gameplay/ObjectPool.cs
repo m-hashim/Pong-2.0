@@ -53,6 +53,7 @@ public class ObjectPool : MonoBehaviour {
 					poolList [i] [j].SetActive (false);
                     poolList[i][j].transform.parent = transform;
                 poolList[i][j].GetComponent<BlockToggle>().enabled = false;
+				poolList [i] [j].GetComponent<BlockBlink> ().disable ();
                 poolList[i][j].GetComponent<BlockBlink>().enabled = false;
                 //}
             }

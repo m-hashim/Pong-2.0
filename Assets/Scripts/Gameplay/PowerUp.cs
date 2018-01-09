@@ -23,9 +23,9 @@
 		private const float BLOKE_MIN_SPAWNX = -3f;
 		private const float BLOKE_MAX_SPAWNX = 3f;
 
-		public float SPEEDNORMAL=12f;
-		private float SPEEDFAST=18f;
-		public float SPEEDSLOW=6f;
+		public float SPEEDNORMAL=13.5f;
+		private float SPEEDFAST=17f;
+		public float SPEEDSLOW=7f;
 
 		private const float POWER_5_DURATION =5f;				//gun
 		private const float POWER_7_DURATION = 7f;			//multi ball,flare ball, vip ball;

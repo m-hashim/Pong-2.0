@@ -625,7 +625,7 @@ public class UI : MonoBehaviour {
 
 	public void previousPageLevel()
 	{
-		if (levelCount>NO_OF_ROWS*NO_OF_COLUMNS) {
+		if (levelCount>NO_OF_ROWS*NO_OF_COLUMNS && youdidthistoher.Instance.campaignLevelReached>20) {
 				blockMovement = false;
 				if (lastSwitch == 1)
 					levelCount -= NO_OF_ROWS*NO_OF_COLUMNS;

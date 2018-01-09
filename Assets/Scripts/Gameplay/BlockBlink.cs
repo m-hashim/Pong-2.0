@@ -13,9 +13,10 @@ public class BlockBlink : MonoBehaviour {
 	void change(){
 		state = state ? false : true;
 		gameObject.SetActive (state);
+		print (state);
 	}
-    void OnDisable()
+    public void disable()
     {
-        CancelInvoke();    
+    	CancelInvoke();    
     }
 }

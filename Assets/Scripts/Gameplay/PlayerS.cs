@@ -7,7 +7,7 @@ public class PlayerS : MonoBehaviour {
 	private static PlayerS instance;
 	public static PlayerS Instance{get{ return instance;}}
 
-	private float ORIGINAL_FORCE_MODIFIER = 0.3f;
+	private float ORIGINAL_FORCE_MODIFIER = 0.4f;
 	private float MAX_FORCE = 500.0f;
 
 	private const float PADDLE_BACK_ANIM_DUR = 0.12f;

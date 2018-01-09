@@ -127,7 +127,13 @@ public class youdidthistoher : MonoBehaviour {
 				PlayerPrefs.DeleteAll ();							// game reset in second update if already on some phone, 10 active devices
 				firstRun();
 			}
-		
+
+			if(!(PlayerPrefs.HasKey("easingLevel")))
+			{
+				PlayerPrefs.DeleteAll ();
+				firstRun();
+			}
+
 		} else{
 			//pehli baar chalega bencho
 			firstRun();
@@ -146,6 +152,7 @@ public class youdidthistoher : MonoBehaviour {
 			powerUpArray[i]=4;
 		Save();
 		PlayerPrefs.SetInt ("levelsUpdated", 1);
+		PlayerPrefs.SetInt ("easingLevel", 1);
 		for (int i = 1; i<=level.Length; i++) {
 			PlayerPrefs.SetString ("level" + i, level [i - 1]);
 		}
