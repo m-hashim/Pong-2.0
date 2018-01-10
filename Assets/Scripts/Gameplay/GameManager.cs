@@ -64,7 +64,6 @@ public class GameManager : MonoBehaviour {
 	private int currLimit;
 
 	public Text coinsEarned, hitsLeft;
-
 	public float HighScore;
 	private bool HighScoreTuta;
 	public bool goGameManager=true;

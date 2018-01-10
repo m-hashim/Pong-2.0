@@ -31,6 +31,7 @@ public class Block : MonoBehaviour {
 			break;
 		case BlockTypes.Blink:
 			GetComponent<BlockBlink> ().enabled = true;
+			GetComponent<BlockBlink> ().enable();
 			break;
 		case BlockTypes.Blast:
 			break;

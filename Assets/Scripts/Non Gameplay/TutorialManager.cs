@@ -122,7 +122,8 @@ public class TutorialManager : MonoBehaviour {
 		case 3:
 			GameManager.Instance.powerupTypeLimiter (-1);
 			disablePowerupFromPause (7);
-			kheloKudoBadho.SetActive (true);
+			if(youdidthistoher.Instance.gameplayType<=1)
+				kheloKudoBadho.SetActive (true);
 			break;
 		case 4:
 			GameManager.Instance.powerupTypeLimiter (4);

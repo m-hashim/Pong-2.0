@@ -101,6 +101,8 @@ public class UI : MonoBehaviour {
 			blockMovement = true;
 		}
 
+
+
 		if (youdidthistoher.Instance.backgroundMusic == 0) {
 			soundButton.transform.GetChild (1).gameObject.SetActive (true);
 			themeSource.enabled = false;
@@ -128,6 +130,7 @@ public class UI : MonoBehaviour {
 		shopInstantiator ("Text/pads",PAD_COUNT,PadsPanel,padSprites);
 		currentActiveStore = 0;
 		shopInstantiator ("Text/powerups",POWERUP_COUNT,PowerupsPanel,powerUpSprites);
+
 	}
 
 	void Start()
@@ -625,7 +628,7 @@ public class UI : MonoBehaviour {
 
 	public void previousPageLevel()
 	{
-		if (levelCount>NO_OF_ROWS*NO_OF_COLUMNS && youdidthistoher.Instance.campaignLevelReached>20) {
+		if (levelCount>NO_OF_ROWS*NO_OF_COLUMNS && youdidthistoher.Instance.campaignLevelReached>=20) {
 				blockMovement = false;
 				if (lastSwitch == 1)
 					levelCount -= NO_OF_ROWS*NO_OF_COLUMNS;

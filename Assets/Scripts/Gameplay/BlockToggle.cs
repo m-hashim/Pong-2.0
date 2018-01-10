@@ -23,10 +23,14 @@ public class BlockToggle : MonoBehaviour {
 
 	}
 	void OnTriggerEnter(Collider col){
+		        
+	}
 
-        if (gameObject.GetComponent<Block> ().blockType != BlockTypes.Toggle)
+	void OnTriggerExit(Collider col)
+	{
+		if (gameObject.GetComponent<Block> ().blockType != BlockTypes.Toggle)
 			return;
-        //print(gameObject.GetComponent<Block>().blockType + "yo hai");
+		//print(gameObject.GetComponent<Block>().blockType + "yo hai");
 
 		if (col.gameObject.CompareTag ("Bullet") || col.gameObject.CompareTag ("padGoli")) {
 			gameObject.GetComponent<Collider> ().isTrigger = false;
