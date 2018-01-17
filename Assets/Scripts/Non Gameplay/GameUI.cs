@@ -146,7 +146,7 @@ public class GameUI : MonoBehaviour {
 				parsed = txt.text.Split ("\n" [0]);
 				descriptionText.text = parsed [Random.Range (0, noOfLoseText)];
 				if (youdidthistoher.Instance.currentPlayingLevel == youdidthistoher.Instance.campaignLevelReached) {
-					continueButton.GetComponent<ButtonBackRotator> ().enabled = false;
+					continueButton.transform.GetChild(0).GetComponent<ButtonBackRotator> ().enabled = false;
 					continueButton.GetComponent<Button> ().interactable = false;
 				}
 			}
@@ -178,6 +178,7 @@ public class GameUI : MonoBehaviour {
 		Time.timeScale = 0f;
 		inputHandler.SetActive (false);
 		themeSource.GetComponent<AudioSource> ().volume = 0f;
+        effectsSource.GetComponent<AudioSource>().volume = 0f;
 		pauseButton.GetComponent<Button> ().interactable = false;
 		loadPowerUpCount ();
 		if(secondPause)
@@ -225,8 +226,17 @@ public class GameUI : MonoBehaviour {
 		}
 		youdidthistoher.Instance.Save ();
 		Time.timeScale = 1f;
-		themeSource.GetComponent<AudioSource> ().volume = SET_VOLUME;
-		pauseButton.GetComponent<Button> ().interactable = true;
+        if (youdidthistoher.Instance.gameplayType == 2)
+        {
+            effectsSource.GetComponent<AudioSource>().volume = SET_VOLUME_TYPE2_EFFECTS;
+            themeSource.GetComponent<AudioSource>().volume = SET_VOLUME_TYPE2_THEME;
+        }
+        else
+        {
+            effectsSource.GetComponent<AudioSource>().volume = SET_VOLUME_TYPE01_EFFECTS;
+            themeSource.GetComponent<AudioSource>().volume = SET_VOLUME_TYPE01_THEME;
+        }
+        pauseButton.GetComponent<Button> ().interactable = true;
 	}
 
 	public void restart()
@@ -458,7 +468,9 @@ public class GameUI : MonoBehaviour {
 	{
 		AdManager.Instance.ShowRewardedVideo (0);
 		doubleCoins.SetActive (false);
-		string s = doubleCoins.transform.parent.GetChild (0).GetComponent<Text> ().text;
+        doubleCoins.transform.parent.GetChild(0).GetComponent<Button>().interactable = false;
+        doubleCoins.transform.parent.GetChild(1).GetComponent<Button>().interactable = false;
+        string s = doubleCoins.transform.parent.GetChild (0).GetComponent<Text> ().text;
 		int coins = int.Parse(s);
 		doubleCoins.transform.parent.GetChild (0).GetComponent<Text> ().text = (coins * 2).ToString ();
 	}

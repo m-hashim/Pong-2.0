@@ -106,53 +106,95 @@ public class AIS : MonoBehaviour {
 				vella = true;
 			}
 
+            if (magnet.activeInHierarchy && magnet.transform.childCount > 0)
+            {
+                float minDistance = Mathf.Infinity, tempDistance;
+                Transform targetBlock = null;
+                foreach (Transform temp in GameManager.Instance.BlokeGroup)
+                {
+                    if (temp.GetComponent<Block>().blockType != BlockTypes.Rock && temp.GetComponent<Block>().blockType != BlockTypes.Blink && temp.GetComponent<Block>().blockType != BlockTypes.Toggle)
+                    {
+                        tempDistance = Vector3.Distance(temp.transform.position, transform.position);
+                        if (tempDistance < minDistance)
+                        {
+                            minDistance = tempDistance;
+                            targetBlock = temp;
+                        }
+                    }
+                }
+                if (minDistance != Mathf.Infinity)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, targetBlock.position, SMOOTH_MOVEMENT); //toward block
+                }
+            }
+            else
+            {
 
-			if (!vella) {
-				Vector3 ballPos = ball.transform.position;
-				if(PowerUp.Instance.powerVar[(int)PowerTypes.AISlowBall].isWorking&&ball.transform.position.x < transform.position.x)
-					ballPos.x = 7f;
-				
-				transform.position = Vector3.MoveTowards (transform.position, ballPos, SMOOTH_MOVEMENT);
-			} else {
-				if (ballAtBack) {
-					Vector3 temp = transform.position;
-					if (temp.x + PAD_THICKNESS > MAX_X) {
-						temp.x = ball.transform.position.x -PAD_THICKNESS;
-					} else {
-						temp.x = ball.transform.position.x + 2f;
-					}
-					if (ballPiche.transform.position.z > 0) {
-						temp.z = temp.z - 1f;	
-						transform.position = Vector3.MoveTowards (transform.position, temp, SMOOTH_MOVEMENT);
-					} else {
-						temp.z = temp.z + 1f;	
-						transform.position = Vector3.MoveTowards (transform.position, temp, SMOOTH_MOVEMENT);
-					}
-				} else {
-					GameObject[] powerUps = GameObject.FindGameObjectsWithTag ("POWERUPS");   //towards powerUPs
-					if (powerUps.Length > 0) {
-						float minDistance = Mathf.Infinity;
-						GameObject PUpakdo = null;
-						foreach (var PU in powerUps) {
-								float tempDistance = Vector3.Distance (PU.transform.position, transform.position);
-								if (PU.transform.position.x > POWERUP_CATCH_LINE) {
-									float distance = tempDistance;
-									if (distance < minDistance) {
-										PUpakdo = PU;
-										minDistance = distance;
-									}
-							}
-						}
-						if (minDistance != Mathf.Infinity) {
-							transform.position = Vector3.MoveTowards (transform.position, PUpakdo.transform.position, SMOOTH_MOVEMENT); //toward powerUp
-						}
-						else {
-							transform.position = Vector3.MoveTowards (transform.position, REST_POS, SMOOTH_MOVEMENT); //towards resting
-						}
-					}
-				} 
-			}
-		
+                if (!vella)
+                {
+                    Vector3 ballPos = ball.transform.position;
+                    if (PowerUp.Instance.powerVar[(int)PowerTypes.AISlowBall].isWorking && ball.transform.position.x < transform.position.x)
+                        ballPos.x = 7f;
+
+                    transform.position = Vector3.MoveTowards(transform.position, ballPos, SMOOTH_MOVEMENT);
+                }
+                else
+                {
+                    if (ballAtBack)
+                    {
+                        Vector3 temp = transform.position;
+                        if (temp.x + PAD_THICKNESS > MAX_X)
+                        {
+                            temp.x = ball.transform.position.x - PAD_THICKNESS;
+                        }
+                        else
+                        {
+                            temp.x = ball.transform.position.x + 2f;
+                        }
+                        if (ballPiche.transform.position.z > 0)
+                        {
+                            temp.z = temp.z - 1f;
+                            transform.position = Vector3.MoveTowards(transform.position, temp, SMOOTH_MOVEMENT);
+                        }
+                        else
+                        {
+                            temp.z = temp.z + 1f;
+                            transform.position = Vector3.MoveTowards(transform.position, temp, SMOOTH_MOVEMENT);
+                        }
+                    }
+                    else
+                    {
+                        GameObject[] powerUps = GameObject.FindGameObjectsWithTag("POWERUPS");   //towards powerUPs
+                        if (powerUps.Length > 0)
+                        {
+                            float minDistance = Mathf.Infinity;
+                            GameObject PUpakdo = null;
+                            foreach (var PU in powerUps)
+                            {
+                                float tempDistance = Vector3.Distance(PU.transform.position, transform.position);
+                                if (PU.transform.position.x > POWERUP_CATCH_LINE)
+                                {
+                                    float distance = tempDistance;
+                                    if (distance < minDistance)
+                                    {
+                                        PUpakdo = PU;
+                                        minDistance = distance;
+                                    }
+                                }
+                            }
+                            if (minDistance != Mathf.Infinity)
+                            {
+                                transform.position = Vector3.MoveTowards(transform.position, PUpakdo.transform.position, SMOOTH_MOVEMENT); //toward powerUp
+                            }
+                            else
+                            {
+                                transform.position = Vector3.MoveTowards(transform.position, REST_POS, SMOOTH_MOVEMENT); //towards resting
+                            }
+                        }
+
+                    }
+                }
+            }
 		}
 			
 		temp = transform.position;
@@ -172,23 +214,7 @@ public class AIS : MonoBehaviour {
 		if (bRb.velocity.magnitude != 0) {
 			//kahan_dhakka_mara = bRb.velocity.normalized.x;
 		}
-
-		if (magnet.activeInHierarchy) {
-			float minDistance = Mathf.Infinity, tempDistance;
-			Transform targetBlock=null;
-			foreach (Transform temp in GameManager.Instance.BlokeGroup) {
-				if (temp.GetComponent<Block> ().blockType != BlockTypes.Rock && temp.GetComponent<Block> ().blockType != BlockTypes.Blink && temp.GetComponent<Block> ().blockType != BlockTypes.Toggle) {
-					tempDistance = Vector3.Distance (temp.transform.position, transform.position);
-					if (tempDistance < minDistance) {
-						minDistance = tempDistance;
-						targetBlock = temp;
-					}
-				}
-			}
-			if (minDistance != Mathf.Infinity) {
-				transform.position = Vector3.MoveTowards (transform.position, targetBlock.position, SMOOTH_MOVEMENT); //toward block
-			}
-		}
+		
 	}
 
 

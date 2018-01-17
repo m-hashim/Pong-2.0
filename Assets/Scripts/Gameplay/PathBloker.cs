@@ -6,6 +6,7 @@ public class PathBloker : MonoBehaviour {
     private const float MAX_TIME = 5f;
     private Rigidbody ballRb;
     public GameObject pathBloker;
+    public Transform playerMagnet, aiMagnet;
     public float timeElapsed;
     private Vector3 spawnPosition;
     void Start () {
@@ -13,7 +14,7 @@ public class PathBloker : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (!PowerUp.Instance.powerVar [(int)PowerTypes.PlayerMagnet].isWorking && !PowerUp.Instance.powerVar [(int)PowerTypes.AIMagnet].isWorking && GameManager.Instance.gameStarted) {
+		if ((playerMagnet.childCount==0 && aiMagnet.childCount==0)) {
 			if (Mathf.Abs (ballRb.velocity.x) <= 0.05 || Mathf.Abs (ballRb.velocity.z) <= 0.05) {
 				timeElapsed += Time.deltaTime;
             

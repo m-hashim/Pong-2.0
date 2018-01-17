@@ -421,13 +421,14 @@
 				break;
 
 			case PowerTypes.FlareBall:
-				foreach (Transform child in BlokeGroup.transform)
-				{	child.GetComponent<Collider> ().isTrigger = true;
-				}
 				for (int i = 0; i < 3; i++) {
 					ballList [i].transform.GetChild (1).gameObject.SetActive (true);
 				}
-				break;
+                foreach (Transform child in BlokeGroup.transform)
+                {
+                    child.GetComponent<Collider>().isTrigger = true;
+                }
+                break;
 
 			case PowerTypes.VipBall:
 				GameManager.Instance.ground.GetComponent<vipBehaviour> ().enabled = true;

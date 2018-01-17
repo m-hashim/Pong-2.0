@@ -13,7 +13,7 @@ public class collisionCorrector : MonoBehaviour {
 	void OnTriggerEnter(Collider col)
 	{
 		if (col.gameObject.tag == "Ball") {
-			print ("idhar bhi aya tha control");
+		//	print ("idhar bhi aya tha control");
 			col.gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 			player.GetComponent<BoxCollider> ().isTrigger = true;
 			Invoke ("cancelTrigger", 0.5f);

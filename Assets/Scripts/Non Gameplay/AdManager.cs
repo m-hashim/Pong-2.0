@@ -61,7 +61,7 @@ public class AdManager : MonoBehaviour {
 			break;
 		case ShowResult.Finished:
 			if (RVAdType == 0) {
-				youdidthistoher.Instance.currency += GameObject.Find ("Ground").GetComponent<GameManager> ().coinCount;
+				youdidthistoher.Instance.currency += GameObject.Find ("GameManager").GetComponent<GameManager> ().coinCount;
 			} else if (RVAdType == 1) {
 				youdidthistoher.Instance.currency += 30;
 			}

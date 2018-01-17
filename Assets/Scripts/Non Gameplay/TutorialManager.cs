@@ -101,10 +101,14 @@ public class TutorialManager : MonoBehaviour {
 		}
 		else
 		{
-			if (curTutElement + 1 < tutorialLevels.Length)
-				youdidthistoher.Instance.tutorialLevel = tutorialLevels [curTutElement + 1];
-			else
-				youdidthistoher.Instance.tutorialLevel = -1;
+            if (curTutElement + 1 < tutorialLevels.Length)
+            {
+                youdidthistoher.Instance.tutorialLevel = tutorialLevels[curTutElement + 1];
+            }
+            else
+            {
+                youdidthistoher.Instance.tutorialLevel = -1;
+            }
 		}
 		youdidthistoher.Instance.Save ();
 	}
@@ -211,8 +215,12 @@ public class TutorialManager : MonoBehaviour {
 		}
 		youdidthistoher.Instance.Save ();
 
-		if (youdidthistoher.Instance.firstEndlessPlay == 1 && youdidthistoher.Instance.firstDarkPlay == 1 && youdidthistoher.Instance.tutorialLevel == -1 && youdidthistoher.Instance.tutorialFinished==0) {
+		if (youdidthistoher.Instance.firstEndlessPlay == 0 && youdidthistoher.Instance.firstDarkPlay == 0 && youdidthistoher.Instance.tutorialLevel == -1) {
 			Social.ReportProgress (GPGSIds.achievement_baby_steps, 100.0f, (bool success) => {
+                if (success)
+                    print("baby steps");
+                else
+                    print("noi baby steps");
 			});			
 		}
 	}

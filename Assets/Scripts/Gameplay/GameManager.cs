@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour {
 	private static GameManager instance;
 	public static GameManager Instance{get{ return instance;}}
 	private const float COIN_PROB=0.3f;
-	private float POWER_UP_PROB = 0.12f;
+    private float POWER_UP_PROB = 0.12f;
 	private float DARK_MODE_AI_POWERUP_PROB = 35f;
 	private float DARK_MODE_AI_POWERUP_TIME = 10f;
 	private const float SPAWN_RATE = 3f;
@@ -417,7 +417,7 @@ public class GameManager : MonoBehaviour {
 			if (MAX_POWERUP_COUNT != -1) {
 			//	print ("chaling");
 				int powerChoice = Random.Range (0, MAX_POWERUP_COUNT);
-				//		powerChoice = 15;
+				//  		powerChoice = 32;
 				//		var pu=new GameObject();
 				GameObject pu;
 				/*	if (powerChoice < 4) pu = Instantiate(padLong, tempBloke.transform.position, Quaternion.identity);
